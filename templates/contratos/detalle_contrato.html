@@ -1,0 +1,116 @@
+{% extends 'base.html' %}
+
+{% block title %}Detalle del Contrato {{ contrato.numero_contrato }} | CLM Pro{% endblock %}
+
+{% block header_title %}Detalles del Contrato{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto space-y-6">
+    <!-- Header Card con Acciones -->
+    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center bg-white p-6 rounded-xl shadow-sm border border-slate-200 gap-4">
+        <div>
+            <div class="flex items-center gap-3">
+                <h2 class="text-xl font-bold text-slate-800">{{ contrato.numero_contrato }}</h2>
+                <span class="px-3 py-1 text-xs font-semibold rounded-full 
+                    {% if contrato.estado == 'Activo' %} bg-emerald-50 text-emerald-700 border border-emerald-200
+                    {% elif contrato.estado == 'Próximo a Vencer' %} bg-amber-50 text-amber-700 border border-amber-200
+                    {% else %} bg-rose-50 text-rose-700 border border-rose-200 {% endif %}">
+                    {{ contrato.estado }}
+                </span>
+            </div>
+            <p class="text-sm text-slate-500 mt-1">Información completa y configuración de alertas del contrato.</p>
+        </div>
+        <div class="flex items-center gap-2">
+            <a href="{% url 'contracts:lista' %}" class="bg-white hover:bg-slate-50 border border-slate-300 text-slate-700 font-medium px-4 py-2 rounded-lg text-sm transition flex items-center gap-1">
+                <i class="fa-solid fa-arrow-left"></i> Volver
+            </a>
+        </div>
+    </div>
+
+    <!-- Cuerpo de la Información -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Información General -->
+        <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 space-y-4">
+            <h3 class="text-sm font-bold text-slate-800 uppercase tracking-wider border-b border-slate-100 pb-2 flex items-center gap-2">
+                <i class="fa-solid fa-file-contract text-blue-600"></i> Datos Generales
+            </h3>
+            <div class="space-y-3 text-sm">
+                <div>
+                    <span class="block text-xs font-semibold text-slate-400">Tipo de Contrato</span>
+                    <span class="text-slate-700 font-medium">{{ contrato.tipo_contrato }}</span>
+                </div>
+                <div>
+                    <span class="block text-xs font-semibold text-slate-400">Empresa / Contratista</span>
+                    <span class="text-slate-700 font-medium">{{ contrato.empresa }}</span>
+                </div>
+                <div>
+                    <span class="block text-xs font-semibold text-slate-400">NIT / Identificación</span>
+                    <span class="text-slate-700 font-medium">{{ contrato.nit }}</span>
+                </div>
+                <div>
+                    <span class="block text-xs font-semibold text-slate-400">Área de Destino</span>
+                    <span class="text-slate-700 font-medium">{{ contrato.area_destino }}</span>
+                </div>
+                <div>
+                    <span class="block text-xs font-semibold text-slate-400">Responsable Asignado</span>
+                    <span class="text-slate-700 font-medium">{{ contrato.responsable }}</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Vigencia y Fechas -->
+        <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 space-y-4">
+            <h3 class="text-sm font-bold text-slate-800 uppercase tracking-wider border-b border-slate-100 pb-2 flex items-center gap-2">
+                <i class="fa-solid fa-calendar-days text-blue-600"></i> Vigencia y Plazos
+            </h3>
+            <div class="space-y-3 text-sm">
+                <div>
+                    <span class="block text-xs font-semibold text-slate-400">Fecha de Inicio</span>
+                    <span class="text-slate-700 font-medium">{{ contrato.fecha_inicio|date:"d/m/Y" }}</span>
+                </div>
+                <div>
+                    <span class="block text-xs font-semibold text-slate-400">Fecha de Vencimiento (Fin)</span>
+                    <span class="text-slate-700 font-medium">{{ contrato.fecha_fin|date:"d/m/Y" }}</span>
+                </div>
+                <div>
+                    <span class="block text-xs font-semibold text-slate-400">Anticipación de Notificación</span>
+                    <span class="text-slate-700 font-medium">{{ contrato.tiempo_notificacion }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Configuración de Notificaciones (Correos) -->
+    <div class="bg-slate-50 p-6 rounded-xl border border-slate-200 space-y-4">
+        <h3 class="text-sm font-bold text-slate-800 flex items-center gap-2">
+            <i class="fa-solid fa-envelope text-blue-600"></i> Correos Asignados para Alertas de Vencimiento
+        </h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="bg-white p-4 rounded-lg border border-slate-200">
+                <span class="block text-xs font-semibold text-slate-400 mb-1">Correo Principal</span>
+                <span class="text-sm font-medium text-slate-700">{{ contrato.correo_notificacion_principal }}</span>
+            </div>
+            <div class="bg-white p-4 rounded-lg border border-slate-200">
+                <span class="block text-xs font-semibold text-slate-400 mb-1">Correo Opcional</span>
+                <span class="text-sm font-medium text-slate-700">
+                    {% if contrato.correo_notificacion_opcional %}
+                        {{ contrato.correo_notificacion_opcional }}
+                    {% else %}
+                        <span class="text-slate-400 italic">No configurado</span>
+                    {% endif %}
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Observaciones -->
+    {% if contrato.observaciones %}
+    <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 space-y-2">
+        <h3 class="text-sm font-bold text-slate-800 flex items-center gap-2">
+            <i class="fa-solid fa-note-sticky text-blue-600"></i> Observaciones
+        </h3>
+        <p class="text-sm text-slate-600 whitespace-pre-line">{{ contrato.observaciones }}</p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

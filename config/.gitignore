@@ -1,0 +1,25 @@
+# Entorno virtual
+venv/
+env/
+ENV/
+
+# Variables de entorno (¡NUNCA SUBIR CONTRASENAS O KEYS A GIT!)
+.env
+
+# Archivos compilados de Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Base de datos local de prueba (si aplica)
+*.sqlite3
+
+# Archivos subidos por usuarios (PDFs, contratos reales)
+media/
+
+# Archivos estáticos recolectados
+staticfiles/
+
+# Archivos del editor
+.vscode/
+.idea/
