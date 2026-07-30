@@ -1,7 +1,9 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from .models import Contrato, HistorialAuditoria
-from .forms import ContratoForm
+from .models import Contrato, HistorialAuditoria, Tercero
+from .forms import ContratoForm, TerceroForm
+from .services import TerceroService
+
 
 @login_required
 def lista_contratos(request):
@@ -13,6 +15,7 @@ def lista_contratos(request):
     }
     return render(request, 'contratos/lista_contratos.html', context)
 
+
 @login_required
 def detalle_contrato(request, pk):
     contrato = get_object_or_404(Contrato, pk=pk)
@@ -21,6 +24,7 @@ def detalle_contrato(request, pk):
         'contrato': contrato
     }
     return render(request, 'contratos/detalle_contrato.html', context)
+
 
 @login_required
 def crear_contrato(request):
@@ -44,6 +48,7 @@ def crear_contrato(request):
         'form': form
     }
     return render(request, 'contratos/crear_contrato.html', context)
+
 
 @login_required
 def editar_contrato(request, pk):
@@ -70,3 +75,62 @@ def editar_contrato(request, pk):
         'contrato': contrato
     }
     return render(request, 'contratos/editar_contrato.html', context)
+
+
+@login_required
+def crear_tercero(request):
+    if request.method == "POST":
+        form = TerceroForm(request.POST)
+        if form.is_valid():
+            TerceroService.crear_tercero(form)
+            return redirect("contracts:lista_terceros")
+    else:
+        form = TerceroForm()
+
+    return render(
+        request,
+        "contratos/terceros/crear.html",
+        {
+            "form": form
+        }
+    )
+
+
+@login_required
+def lista_terceros(request):
+    terceros = Tercero.objects.all().order_by("nombre")
+
+    return render(
+        request,
+        "contratos/terceros/lista.html",
+        {
+            "terceros": terceros
+        }
+    )
+
+
+@login_required
+def editar_tercero(request, pk):
+    tercero = get_object_or_404(Tercero, pk=pk)
+
+    if request.method == "POST":
+        form = TerceroForm(
+            request.POST,
+            instance=tercero
+        )
+
+        if form.is_valid():
+            TerceroService.actualizar_tercero(form)
+            return redirect("contracts:lista_terceros")
+
+    else:
+        form = TerceroForm(instance=tercero)
+
+    return render(
+        request,
+        "contratos/terceros/crear.html",
+        {
+            "form": form,
+            "tercero": tercero
+        }
+    )

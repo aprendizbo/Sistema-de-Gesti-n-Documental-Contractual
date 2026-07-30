@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+
+{% block title %}
+{% if tercero %}
+Editar Tercero
+{% else %}
+Nuevo Tercero
+{% endif %}
+{% endblock %}
+
+{% block header_title %}
+Gestión de Terceros
+{% endblock %}
+
+{% block content %}
+
+<div class="max-w-5xl mx-auto">
+
+    <div class="bg-white rounded-xl shadow border p-6">
+
+        <div class="flex justify-between items-center mb-6">
+            <div>
+                <h2 class="text-2xl font-bold text-slate-800">
+                    {% if tercero %}
+                        Editar Tercero
+                    {% else %}
+                        Registrar Nuevo Tercero
+                    {% endif %}
+                </h2>
+
+                <p class="text-slate-500 mt-1">
+                    Información general del tercero.
+                </p>
+            </div>
+
+            <a href="{% url 'contracts:lista_terceros' %}"
+               class="text-slate-600 hover:text-blue-600">
+                ← Volver
+            </a>
+        </div>
+
+        <form method="post">
+
+            {% csrf_token %}
+
+            {{ form.as_p }}
+
+            <div class="mt-8 flex justify-end gap-3">
+
+                <a href="{% url 'contracts:lista_terceros' %}"
+                   class="px-5 py-2 rounded-lg border">
+                    Cancelar
+                </a>
+
+                <button
+                    type="submit"
+                    class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg">
+                    Guardar
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}

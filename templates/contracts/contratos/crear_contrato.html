@@ -57,18 +57,56 @@
                     <label class="block text-sm font-semibold text-slate-700 mb-2">Tipo de Contrato</label>
                     {{ form.tipo_contrato }}
                 </div>
+                
+                <!-- Selector de Tercero -->
                 <div>
-                    <label class="block text-sm font-semibold text-slate-700 mb-2">Empresa / Contratista</label>
-                    {{ form.empresa }}
+                    <label class="block text-sm font-semibold text-slate-700 mb-2">Tercero</label>
+                    {{ form.tercero }}
                 </div>
-                <div>
-                    <label class="block text-sm font-semibold text-slate-700 mb-2">NIT / Identificación</label>
-                    {{ form.nit }}
+
+                <!-- Tarjeta Informativa del Tercero (Se muestra mediante JS) -->
+                <div id="info-tercero" class="hidden md:col-span-2 bg-white border border-slate-200 rounded-xl p-6 shadow-sm mt-2">
+                    <h3 class="font-bold text-slate-800 mb-5 flex items-center gap-2">
+                        <i class="fa-solid fa-building text-blue-600"></i> Información del tercero
+                    </h3>
+
+                    <div class="grid grid-cols-2 md:grid-cols-3 gap-6">
+                        <div>
+                            <span class="block text-xs uppercase tracking-wider text-slate-400 font-bold">Empresa</span>
+                            <p id="empresa" class="font-semibold text-slate-800 mt-1"></p>
+                        </div>
+                        <div>
+                            <span class="block text-xs uppercase tracking-wider text-slate-400 font-bold">NIT</span>
+                            <p id="nit" class="font-semibold text-slate-800 mt-1"></p>
+                        </div>
+                        <div>
+                            <span class="block text-xs uppercase tracking-wider text-slate-400 font-bold">Tipo</span>
+                            <p id="tipo" class="font-semibold text-blue-600 mt-1 bg-blue-50 px-2 py-0.5 rounded-md inline-block text-xs"></p>
+                        </div>
+                        <div>
+                            <span class="block text-xs uppercase tracking-wider text-slate-400 font-bold">Ciudad</span>
+                            <p id="ciudad" class="font-semibold text-slate-800 mt-1"></p>
+                        </div>
+                        <div>
+                            <span class="block text-xs uppercase tracking-wider text-slate-400 font-bold">Contacto</span>
+                            <p id="contacto" class="font-semibold text-slate-800 mt-1"></p>
+                        </div>
+                        <div>
+                            <span class="block text-xs uppercase tracking-wider text-slate-400 font-bold">Estado</span>
+                            <p id="estado" class="font-semibold text-emerald-600 mt-1"></p>
+                        </div>
+                        <div class="col-span-2 md:col-span-3">
+                            <span class="block text-xs uppercase tracking-wider text-slate-400 font-bold">Correo</span>
+                            <p id="correo" class="font-semibold text-slate-800 mt-1"></p>
+                        </div>
+                    </div>
                 </div>
+                
                 <div>
                     <label class="block text-sm font-semibold text-slate-700 mb-2">Área de Destino</label>
                     {{ form.area_destino }}
                 </div>
+
                 <div>
                     <label class="block text-sm font-semibold text-slate-700 mb-2">Responsable Asignado</label>
                     {{ form.responsable }}
@@ -84,26 +122,26 @@
                 <div>
                     <label class="block text-sm font-semibold text-slate-700 mb-2">Anticipación de Notificación</label>
                     {{ form.tiempo_notificacion }}
-                    <p class="text-xs text-slate-400 mt-1">Días antes de la fecha de vencimiento para enviar las alertas.</p>
+                    <p class="text-xs text-slate-400 mt-1">Días antes del vencimiento para enviar las alertas.</p>
                 </div>
                 <div>
                     <label class="block text-sm font-semibold text-slate-700 mb-2">Estado Inicial</label>
                     {{ form.estado }}
                 </div>
 
-                <!-- Sección integrada de correos de alerta y vencimiento -->
+                <!-- Sección integrada de correos -->
                 <div class="md:col-span-2 bg-slate-50 p-5 rounded-xl border border-slate-200 space-y-4">
                     <h3 class="text-sm font-bold text-slate-800 flex items-center gap-2">
-                        <i class="fa-solid fa-envelope text-blue-600"></i> Configuración de Correos para Alertas de Vencimiento
+                        <i class="fa-solid fa-envelope text-blue-600"></i> Configuración de Correos para Alertas
                     </h3>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
-                            <label class="block text-xs font-semibold text-slate-700 mb-1">Correo Principal (Obligatorio - @boccherini.com.co)</label>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Correo Principal (Obligatorio)</label>
                             {{ form.correo_notificacion_principal }}
                         </div>
                         <div>
-                            <label class="block text-xs font-semibold text-slate-700 mb-1">Correo Opcional (Usuario / Tercero - Opcional)</label>
-                            {{ form.correo_notificacion_opcional }}
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Correo Secundario (Opcional)</label>
+                            {{ form.correo_notificacion_secundario }}
                         </div>
                     </div>
                 </div>
@@ -125,4 +163,38 @@
         </form>
     </div>
 </div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const terceroSelect = document.getElementById("id_tercero");
+    const infoTercero = document.getElementById("info-tercero");
+
+    terceroSelect.addEventListener("change", function () {
+        if (!this.value) {
+            infoTercero.classList.add("hidden");
+            return;
+        }
+
+        fetch(`/contratos/terceros/${this.value}/json/`)
+        .then(response => response.json())
+        .then(data => {
+            // Actualización de campos
+            document.getElementById("empresa").textContent = data.nombre;
+            document.getElementById("nit").textContent = data.identificacion;
+            document.getElementById("tipo").textContent = data.tipo;
+            document.getElementById("ciudad").textContent = data.ciudad;
+            document.getElementById("contacto").textContent = data.contacto;
+            document.getElementById("estado").textContent = data.estado;
+            document.getElementById("correo").textContent = data.correo;
+
+            // Mostrar el panel
+            infoTercero.classList.remove("hidden");
+        })
+        .catch(err => {
+            console.error("Error al obtener datos:", err);
+            infoTercero.classList.add("hidden");
+        });
+    });
+});
+</script>
 {% endblock %}

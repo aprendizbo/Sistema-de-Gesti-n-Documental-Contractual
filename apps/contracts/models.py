@@ -4,6 +4,143 @@ from django.contrib.auth.models import User
 from django.core.validators import FileExtensionValidator
 
 
+class Tercero(models.Model):
+    TIPOS = [
+        ("PROVEEDOR", "Proveedor"),
+        ("CONTRATISTA", "Contratista"),
+        ("CLIENTE", "Cliente"),
+        ("PERSONA", "Persona Natural"),
+        ("EMPLEADO", "Empleado"),
+        ("ALIADO", "Aliado Estratégico"),
+        ("OTRO", "Otro"),
+    ]
+
+    ESTADOS = [
+        ("ACTIVO", "Activo"),
+        ("INACTIVO", "Inactivo"),
+    ]
+
+    tipo = models.CharField(
+        max_length=20,
+        choices=TIPOS,
+        default='PROVEEDOR'
+    )
+
+    nombre = models.CharField(
+        max_length=200,
+        verbose_name="Nombre"
+    )
+
+    identificacion = models.CharField(
+        max_length=30,
+        unique=True,
+        verbose_name="NIT / Documento"
+    )
+
+    direccion = models.CharField(
+        max_length=250,
+        blank=True,
+        null=True
+    )
+
+    # NUEVO: Fase 1
+    ciudad = models.CharField(
+        max_length=120,
+        blank=True,
+        null=True
+    )
+
+    telefono = models.CharField(
+        max_length=30,
+        blank=True,
+        null=True
+    )
+
+    # Se mantiene igual para la Fase 2
+    correo = models.EmailField(
+        blank=True,
+        null=True
+    )
+
+    # Se mantiene igual para la Fase 2 (futuro persona_contacto)
+    contacto = models.CharField(
+        max_length=150,
+        blank=True,
+        null=True,
+        help_text="Persona de contacto (si aplica)"
+    )
+
+    # NUEVO: Fase 1
+    cargo_contacto = models.CharField(
+        max_length=120,
+        blank=True,
+        null=True
+    )
+
+    # NUEVO: Fase 1 (Reemplaza a 'activo')
+    estado = models.CharField(
+        max_length=10,
+        choices=ESTADOS,
+        default="ACTIVO"
+    )
+
+    creado_en = models.DateTimeField(auto_now_add=True)
+    
+    # NUEVO: Fase 1
+    actualizado_en = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['nombre']
+        verbose_name = "Tercero"
+        verbose_name_plural = "Terceros"
+
+    def __str__(self):
+        return self.nombre
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "nombre": self.nombre,
+            "identificacion": self.identificacion,
+            "ciudad": self.ciudad,
+            "telefono": self.telefono,
+            "correo": self.correo,
+            "contacto": self.contacto,
+            "cargo_contacto": self.cargo_contacto,
+            "estado": self.estado,
+        }
+
+
+class Area(models.Model):
+    nombre = models.CharField(
+        max_length=150,
+        unique=True,
+        verbose_name="Nombre del Área"
+    )
+
+    descripcion = models.TextField(
+        blank=True,
+        null=True,
+        verbose_name="Descripción"
+    )
+
+    activo = models.BooleanField(
+        default=True
+    )
+
+    creado_en = models.DateTimeField(
+        auto_now_add=True
+    )
+
+    class Meta:
+        ordering = ['nombre']
+        verbose_name = "Área"
+        verbose_name_plural = "Áreas"
+
+    def __str__(self):
+        return self.nombre
+
+
 class TipoContrato(models.Model):
     nombre = models.CharField(max_length=100, unique=True, verbose_name="Nombre del Tipo")
     descripcion = models.TextField(blank=True, null=True, verbose_name="Descripción")
@@ -52,11 +189,31 @@ class Contrato(models.Model):
 
     numero_contrato = models.CharField(max_length=50, unique=True, verbose_name="Número de Contrato")
     tipo_contrato = models.ForeignKey(TipoContrato, on_delete=models.PROTECT, related_name='contratos')
+    
     empresa = models.CharField(max_length=200, verbose_name="Empresa / Contratista")
     nit = models.CharField(max_length=30, verbose_name="NIT / Identificación")
     
+    tercero = models.ForeignKey(
+        Tercero,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='contratos',
+        verbose_name="Tercero"
+    )
+    
     # Nuevos campos integrados
     area_destino = models.CharField(max_length=150, verbose_name="Área de Destino")
+    
+    area = models.ForeignKey(
+        Area,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='contratos',
+        verbose_name="Área Responsable"
+    )
+    
     responsable = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='contratos_a_cargo')
     
     fecha_inicio = models.DateField(verbose_name="Fecha de Inicio")
@@ -64,8 +221,14 @@ class Contrato(models.Model):
     
     # Campos de alertas y correos
     tiempo_notificacion = models.IntegerField(choices=TIEMPO_NOTIFICACION_CHOICES, default=30, verbose_name="Anticipación de Notificación")
-    correo_notificacion_principal = models.EmailField(verbose_name="Correo Principal (Admin @boccherini.com.co)")
-    correo_notificacion_opcional = models.EmailField(blank=True, null=True, verbose_name="Correo Opcional (Usuario/Responsable)")
+    correo_notificacion_principal = models.EmailField(
+        verbose_name="Correo Principal"
+    )
+    correo_notificacion_secundario = models.EmailField(
+        blank=True,
+        null=True,
+        verbose_name="Correo Secundario"
+    )
 
     estado = models.CharField(max_length=20, choices=ESTADOS, default='ACTIVO', verbose_name="Estado")
     observaciones = models.TextField(blank=True, null=True, verbose_name="Observaciones")

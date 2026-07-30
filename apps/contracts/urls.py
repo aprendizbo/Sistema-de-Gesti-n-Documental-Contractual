@@ -4,6 +4,33 @@ from . import views
 app_name = 'contracts'
 
 urlpatterns = [
+    # -------------------------
+    # Terceros
+    # -------------------------
+    path(
+        "terceros/",
+        views.lista_terceros,
+        name="lista_terceros"
+    ),
+    path(
+        "terceros/crear/",
+        views.crear_tercero,
+        name="crear_tercero"
+    ),
+    path(
+        "terceros/<int:pk>/json/",  # <-- Cambio aplicado aquí
+        views.obtener_tercero,
+        name="obtener_tercero"
+    ),
+    path(
+        "terceros/<int:pk>/editar/",
+        views.editar_tercero,
+        name="editar_tercero"
+    ),
+
+    # -------------------------
+    # Contratos
+    # -------------------------
     # Listar contratos (la que conecta con tu botón del menú lateral)
     path('lista/', views.lista_contratos, name='lista'),
     

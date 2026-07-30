@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+
+{% block title %}Terceros | CLM Pro{% endblock %}
+
+{% block header_title %}Gestión de Terceros{% endblock %}
+
+{% block content %}
+
+<div class="space-y-6">
+
+    <div class="flex justify-between items-center bg-white p-6 rounded-xl shadow">
+        <div>
+            <h2 class="text-2xl font-bold">Terceros</h2>
+            <p class="text-gray-500">
+                Empresas, contratistas, clientes y demás terceros registrados.
+            </p>
+        </div>
+
+        <a href="{% url 'contracts:crear_tercero' %}"
+           class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg">
+            + Nuevo tercero
+        </a>
+    </div>
+
+    <form method="get" class="bg-white p-4 rounded-xl shadow">
+        <input
+            type="text"
+            name="q"
+            value="{{ request.GET.q }}"
+            placeholder="Buscar por nombre o NIT..."
+            class="w-full border rounded-lg p-2">
+    </form>
+
+    <div class="bg-white rounded-xl shadow overflow-hidden">
+
+        <table class="w-full">
+
+            <thead class="bg-gray-100">
+
+                <tr>
+
+                    <th class="p-3 text-left">Nombre</th>
+
+                    <th class="p-3 text-left">Tipo</th>
+
+                    <th class="p-3 text-left">Documento</th>
+
+                    <th class="p-3 text-left">Ciudad</th>
+
+                    <th class="p-3 text-left">Estado</th>
+
+                    <th class="p-3 text-center">Acciones</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+            {% for tercero in terceros %}
+
+                <tr class="border-t">
+
+                    <td class="p-3">{{ tercero.nombre }}</td>
+
+                    <td class="p-3">{{ tercero.get_tipo_display }}</td>
+
+                    <td class="p-3">{{ tercero.identificacion }}</td>
+
+                    <td class="p-3">{{ tercero.ciudad }}</td>
+
+                    <td class="p-3">{{ tercero.get_estado_display }}</td>
+
+                    <td class="p-3 text-center">
+
+                        <a href="{% url 'contracts:editar_tercero' tercero.id %}">
+                            Editar
+                        </a>
+
+                    </td>
+
+                </tr>
+
+            {% empty %}
+
+                <tr>
+
+                    <td colspan="6" class="p-6 text-center text-gray-500">
+                        No existen terceros registrados.
+                    </td>
+
+                </tr>
+
+            {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+{% endblock %}

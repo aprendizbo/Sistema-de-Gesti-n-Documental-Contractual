@@ -1,5 +1,10 @@
 from django import forms
-from .models import Contrato
+from .models import Contrato, Tercero
+
+DOMINIOS_PERMITIDOS = [
+    "boccherini.com.co",
+]
+
 
 class ContratoForm(forms.ModelForm):
     class Meta:
@@ -7,15 +12,15 @@ class ContratoForm(forms.ModelForm):
         fields = [
             'numero_contrato', 
             'tipo_contrato', 
-            'empresa', 
-            'nit', 
-            'area_destino',
+            'tercero',
+            'area_destino',      # <-- Campo viejo (lo mantenemos por ahora)
+            'area',              # <-- NUEVO campo agregado
             'responsable', 
             'fecha_inicio', 
             'fecha_fin', 
             'tiempo_notificacion',
             'correo_notificacion_principal',
-            'correo_notificacion_opcional',
+            'correo_notificacion_secundario', 
             'estado', 
             'observaciones'
         ]
@@ -27,17 +32,15 @@ class ContratoForm(forms.ModelForm):
             'tipo_contrato': forms.Select(attrs={
                 'class': 'w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600'
             }),
-            'empresa': forms.TextInput(attrs={
-                'class': 'w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600',
-                'placeholder': 'Nombre de la empresa o contratista'
-            }),
-            'nit': forms.TextInput(attrs={
-                'class': 'w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600',
-                'placeholder': 'Ej: 900123456-7'
+            'tercero': forms.Select(attrs={
+                'class': 'w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600'
             }),
             'area_destino': forms.TextInput(attrs={
                 'class': 'w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600',
                 'placeholder': 'Ej: Gestión Humana / Legal / TI'
+            }),
+            'area': forms.Select(attrs={
+                'class': 'w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600'
             }),
             'responsable': forms.Select(attrs={
                 'class': 'w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600'
@@ -57,9 +60,9 @@ class ContratoForm(forms.ModelForm):
                 'class': 'w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600',
                 'placeholder': 'admin.contratos@boccherini.com.co'
             }),
-            'correo_notificacion_opcional': forms.EmailInput(attrs={
+            'correo_notificacion_secundario': forms.EmailInput(attrs={
                 'class': 'w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600',
-                'placeholder': 'usuario.responsable@correo.com (Opcional)'
+                'placeholder': 'usuario.responsable@boccherini.com.co' 
             }),
             'estado': forms.Select(attrs={
                 'class': 'w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600'
@@ -71,8 +74,91 @@ class ContratoForm(forms.ModelForm):
             }),
         }
 
-    def clean_correo_notificacion_principal(self):
-        correo = self.cleaned_data.get('correo_notificacion_principal')
-        if correo and not correo.endswith('@boccherini.com.co'):
-            raise forms.ValidationError("El correo principal debe pertenecer obligatoriamente al dominio institucional (@boccherini.com.co).")
-        return correo
+    def _validar_dominio(self, correo):
+        dominio = correo.split("@")[-1].lower()
+        if dominio not in DOMINIOS_PERMITIDOS:
+            raise forms.ValidationError(
+                "Solo se permiten correos institucionales."
+            )
+
+    def clean(self):
+        cleaned_data = super().clean()
+
+        principal = cleaned_data.get("correo_notificacion_principal")
+        secundario = cleaned_data.get("correo_notificacion_secundario")
+
+        if principal:
+            self._validar_dominio(principal)
+
+        if secundario:
+            self._validar_dominio(secundario)
+
+        return cleaned_data
+
+
+class TerceroForm(forms.ModelForm):
+
+    class Meta:
+        model = Tercero
+        fields = [
+            'tipo',
+            'nombre',
+            'identificacion',
+            'direccion',
+            'ciudad',
+            'telefono',
+            'correo',
+            'contacto',
+            'cargo_contacto',
+            'estado',
+        ]
+
+        widgets = {
+            'tipo': forms.Select(attrs={
+                'class': 'w-full px-4 py-2 border rounded-lg'
+            }),
+
+            'nombre': forms.TextInput(attrs={
+                'class': 'w-full px-4 py-2 border rounded-lg',
+                'placeholder': 'Nombre del tercero'
+            }),
+
+            'identificacion': forms.TextInput(attrs={
+                'class': 'w-full px-4 py-2 border rounded-lg',
+                'placeholder': 'NIT o Documento'
+            }),
+
+            'direccion': forms.TextInput(attrs={
+                'class': 'w-full px-4 py-2 border rounded-lg',
+                'placeholder': 'Dirección'
+            }),
+
+            'ciudad': forms.TextInput(attrs={
+                'class': 'w-full px-4 py-2 border rounded-lg',
+                'placeholder': 'Ciudad'
+            }),
+
+            'telefono': forms.TextInput(attrs={
+                'class': 'w-full px-4 py-2 border rounded-lg',
+                'placeholder': 'Teléfono de contacto'
+            }),
+
+            'correo': forms.EmailInput(attrs={
+                'class': 'w-full px-4 py-2 border rounded-lg',
+                'placeholder': 'correo@dominio.com'
+            }),
+
+            'contacto': forms.TextInput(attrs={
+                'class': 'w-full px-4 py-2 border rounded-lg',
+                'placeholder': 'Nombre de la persona de contacto'
+            }),
+
+            'cargo_contacto': forms.TextInput(attrs={
+                'class': 'w-full px-4 py-2 border rounded-lg',
+                'placeholder': 'Cargo de la persona de contacto'
+            }),
+
+            'estado': forms.Select(attrs={
+                'class': 'w-full px-4 py-2 border rounded-lg'
+            }),
+        }
