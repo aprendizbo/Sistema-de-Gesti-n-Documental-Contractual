@@ -1,0 +1,122 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Áreas | CLM Pro
+{% endblock %}
+
+{% block header_title %}
+Gestión de Áreas
+{% endblock %}
+
+{% block content %}
+
+<div class="space-y-6">
+
+    <div class="flex justify-between items-center">
+
+        <h2 class="text-2xl font-bold">
+            Áreas
+        </h2>
+
+        <a
+            href="{% url 'contracts:crear_area' %}"
+            class="bg-blue-600 text-white px-5 py-2 rounded-lg"
+        >
+            Nueva Área
+        </a>
+
+    </div>
+
+    <div class="bg-white rounded-xl shadow overflow-hidden">
+
+        <table class="w-full">
+
+            <thead class="bg-slate-100">
+
+                <tr>
+
+                    <th class="text-left p-4">
+                        Nombre
+                    </th>
+
+                    <th class="text-left p-4">
+                        Descripción
+                    </th>
+
+                    <th class="text-left p-4">
+                        Estado
+                    </th>
+
+                    <th class="text-center p-4">
+                        Acciones
+                    </th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+            {% for area in areas %}
+
+                <tr class="border-t">
+
+                    <td class="p-4">
+                        {{ area.nombre }}
+                    </td>
+
+                    <td class="p-4">
+                        {{ area.descripcion }}
+                    </td>
+
+                    <td class="p-4">
+
+                        {% if area.activo %}
+
+                            <span class="text-green-600 font-semibold">
+                                Activa
+                            </span>
+
+                        {% else %}
+
+                            <span class="text-red-600 font-semibold">
+                                Inactiva
+                            </span>
+
+                        {% endif %}
+
+                    </td>
+
+                    <td class="text-center">
+
+                        <a href="{% url 'contracts:editar_area' area.id %}">
+                            Editar
+                        </a>
+
+                    </td>
+
+                </tr>
+
+            {% empty %}
+
+                <tr>
+
+                    <td colspan="4" class="text-center p-6">
+
+                        No existen áreas registradas.
+
+                    </td>
+
+                </tr>
+
+            {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+{% endblock %}

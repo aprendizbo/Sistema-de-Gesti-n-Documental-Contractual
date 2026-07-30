@@ -1,5 +1,5 @@
 from django import forms
-from .models import Contrato, Tercero
+from .models import Contrato, Tercero, Area
 
 DOMINIOS_PERMITIDOS = [
     "boccherini.com.co",
@@ -161,4 +161,34 @@ class TerceroForm(forms.ModelForm):
             'estado': forms.Select(attrs={
                 'class': 'w-full px-4 py-2 border rounded-lg'
             }),
+        }
+
+class AreaForm(forms.ModelForm):
+
+    class Meta:
+        model = Area
+
+        fields = [
+            "nombre",
+            "descripcion",
+            "activo",
+        ]
+
+        widgets = {
+
+            "nombre": forms.TextInput(attrs={
+                "class": "w-full px-4 py-2 border rounded-lg",
+                "placeholder": "Nombre del área"
+            }),
+
+            "descripcion": forms.Textarea(attrs={
+                "class": "w-full px-4 py-2 border rounded-lg",
+                "rows": 3,
+                "placeholder": "Descripción..."
+            }),
+
+            "activo": forms.CheckboxInput(attrs={
+                "class": "rounded"
+            }),
+
         }

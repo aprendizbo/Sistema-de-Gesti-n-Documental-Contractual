@@ -29,6 +29,25 @@ urlpatterns = [
     ),
 
     # -------------------------
+    # Áreas
+    # -------------------------
+    path(
+        "areas/",
+        views.lista_areas,
+        name="lista_areas"
+    ),
+    path(
+        "areas/crear/",
+        views.crear_area,
+        name="crear_area"
+    ),
+    path(
+        "areas/<int:pk>/editar/",
+        views.editar_area,
+        name="editar_area"
+    ),
+
+    # -------------------------
     # Contratos
     # -------------------------
     # Listar contratos (la que conecta con tu botón del menú lateral)

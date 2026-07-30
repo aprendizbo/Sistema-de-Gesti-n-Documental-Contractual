@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Nueva Área | CLM Pro
+{% endblock %}
+
+{% block header_title %}
+Gestión de Áreas
+{% endblock %}
+
+{% block content %}
+
+<div class="max-w-3xl mx-auto">
+
+    <div class="bg-white rounded-xl shadow p-6">
+
+        <h2 class="text-2xl font-bold mb-6">
+            {% if area %}
+                Editar Área
+            {% else %}
+                Nueva Área
+            {% endif %}
+        </h2>
+
+        <form method="post">
+
+            {% csrf_token %}
+
+            <div class="space-y-5">
+
+                <div>
+                    <label class="font-semibold">
+                        Nombre
+                    </label>
+
+                    {{ form.nombre }}
+                </div>
+
+                <div>
+                    <label class="font-semibold">
+                        Descripción
+                    </label>
+
+                    {{ form.descripcion }}
+                </div>
+
+                <div class="flex items-center gap-3">
+                    {{ form.activo }}
+                    <label>
+                        Área Activa
+                    </label>
+                </div>
+
+            </div>
+
+            <div class="mt-8 flex justify-end gap-3">
+
+                <a
+                    href="{% url 'contracts:lista_areas' %}"
+                    class="px-5 py-2 border rounded-lg"
+                >
+                    Cancelar
+                </a>
+
+                <button
+                    class="px-5 py-2 bg-blue-600 text-white rounded-lg"
+                >
+                    Guardar
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}
