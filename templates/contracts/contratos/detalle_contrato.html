@@ -112,5 +112,121 @@
         <p class="text-sm text-slate-600 whitespace-pre-line">{{ contrato.observaciones }}</p>
     </div>
     {% endif %}
+
+    <!-- ===================== -->
+    <!-- DOCUMENTOS DEL CONTRATO -->
+    <!-- ===================== -->
+    <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 mt-6">
+        <div class="flex justify-between items-center mb-6">
+            <div>
+                <h3 class="text-lg font-bold text-slate-800">
+                    Carpeta Documental
+                </h3>
+                <p class="text-sm text-slate-500">
+                    Administra todos los documentos asociados a este contrato.
+                </p>
+            </div>
+        </div>
+
+        <form
+            method="POST"
+            enctype="multipart/form-data"
+            action="{% url 'contracts:subir_documento' contrato.pk %}"
+            class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8"
+        >
+            {% csrf_token %}
+            
+            <div>
+                <label class="block text-sm font-medium mb-2">
+                    Tipo documento
+                </label>
+                <select
+                    name="tipo_documento"
+                    class="w-full border rounded-lg px-3 py-2"
+                    required
+                >
+                    {% for tipo in tipos_documento %}
+                        <option value="{{ tipo.id }}">
+                            {{ tipo.nombre }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium mb-2">
+                    Archivo
+                </label>
+                <input
+                    type="file"
+                    name="archivo"
+                    class="w-full border rounded-lg px-3 py-2"
+                    required
+                >
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium mb-2">
+                    Observaciones
+                </label>
+                <input
+                    type="text"
+                    name="observaciones"
+                    class="w-full border rounded-lg px-3 py-2"
+                >
+            </div>
+
+            <div class="flex items-end">
+                <button
+                    class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg w-full"
+                >
+                    Subir documento
+                </button>
+            </div>
+        </form>
+
+        <table class="w-full">
+            <thead class="bg-slate-100">
+                <tr>
+                    <th class="text-left p-3">Tipo</th>
+                    <th class="text-left p-3">Archivo</th>
+                    <th class="text-left p-3">Versión</th>
+                    <th class="text-left p-3">Fecha</th>
+                    <th class="text-left p-3">Acción</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for documento in documentos %}
+                <tr class="border-b">
+                    <td class="p-3">
+                        {{ documento.tipo_documento }}
+                    </td>
+                    <td class="p-3">
+                        {{ documento.archivo.name }}
+                    </td>
+                    <td class="p-3">
+                        {{ documento.version|default:"1.0" }}
+                    </td>
+                    <td class="p-3">
+                        {{ documento.fecha_subida|date:"d/m/Y"|default:"-" }}
+                    </td>
+                    <td class="p-3">
+                        {% if documento.archivo %}
+                            <a href="{{ documento.archivo.url }}" target="_blank" class="text-blue-600 hover:text-blue-800 text-sm font-medium underline">
+                                Descargar / Ver
+                            </a>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5" class="p-3 text-center text-slate-500 italic">
+                        No hay documentos asociados a este contrato aún.
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 </div>
 {% endblock %}

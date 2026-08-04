@@ -1,0 +1,142 @@
+{% extends "base.html" %}
+
+{% block title %}
+{% if supervisor %}
+Editar Supervisor
+{% else %}
+Registrar Supervisor
+{% endif %}
+{% endblock %}
+
+{% block content %}
+
+<div class="max-w-5xl mx-auto">
+
+    <div class="bg-white rounded-2xl shadow-lg p-10">
+
+        <div class="flex justify-between items-start mb-8">
+
+            <div>
+
+                <h1 class="text-5xl font-bold text-slate-800">
+
+                    {% if supervisor %}
+                        Editar Supervisor
+                    {% else %}
+                        Registrar Supervisor
+                    {% endif %}
+
+                </h1>
+
+                <p class="text-slate-500 mt-2">
+                    Información general del supervisor.
+                </p>
+
+            </div>
+
+            <a href="{% url 'contracts:lista_supervisores' %}"
+               class="text-slate-600 hover:text-blue-600">
+
+                ← Volver
+
+            </a>
+
+        </div>
+
+        <form method="POST" enctype="multipart/form-data"></form>
+
+            {% csrf_token %}
+
+            <div class="space-y-6">
+
+                <!-- NUEVO CAMPO: Empresa -->
+                <div>
+
+                    <label class="font-semibold">
+                        Empresa
+                    </label>
+
+                    {{ form.empresa }}
+
+                </div>
+
+                <div>
+
+                    <label class="font-semibold">
+                        Nombre
+                    </label>
+
+                    {{ form.nombre }}
+
+                </div>
+
+                <div>
+
+                    <label class="font-semibold">
+                        Cargo
+                    </label>
+
+                    {{ form.cargo }}
+
+                </div>
+
+                <div>
+
+                    <label class="font-semibold">
+                        Correo
+                    </label>
+
+                    {{ form.correo }}
+
+                </div>
+
+                <div>
+
+                    <label class="font-semibold">
+                        Teléfono
+                    </label>
+
+                    {{ form.telefono }}
+
+                </div>
+
+                <div class="flex items-center gap-3">
+
+                    {{ form.activo }}
+
+                    <label>
+
+                        Supervisor Activo
+
+                    </label>
+
+                </div>
+
+            </div>
+
+            <div class="flex justify-end gap-3 mt-10">
+
+                <a href="{% url 'contracts:lista_supervisores' %}"
+                   class="px-6 py-3 rounded-lg border">
+
+                    Cancelar
+
+                </a>
+
+                <button
+                    type="submit"
+                    class="px-8 py-3 rounded-lg bg-blue-600 text-white hover:bg-blue-700">
+
+                    Guardar Supervisor
+
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}

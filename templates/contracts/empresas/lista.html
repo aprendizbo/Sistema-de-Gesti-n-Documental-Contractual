@@ -1,0 +1,178 @@
+{% extends "base.html" %}
+
+{% block title %}Empresas | CLM Pro{% endblock %}
+
+{% block header_title %}Gestión de Empresas{% endblock %}
+
+{% block content %}
+
+<div class="max-w-7xl mx-auto space-y-6">
+
+    <!-- Encabezado -->
+    <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 flex justify-between items-center">
+
+        <div>
+            <h2 class="text-2xl font-bold text-slate-800">
+                Empresas
+            </h2>
+
+            <p class="text-slate-500 text-sm mt-1">
+                Administra las empresas registradas dentro del sistema.
+            </p>
+        </div>
+
+        <a href="{% url 'contracts:crear_empresa' %}"
+           class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg font-medium transition">
+
+            <i class="fa-solid fa-plus mr-2"></i>
+            Nueva Empresa
+
+        </a>
+
+    </div>
+
+
+    <!-- Buscador -->
+
+    <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-5">
+
+        <form method="GET">
+
+            <div class="flex gap-3">
+
+                <input
+                    type="text"
+                    name="q"
+                    value="{{ request.GET.q }}"
+                    placeholder="Buscar empresa..."
+                    class="flex-1 border border-slate-300 rounded-lg px-4 py-2">
+
+                <button
+                    class="bg-slate-800 text-white px-5 rounded-lg">
+
+                    Buscar
+
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+
+    <!-- Tabla -->
+
+    <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+
+        <table class="w-full">
+
+            <thead class="bg-slate-100">
+
+                <tr>
+
+                    <th class="text-left p-4">Empresa</th>
+
+                    <th class="text-left p-4">NIT</th>
+
+                    <th class="text-left p-4">Ciudad</th>
+
+                    <th class="text-left p-4">Correo</th>
+
+                    <th class="text-center p-4">Estado</th>
+
+                    <th class="text-center p-4">Acciones</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+            {% for empresa in empresas %}
+
+                <tr class="border-t hover:bg-slate-50">
+
+                    <td class="p-4 font-semibold">
+
+                        {{ empresa.nombre }}
+
+                    </td>
+
+                    <td class="p-4">
+
+                        {{ empresa.nit }}
+
+                    </td>
+
+                    <td class="p-4">
+
+                        {{ empresa.ciudad }}
+
+                    </td>
+
+                    <td class="p-4">
+
+                        {{ empresa.correo }}
+
+                    </td>
+
+                    <td class="p-4 text-center">
+
+                        {% if empresa.activo %}
+
+                            <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-semibold">
+
+                                Activa
+
+                            </span>
+
+                        {% else %}
+
+                            <span class="bg-red-100 text-red-700 px-3 py-1 rounded-full text-xs font-semibold">
+
+                                Inactiva
+
+                            </span>
+
+                        {% endif %}
+
+                    </td>
+
+                    <td class="p-4 text-center">
+
+                        <a
+                            href="{% url 'contracts:editar_empresa' empresa.id %}"
+                            class="text-blue-600 hover:text-blue-800">
+
+                            <i class="fa-solid fa-pen-to-square"></i>
+
+                        </a>
+
+                    </td>
+
+                </tr>
+
+            {% empty %}
+
+                <tr>
+
+                    <td colspan="6" class="text-center p-10 text-slate-500">
+
+                        No hay empresas registradas.
+
+                    </td>
+
+                </tr>
+
+            {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+{% endblock %}

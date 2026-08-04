@@ -4,6 +4,53 @@ from django.contrib.auth.models import User
 from django.core.validators import FileExtensionValidator
 
 
+def ruta_documento_contrato(instance, filename):
+    return os.path.join("contratos", "documentos", filename)
+
+
+class Empresa(models.Model):
+    nombre = models.CharField(
+        max_length=200,
+        unique=True
+    )
+    nit = models.CharField(
+        max_length=50,
+        unique=True
+    )
+    direccion = models.CharField(
+        max_length=250,
+        blank=True
+    )
+    ciudad = models.CharField(
+        max_length=120,
+        blank=True
+    )
+    telefono = models.CharField(
+        max_length=50,
+        blank=True
+    )
+    correo = models.EmailField(
+        blank=True
+    )
+    pagina_web = models.URLField(
+        blank=True
+    )
+    activo = models.BooleanField(
+        default=True
+    )
+    fecha_creacion = models.DateTimeField(
+        auto_now_add=True
+    )
+
+    class Meta:
+        ordering = ["nombre"]
+        verbose_name = "Empresa"
+        verbose_name_plural = "Empresas"
+
+    def __str__(self):
+        return f"{self.nombre} ({self.nit})"
+
+
 class Tercero(models.Model):
     TIPOS = [
         ("PROVEEDOR", "Proveedor"),
@@ -19,6 +66,14 @@ class Tercero(models.Model):
         ("ACTIVO", "Activo"),
         ("INACTIVO", "Inactivo"),
     ]
+
+    empresa = models.ForeignKey(
+        Empresa,
+        on_delete=models.PROTECT,
+        related_name="terceros",
+        null=True,
+        blank=True
+    )
 
     tipo = models.CharField(
         max_length=20,
@@ -43,7 +98,6 @@ class Tercero(models.Model):
         null=True
     )
 
-    # NUEVO: Fase 1
     ciudad = models.CharField(
         max_length=120,
         blank=True,
@@ -56,13 +110,11 @@ class Tercero(models.Model):
         null=True
     )
 
-    # Se mantiene igual para la Fase 2
     correo = models.EmailField(
         blank=True,
         null=True
     )
 
-    # Se mantiene igual para la Fase 2 (futuro persona_contacto)
     contacto = models.CharField(
         max_length=150,
         blank=True,
@@ -70,14 +122,12 @@ class Tercero(models.Model):
         help_text="Persona de contacto (si aplica)"
     )
 
-    # NUEVO: Fase 1
     cargo_contacto = models.CharField(
         max_length=120,
         blank=True,
         null=True
     )
 
-    # NUEVO: Fase 1 (Reemplaza a 'activo')
     estado = models.CharField(
         max_length=10,
         choices=ESTADOS,
@@ -85,8 +135,6 @@ class Tercero(models.Model):
     )
 
     creado_en = models.DateTimeField(auto_now_add=True)
-    
-    # NUEVO: Fase 1
     actualizado_en = models.DateTimeField(auto_now=True)
 
     class Meta:
@@ -100,6 +148,9 @@ class Tercero(models.Model):
     def to_dict(self):
         return {
             "id": self.id,
+            "empresa": self.empresa.nombre if self.empresa else "",
+            "tipo": self.tipo,
+            "estado": self.estado,
             "nombre": self.nombre,
             "identificacion": self.identificacion,
             "ciudad": self.ciudad,
@@ -107,7 +158,6 @@ class Tercero(models.Model):
             "correo": self.correo,
             "contacto": self.contacto,
             "cargo_contacto": self.cargo_contacto,
-            "estado": self.estado,
         }
 
 
@@ -136,6 +186,52 @@ class Area(models.Model):
         ordering = ['nombre']
         verbose_name = "Área"
         verbose_name_plural = "Áreas"
+
+    def __str__(self):
+        return self.nombre
+
+
+class Supervisor(models.Model):
+    nombre = models.CharField(
+        max_length=150,
+        verbose_name="Nombre"
+    )
+
+    cargo = models.CharField(
+        max_length=120,
+        blank=True
+    )
+
+    correo = models.EmailField(
+        unique=True
+    )
+
+    telefono = models.CharField(
+        max_length=30,
+        blank=True
+    )
+
+    empresa = models.ForeignKey(
+        Empresa,
+        on_delete=models.CASCADE,
+        related_name="supervisores",
+        verbose_name="Empresa",
+        null=True,
+        blank=True,
+    )
+
+    activo = models.BooleanField(
+        default=True
+    )
+
+    creado_en = models.DateTimeField(
+        auto_now_add=True
+    )
+
+    class Meta:
+        ordering = ["nombre"]
+        verbose_name = "Supervisor"
+        verbose_name_plural = "Supervisores"
 
     def __str__(self):
         return self.nombre
@@ -202,8 +298,12 @@ class Contrato(models.Model):
         verbose_name="Tercero"
     )
     
-    # Nuevos campos integrados
-    area_destino = models.CharField(max_length=150, verbose_name="Área de Destino")
+    area_destino = models.ForeignKey(
+        Area,
+        on_delete=models.PROTECT,
+        related_name="contratos_destino",
+        verbose_name="Área de Destino"
+    )
     
     area = models.ForeignKey(
         Area,
@@ -216,10 +316,18 @@ class Contrato(models.Model):
     
     responsable = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='contratos_a_cargo')
     
+    supervisor = models.ForeignKey(
+        Supervisor,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="contratos",
+        verbose_name="Supervisor del Contrato"
+    )
+    
     fecha_inicio = models.DateField(verbose_name="Fecha de Inicio")
     fecha_fin = models.DateField(verbose_name="Fecha de Vencimiento")
     
-    # Campos de alertas y correos
     tiempo_notificacion = models.IntegerField(choices=TIEMPO_NOTIFICACION_CHOICES, default=30, verbose_name="Anticipación de Notificación")
     correo_notificacion_principal = models.EmailField(
         verbose_name="Correo Principal"
@@ -232,6 +340,13 @@ class Contrato(models.Model):
 
     estado = models.CharField(max_length=20, choices=ESTADOS, default='ACTIVO', verbose_name="Estado")
     observaciones = models.TextField(blank=True, null=True, verbose_name="Observaciones")
+
+    archivo_pdf = models.FileField(
+        upload_to="contratos/",
+        blank=True,
+        null=True,
+        verbose_name="Contrato PDF"
+    )
 
     creado_en = models.DateTimeField(auto_now_add=True)
     actualizado_en = models.DateTimeField(auto_now=True)
@@ -256,33 +371,53 @@ class Contrato(models.Model):
         return int((docs_subidos / total_requisitos) * 100)
 
 
-def ruta_documento_contrato(instance, filename):
-    """Organiza físicamente los archivos subidos en carpetas por número de contrato."""
-    return f"contratos/{instance.contrato.numero_contrato}/{filename}"
+class TipoDocumento(models.Model):
+    nombre = models.CharField(max_length=150)
+    descripcion = models.TextField(blank=True)
+    obligatorio = models.BooleanField(default=False)
+    activo = models.BooleanField(default=True)
+
+    class Meta:
+        verbose_name = "Tipo de Documento"
+        verbose_name_plural = "Tipos de Documentos"
+        ordering = ["nombre"]
+
+    def __str__(self):
+        return self.nombre
 
 
 class DocumentoContrato(models.Model):
-    contrato = models.ForeignKey(Contrato, on_delete=models.CASCADE, related_name='documentos')
-    requisito = models.ForeignKey(RequisitoDocumental, on_delete=models.SET_NULL, null=True, blank=True)
-    nombre_archivo = models.CharField(max_length=200, verbose_name="Nombre del Archivo")
-    archivo = models.FileField(
-        upload_to=ruta_documento_contrato,
-        validators=[FileExtensionValidator(allowed_extensions=['pdf', 'doc', 'docx', 'xls', 'xlsx', 'png', 'jpg', 'zip'])],
-        verbose_name="Archivo Adjunto"
+    contrato = models.ForeignKey(
+        Contrato,
+        on_delete=models.CASCADE,
+        related_name="documentos"
     )
-    version = models.PositiveIntegerField(default=1, verbose_name="Versión")
-    es_version_actual = models.BooleanField(default=True, verbose_name="¿Es la versión actual?")
-    
-    subido_por = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
-    fecha_subida = models.DateTimeField(auto_now_add=True)
+
+    tipo_documento = models.ForeignKey(
+        TipoDocumento,
+        on_delete=models.PROTECT,
+        related_name="documentos",
+        null=True,
+        blank=True,
+    )
+
+    archivo = models.FileField(
+        upload_to=ruta_documento_contrato
+    )
+
+    version = models.PositiveIntegerField(default=1)
+
+    observaciones = models.TextField(blank=True)
+
+    fecha_carga = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        verbose_name = "Documento de Contrato"
+        verbose_name = "Documento del Contrato"
         verbose_name_plural = "Documentos de Contratos"
-        ordering = ['-version']
+        ordering = ["tipo_documento"]
 
     def __str__(self):
-        return f"{self.nombre_archivo} (v{self.version}) - {self.contrato.numero_contrato}"
+        return f"{self.contrato.numero_contrato} - {self.tipo_documento.nombre if self.tipo_documento else 'Sin tipo'}"
 
 
 class HistorialAuditoria(models.Model):
@@ -307,4 +442,4 @@ class HistorialAuditoria(models.Model):
         ordering = ['-fecha_registro']
 
     def __str__(self):
-        return f"{self.fecha_registro.strftime('%d/%m/%Y %H:%M')} - {self.get_accion_display()} por {self.usuario or 'Sistema'}"
+        return f"{self.fecha_registro.strftime('%d/%m/%Y %H:%M')} - {self.get_accion_display()} por {self.usuario or 'Sistema'} en contrato {self.contrato.numero_contrato}"

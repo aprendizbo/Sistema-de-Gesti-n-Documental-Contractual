@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse, HttpResponse  # <-- Import agregado HttpResponse
 
-from contracts.models import Contrato, HistorialAuditoria
+from contracts.models import Contrato, HistorialAuditoria, DocumentoContrato, TipoDocumento
 from contracts.forms import ContratoForm
 
 
@@ -20,13 +21,24 @@ def lista_contratos(request):
 
 @login_required
 def detalle_contrato(request, pk):
-    contrato = get_object_or_404(Contrato, pk=pk)
+    contrato = get_object_or_404(
+        Contrato,
+        pk=pk
+    )
+
+    documentos = DocumentoContrato.objects.filter(
+        contrato=contrato
+    ).order_by(
+        "tipo_documento__nombre",
+        "-version"
+    )
 
     return render(
         request,
         "contracts/contratos/detalle_contrato.html",
         {
-            "contrato": contrato
+            "contrato": contrato,
+            "documentos": documentos,
         }
     )
 
@@ -34,12 +46,15 @@ def detalle_contrato(request, pk):
 @login_required
 def crear_contrato(request):
     if request.method == "POST":
-        form = ContratoForm(request.POST)
+        # CAMBIO APLICADO AQUÍ: Se agregó request.FILES
+        form = ContratoForm(
+            request.POST,
+            request.FILES
+        )
 
         if form.is_valid():
             contrato = form.save(commit=False)
 
-            # Completa automáticamente la información desde el tercero
             if contrato.tercero:
                 contrato.empresa = contrato.tercero.nombre
                 contrato.nit = contrato.tercero.identificacion
@@ -72,13 +87,23 @@ def editar_contrato(request, pk):
     contrato = get_object_or_404(Contrato, pk=pk)
 
     if request.method == "POST":
+        # CAMBIO APLICADO AQUÍ: Se agregó request.FILES
         form = ContratoForm(
             request.POST,
+            request.FILES,
             instance=contrato
         )
 
         if form.is_valid():
             contrato = form.save(commit=False)
+            
+            # --- SE PUEDE APLICAR LA MISMA LÓGICA DE LECTURA AQUÍ SI ES NECESARIO ---
+            # print(">>>> ENTRO A FORM VALID (EDITAR)")
+            # if contrato.archivo_pdf:
+            #    print(">>>> SI HAY PDF")
+            #    print(">>>>", contrato.archivo_pdf)
+            # else:
+            #    print(">>>> NO HAY PDF")
 
             # Actualiza automáticamente la empresa y el NIT
             if contrato.tercero:

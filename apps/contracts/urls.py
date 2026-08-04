@@ -48,6 +48,50 @@ urlpatterns = [
     ),
 
     # -------------------------
+    # Empresas
+    # -------------------------
+    path(
+        "empresas/",
+        views.lista_empresas,
+        name="lista_empresas"
+    ),
+    path(
+        "empresas/crear/",
+        views.crear_empresa,
+        name="crear_empresa"
+    ),
+    path(
+        "empresas/<int:pk>/editar/",
+        views.editar_empresa,
+        name="editar_empresa"
+    ),
+
+    # -------------------------
+    # Supervisores
+    # -------------------------
+    path(
+        "supervisores/",
+        views.lista_supervisores,
+        name="lista_supervisores"
+    ),
+    path(
+        "supervisores/crear/",
+        views.crear_supervisor,
+        name="crear_supervisor"
+    ),
+    path(
+        "supervisores/<int:pk>/editar/",
+        views.editar_supervisor,
+        name="editar_supervisor"
+    ),
+    # NUEVA RUTA: Obtener JSON del supervisor
+    path(
+        "supervisores/<int:pk>/json/",
+        views.obtener_supervisor,
+        name="obtener_supervisor"
+    ),
+
+    # -------------------------
     # Contratos
     # -------------------------
     # Listar contratos (la que conecta con tu botón del menú lateral)
@@ -61,4 +105,11 @@ urlpatterns = [
     
     # Ruta para editar un contrato existente
     path('contratos/<int:pk>/editar/', views.editar_contrato, name='editar_contrato'),
+
+    # Ruta para subir documentos al contrato
+    path(
+        "contratos/<int:pk>/documentos/",
+        views.subir_documento,
+        name="subir_documento"
+    ),
 ]

@@ -1,0 +1,151 @@
+{% extends "base.html" %}
+
+{% block title %}
+{% if empresa %}
+Editar Empresa
+{% else %}
+Nueva Empresa
+{% endif %}
+| CLM Pro
+{% endblock %}
+
+{% block header_title %}
+Gestión de Empresas
+{% endblock %}
+
+{% block content %}
+
+<div class="max-w-4xl mx-auto">
+
+    <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-8">
+
+        <div class="flex justify-between items-center mb-8">
+
+            <div>
+
+                <h2 class="text-3xl font-bold text-slate-800">
+
+                    {% if empresa %}
+                        Editar Empresa
+                    {% else %}
+                        Registrar Empresa
+                    {% endif %}
+
+                </h2>
+
+                <p class="text-slate-500 mt-2">
+
+                    Información general de la empresa.
+
+                </p>
+
+            </div>
+
+            <a href="{% url 'contracts:lista_empresas' %}"
+               class="text-slate-600 hover:text-slate-900">
+
+                ← Volver
+
+            </a>
+
+        </div>
+
+        <form method="POST" enctype="multipart/form-data"></form>
+
+            {% csrf_token %}
+
+            <div class="space-y-5">
+
+                <div>
+                    <label class="block font-semibold mb-2">
+                        Nombre
+                    </label>
+
+                    {{ form.nombre }}
+                </div>
+
+                <div>
+                    <label class="block font-semibold mb-2">
+                        NIT
+                    </label>
+
+                    {{ form.nit }}
+                </div>
+
+                <div>
+                    <label class="block font-semibold mb-2">
+                        Dirección
+                    </label>
+
+                    {{ form.direccion }}
+                </div>
+
+                <div>
+                    <label class="block font-semibold mb-2">
+                        Ciudad
+                    </label>
+
+                    {{ form.ciudad }}
+                </div>
+
+                <div>
+                    <label class="block font-semibold mb-2">
+                        Teléfono
+                    </label>
+
+                    {{ form.telefono }}
+                </div>
+
+                <div>
+                    <label class="block font-semibold mb-2">
+                        Correo
+                    </label>
+
+                    {{ form.correo }}
+                </div>
+
+                <div>
+                    <label class="block font-semibold mb-2">
+                        Página Web
+                    </label>
+
+                    {{ form.pagina_web }}
+                </div>
+
+                <div class="flex items-center gap-3">
+
+                    {{ form.activo }}
+
+                    <label>
+                        Empresa Activa
+                    </label>
+
+                </div>
+
+            </div>
+
+            <div class="flex justify-end gap-3 mt-10">
+
+                <a href="{% url 'contracts:lista_empresas' %}"
+                   class="px-5 py-2 border rounded-lg hover:bg-slate-100">
+
+                    Cancelar
+
+                </a>
+
+                <button
+                    class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg">
+
+                    Guardar
+
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}

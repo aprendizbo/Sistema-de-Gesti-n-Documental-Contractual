@@ -1,5 +1,5 @@
 from django import forms
-from .models import Contrato, Tercero, Area
+from .models import Contrato, Tercero, Area, Empresa, Supervisor
 
 DOMINIOS_PERMITIDOS = [
     "boccherini.com.co",
@@ -13,8 +13,9 @@ class ContratoForm(forms.ModelForm):
             'numero_contrato', 
             'tipo_contrato', 
             'tercero',
-            'area_destino',      # <-- Campo viejo (lo mantenemos por ahora)
-            'area',              # <-- NUEVO campo agregado
+            'supervisor',        
+            'area_destino',      
+            'area',              
             'responsable', 
             'fecha_inicio', 
             'fecha_fin', 
@@ -35,9 +36,11 @@ class ContratoForm(forms.ModelForm):
             'tercero': forms.Select(attrs={
                 'class': 'w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600'
             }),
-            'area_destino': forms.TextInput(attrs={
-                'class': 'w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600',
-                'placeholder': 'Ej: Gestión Humana / Legal / TI'
+            'supervisor': forms.Select(attrs={  
+                'class': 'w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600'
+            }),
+            'area_destino': forms.Select(attrs={
+                'class': 'w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600'
             }),
             'area': forms.Select(attrs={
                 'class': 'w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600'
@@ -97,10 +100,10 @@ class ContratoForm(forms.ModelForm):
 
 
 class TerceroForm(forms.ModelForm):
-
     class Meta:
         model = Tercero
         fields = [
+            'empresa', 
             'tipo',
             'nombre',
             'identificacion',
@@ -114,81 +117,154 @@ class TerceroForm(forms.ModelForm):
         ]
 
         widgets = {
+            'empresa': forms.Select(attrs={
+                'class': 'w-full px-4 py-2 border rounded-lg'
+            }),
             'tipo': forms.Select(attrs={
                 'class': 'w-full px-4 py-2 border rounded-lg'
             }),
-
             'nombre': forms.TextInput(attrs={
                 'class': 'w-full px-4 py-2 border rounded-lg',
                 'placeholder': 'Nombre del tercero'
             }),
-
             'identificacion': forms.TextInput(attrs={
                 'class': 'w-full px-4 py-2 border rounded-lg',
                 'placeholder': 'NIT o Documento'
             }),
-
             'direccion': forms.TextInput(attrs={
                 'class': 'w-full px-4 py-2 border rounded-lg',
                 'placeholder': 'Dirección'
             }),
-
             'ciudad': forms.TextInput(attrs={
                 'class': 'w-full px-4 py-2 border rounded-lg',
                 'placeholder': 'Ciudad'
             }),
-
             'telefono': forms.TextInput(attrs={
                 'class': 'w-full px-4 py-2 border rounded-lg',
                 'placeholder': 'Teléfono de contacto'
             }),
-
             'correo': forms.EmailInput(attrs={
                 'class': 'w-full px-4 py-2 border rounded-lg',
                 'placeholder': 'correo@dominio.com'
             }),
-
             'contacto': forms.TextInput(attrs={
                 'class': 'w-full px-4 py-2 border rounded-lg',
                 'placeholder': 'Nombre de la persona de contacto'
             }),
-
             'cargo_contacto': forms.TextInput(attrs={
                 'class': 'w-full px-4 py-2 border rounded-lg',
                 'placeholder': 'Cargo de la persona de contacto'
             }),
-
             'estado': forms.Select(attrs={
                 'class': 'w-full px-4 py-2 border rounded-lg'
             }),
         }
 
-class AreaForm(forms.ModelForm):
 
+class AreaForm(forms.ModelForm):
     class Meta:
         model = Area
-
         fields = [
             "nombre",
             "descripcion",
             "activo",
         ]
-
         widgets = {
-
             "nombre": forms.TextInput(attrs={
                 "class": "w-full px-4 py-2 border rounded-lg",
                 "placeholder": "Nombre del área"
             }),
-
             "descripcion": forms.Textarea(attrs={
                 "class": "w-full px-4 py-2 border rounded-lg",
                 "rows": 3,
                 "placeholder": "Descripción..."
             }),
-
             "activo": forms.CheckboxInput(attrs={
                 "class": "rounded"
             }),
+        }
 
+
+class EmpresaForm(forms.ModelForm):
+    class Meta:
+        model = Empresa
+        fields = [
+            "nombre",
+            "nit",
+            "direccion",
+            "ciudad",
+            "telefono",
+            "correo",
+            "pagina_web",
+            "activo",
+        ]
+        widgets = {
+            "nombre": forms.TextInput(attrs={
+                "class": "w-full px-4 py-2 border rounded-lg",
+                "placeholder": "Nombre de la empresa"
+            }),
+            "nit": forms.TextInput(attrs={
+                "class": "w-full px-4 py-2 border rounded-lg",
+                "placeholder": "NIT"
+            }),
+            "direccion": forms.TextInput(attrs={
+                "class": "w-full px-4 py-2 border rounded-lg",
+                "placeholder": "Dirección"
+            }),
+            "ciudad": forms.TextInput(attrs={
+                "class": "w-full px-4 py-2 border rounded-lg",
+                "placeholder": "Ciudad"
+            }),
+            "telefono": forms.TextInput(attrs={
+                "class": "w-full px-4 py-2 border rounded-lg",
+                "placeholder": "Teléfono"
+            }),
+            "correo": forms.EmailInput(attrs={
+                "class": "w-full px-4 py-2 border rounded-lg",
+                "placeholder": "correo@empresa.com"
+            }),
+            "pagina_web": forms.URLInput(attrs={
+                "class": "w-full px-4 py-2 border rounded-lg",
+                "placeholder": "https://empresa.com"
+            }),
+            "activo": forms.CheckboxInput(attrs={
+                "class": "rounded"
+            }),
+        }
+
+
+class SupervisorForm(forms.ModelForm):
+    class Meta:
+        model = Supervisor
+        fields = [
+            "empresa",
+            "nombre",
+            "cargo",
+            "correo",
+            "telefono",
+            "activo",
+        ]
+        widgets = {
+            "empresa": forms.Select(attrs={
+                "class": "w-full px-4 py-2 border rounded-lg"
+            }),
+            "nombre": forms.TextInput(attrs={
+                "class": "w-full px-4 py-2 border rounded-lg",
+                "placeholder": "Nombre completo"
+            }),
+            "cargo": forms.TextInput(attrs={
+                "class": "w-full px-4 py-2 border rounded-lg",
+                "placeholder": "Ej: Coordinador Jurídico"
+            }),
+            "correo": forms.EmailInput(attrs={
+                "class": "w-full px-4 py-2 border rounded-lg",
+                "placeholder": "usuario@boccherini.com.co"
+            }),
+            "telefono": forms.TextInput(attrs={
+                "class": "w-full px-4 py-2 border rounded-lg",
+                "placeholder": "3001234567"
+            }),
+            "activo": forms.CheckboxInput(attrs={
+                "class": "rounded"
+            }),
         }

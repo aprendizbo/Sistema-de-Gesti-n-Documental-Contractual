@@ -1,0 +1,138 @@
+{% extends "base.html" %}
+
+{% block title %}Supervisores{% endblock %}
+
+{% block content %}
+
+<div class="max-w-7xl mx-auto">
+
+    <div class="flex justify-between items-center mb-6">
+
+        <div>
+            <h1 class="text-3xl font-bold">
+                Gestión de Supervisores
+            </h1>
+
+            <p class="text-gray-500">
+                Administre los supervisores responsables de contratos.
+            </p>
+        </div>
+
+        <a href="{% url 'contracts:crear_supervisor' %}"
+           class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg">
+
+            + Nuevo Supervisor
+
+        </a>
+
+    </div>
+
+    <div class="bg-white rounded-xl shadow overflow-hidden">
+
+        <table class="min-w-full">
+
+            <thead class="bg-gray-100">
+
+                <tr>
+
+                    <th class="text-left px-6 py-3">Nombre</th>
+
+                    <th class="text-left px-6 py-3">Cargo</th>
+
+                    <th class="text-left px-6 py-3">Correo</th>
+
+                    <th class="text-left px-6 py-3">Teléfono</th>
+
+                    <th class="text-center px-6 py-3">Estado</th>
+
+                    <th class="text-center px-6 py-3">Acciones</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                {% for supervisor in supervisores %}
+
+                <tr class="border-b">
+
+                    <td class="px-6 py-4">
+
+                        {{ supervisor.nombre }}
+
+                    </td>
+
+                    <td class="px-6 py-4">
+
+                        {{ supervisor.cargo }}
+
+                    </td>
+
+                    <td class="px-6 py-4">
+
+                        {{ supervisor.correo }}
+
+                    </td>
+
+                    <td class="px-6 py-4">
+
+                        {{ supervisor.telefono }}
+
+                    </td>
+
+                    <td class="text-center">
+
+                        {% if supervisor.activo %}
+
+                            <span class="text-green-600 font-semibold">
+                                Activo
+                            </span>
+
+                        {% else %}
+
+                            <span class="text-red-600 font-semibold">
+                                Inactivo
+                            </span>
+
+                        {% endif %}
+
+                    </td>
+
+                    <td class="text-center">
+
+                        <a href="{% url 'contracts:editar_supervisor' supervisor.id %}"
+                           class="text-blue-600 font-semibold">
+
+                            Editar
+
+                        </a>
+
+                    </td>
+
+                </tr>
+
+                {% empty %}
+
+                <tr>
+
+                    <td colspan="6"
+                        class="text-center py-10 text-gray-500">
+
+                        No existen supervisores registrados.
+
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+{% endblock %}

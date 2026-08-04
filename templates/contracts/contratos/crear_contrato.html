@@ -1,8 +1,8 @@
 {% extends 'base.html' %}
 
-{% block title %}Nuevo Contrato | CLM Pro{% endblock %}
+{% block title %}Editar Contrato | CLM Pro{% endblock %}
 
-{% block header_title %}Registro de Contrato{% endblock %}
+{% block header_title %}Editar Contrato{% endblock %}
 
 {% block extra_head %}
 <style>
@@ -29,8 +29,8 @@
 <div class="max-w-4xl mx-auto space-y-6">
     <div class="flex justify-between items-center bg-white p-6 rounded-xl shadow-sm border border-slate-200">
         <div>
-            <h2 class="text-xl font-bold text-slate-800">Registrar Nuevo Contrato</h2>
-            <p class="text-sm text-slate-500 mt-1">Completa los datos esenciales y de notificación para abrir la nueva carpeta contractual.</p>
+            <h2 class="text-xl font-bold text-slate-800">Editar Contrato</h2>
+            <p class="text-sm text-slate-500 mt-1">Completa los datos esenciales y de notificación para actualizar la carpeta contractual.</p>
         </div>
         <a href="{% url 'contracts:lista' %}" class="text-slate-600 hover:text-slate-800 font-medium text-sm transition flex items-center gap-1">
             <i class="fa-solid fa-arrow-left"></i> Volver
@@ -64,7 +64,60 @@
                     {{ form.tercero }}
                 </div>
 
-                <!-- Tarjeta Informativa del Tercero (Se muestra mediante JS) -->
+                <!-- Selector de Supervisor -->
+                <div>
+                    <label class="block text-sm font-semibold text-slate-700 mb-2">
+                        Supervisor
+                    </label>
+                    {{ form.supervisor }}
+                </div>
+                
+                <!-- Tarjeta Informativa del Supervisor -->
+                <div id="info-supervisor" class="hidden md:col-span-2 bg-white border border-slate-200 rounded-xl p-6 shadow-sm mt-2">
+                    <h3 class="font-bold text-slate-800 mb-5 flex items-center gap-2">
+                        <i class="fa-solid fa-user-tie text-blue-600"></i>
+                        Información del Supervisor
+                    </h3>
+
+                    <div class="grid grid-cols-2 md:grid-cols-3 gap-6">
+                        <div>
+                            <span class="block text-xs uppercase tracking-wider text-slate-400 font-bold">
+                                Empresa
+                            </span>
+                            <p id="sup_empresa" class="font-semibold text-slate-800 mt-1"></p>
+                        </div>
+
+                        <div>
+                            <span class="block text-xs uppercase tracking-wider text-slate-400 font-bold">
+                                Cargo
+                            </span>
+                            <p id="sup_cargo" class="font-semibold text-slate-800 mt-1"></p>
+                        </div>
+
+                        <div>
+                            <span class="block text-xs uppercase tracking-wider text-slate-400 font-bold">
+                                Estado
+                            </span>
+                            <p id="sup_estado" class="font-semibold text-emerald-600 mt-1"></p>
+                        </div>
+
+                        <div>
+                            <span class="block text-xs uppercase tracking-wider text-slate-400 font-bold">
+                                Correo
+                            </span>
+                            <p id="sup_correo" class="font-semibold text-slate-800 mt-1"></p>
+                        </div>
+
+                        <div>
+                            <span class="block text-xs uppercase tracking-wider text-slate-400 font-bold">
+                                Teléfono
+                            </span>
+                            <p id="sup_telefono" class="font-semibold text-slate-800 mt-1"></p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tarjeta Informativa del Tercero -->
                 <div id="info-tercero" class="hidden md:col-span-2 bg-white border border-slate-200 rounded-xl p-6 shadow-sm mt-2">
                     <h3 class="font-bold text-slate-800 mb-5 flex items-center gap-2">
                         <i class="fa-solid fa-building text-blue-600"></i> Información del tercero
@@ -157,7 +210,7 @@
                     Cancelar
                 </a>
                 <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-medium px-6 py-2.5 rounded-lg transition shadow-sm">
-                    Guardar y Registrar Contrato
+                    Guardar Cambios
                 </button>
             </div>
         </form>
@@ -166,35 +219,82 @@
 
 <script>
 document.addEventListener("DOMContentLoaded", function () {
-    const terceroSelect = document.getElementById("id_tercero");
-    const infoTercero = document.getElementById("info-tercero");
+    cargarTercero();
+    cargarSupervisor();
+});
 
-    terceroSelect.addEventListener("change", function () {
+function cargarTercero() {
+    const tercero = document.getElementById("id_tercero");
+    const tarjeta = document.getElementById("info-tercero");
+
+    if (!tercero) return;
+
+    if (tercero.value) {
+        fetchDataTercero(tercero.value, tarjeta);
+    }
+
+    tercero.addEventListener("change", function () {
         if (!this.value) {
-            infoTercero.classList.add("hidden");
+            tarjeta.classList.add("hidden");
             return;
         }
-
-        fetch(`/contratos/terceros/${this.value}/json/`)
-        .then(response => response.json())
-        .then(data => {
-            // Actualización de campos
-            document.getElementById("empresa").textContent = data.nombre;
-            document.getElementById("nit").textContent = data.identificacion;
-            document.getElementById("tipo").textContent = data.tipo;
-            document.getElementById("ciudad").textContent = data.ciudad;
-            document.getElementById("contacto").textContent = data.contacto;
-            document.getElementById("estado").textContent = data.estado;
-            document.getElementById("correo").textContent = data.correo;
-
-            // Mostrar el panel
-            infoTercero.classList.remove("hidden");
-        })
-        .catch(err => {
-            console.error("Error al obtener datos:", err);
-            infoTercero.classList.add("hidden");
-        });
+        fetchDataTercero(this.value, tarjeta);
     });
-});
+}
+
+function fetchDataTercero(id, tarjeta) {
+    fetch(`/contratos/terceros/${id}/json/`)
+    .then(response => response.json())
+    .then(data => {
+        document.getElementById("empresa").textContent = data.empresa;
+        document.getElementById("nit").textContent = data.identificacion;
+        document.getElementById("tipo").textContent = data.tipo;
+        document.getElementById("ciudad").textContent = data.ciudad;
+        document.getElementById("contacto").textContent = data.contacto;
+        document.getElementById("estado").textContent = data.estado;
+        document.getElementById("correo").textContent = data.correo;
+
+        tarjeta.classList.remove("hidden");
+    });
+}
+
+function cargarSupervisor() {
+    const supervisor = document.getElementById("id_supervisor");
+    const tarjeta = document.getElementById("info-supervisor");
+
+    if (!supervisor) return;
+
+    if (supervisor.value) {
+        fetchDataSupervisor(supervisor.value, tarjeta, false); 
+    }
+
+    supervisor.addEventListener("change", function () {
+        if (!this.value) {
+            tarjeta.classList.add("hidden");
+            document.getElementById("id_correo_notificacion_principal").value = "";
+            return;
+        }
+        fetchDataSupervisor(this.value, tarjeta, true);
+    });
+}
+
+function fetchDataSupervisor(id, tarjeta, actualizarCorreo) {
+    fetch(`/contratos/supervisores/${id}/json/`)
+    .then(response => response.json())
+    .then(data => {
+        document.getElementById("sup_empresa").textContent = data.empresa;
+        document.getElementById("sup_cargo").textContent = data.cargo;
+        document.getElementById("sup_correo").textContent = data.correo;
+        
+        if(actualizarCorreo){
+            document.getElementById("id_correo_notificacion_principal").value = data.correo;
+        }
+
+        document.getElementById("sup_telefono").textContent = data.telefono;
+        document.getElementById("sup_estado").textContent = data.activo;
+
+        tarjeta.classList.remove("hidden");
+    });
+}
 </script>
 {% endblock %}
