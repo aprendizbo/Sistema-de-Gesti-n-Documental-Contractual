@@ -92,6 +92,25 @@ urlpatterns = [
     ),
 
     # -------------------------
+    # Tipos de Contrato
+    # -------------------------
+    path(
+        "tipos-contrato/",
+        views.lista_tipos_contrato,
+        name="lista_tipos_contrato"
+    ),
+    path(
+        "tipos-contrato/crear/",
+        views.crear_tipo_contrato,
+        name="crear_tipo_contrato"
+    ),
+    path(
+        "tipos-contrato/<int:pk>/editar/",
+        views.editar_tipo_contrato,
+        name="editar_tipo_contrato"
+    ),
+
+    # -------------------------
     # Contratos
     # -------------------------
     # Listar contratos (la que conecta con tu botón del menú lateral)

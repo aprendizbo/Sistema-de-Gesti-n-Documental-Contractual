@@ -1,0 +1,69 @@
+from django.db import models
+
+class Area(models.Model):
+    nombre = models.CharField(
+        max_length=150,
+        unique=True,
+        verbose_name="Nombre del Área"
+    )
+
+    descripcion = models.TextField(
+        blank=True,
+        null=True,
+        verbose_name="Descripción"
+    )
+
+    activo = models.BooleanField(
+        default=True
+    )
+
+    creado_en = models.DateTimeField(
+        auto_now_add=True
+    )
+
+    class Meta:
+        ordering = ['nombre']
+        verbose_name = "Área"
+        verbose_name_plural = "Áreas"
+
+    def __str__(self):
+        return self.nombre
+
+
+class TipoContrato(models.Model):
+    nombre = models.CharField(
+        max_length=150,
+        unique=True
+    )
+
+    descripcion = models.TextField(
+        blank=True,
+        null=True
+    )
+
+    activo = models.BooleanField(
+        default=True
+    )
+
+    def __str__(self):
+        return self.nombre
+
+    class Meta:
+        ordering = ["nombre"]
+        verbose_name = "Tipo de contrato"
+        verbose_name_plural = "Tipos de contrato"
+
+
+class TipoDocumento(models.Model):
+    nombre = models.CharField(max_length=150)
+    descripcion = models.TextField(blank=True, null=True)
+    obligatorio = models.BooleanField(default=False)
+    activo = models.BooleanField(default=True)
+
+    class Meta:
+        verbose_name = "Tipo de Documento"
+        verbose_name_plural = "Tipos de Documentos"
+        ordering = ["nombre"]
+
+    def __str__(self):
+        return self.nombre

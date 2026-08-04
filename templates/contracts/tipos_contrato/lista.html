@@ -1,0 +1,122 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Tipos de Contrato | CLM Pro
+{% endblock %}
+
+{% block header_title %}
+Gestión de Tipos de Contrato
+{% endblock %}
+
+{% block content %}
+
+<div class="space-y-6">
+
+    <div class="flex justify-between items-center">
+
+        <h2 class="text-2xl font-bold">
+            Tipos de Contrato
+        </h2>
+
+        <a
+            href="{% url 'contracts:crear_tipo_contrato' %}"
+            class="bg-blue-600 text-white px-5 py-2 rounded-lg"
+        >
+            Nuevo Tipo de Contrato
+        </a>
+
+    </div>
+
+    <div class="bg-white rounded-xl shadow overflow-hidden">
+
+        <table class="w-full">
+
+            <thead class="bg-slate-100">
+
+                <tr>
+
+                    <th class="text-left p-4">
+                        Nombre
+                    </th>
+
+                    <th class="text-left p-4">
+                        Descripción
+                    </th>
+
+                    <th class="text-left p-4">
+                        Estado
+                    </th>
+
+                    <th class="text-center p-4">
+                        Acciones
+                    </th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+            {% for tipo in tipos %}
+
+                <tr class="border-t">
+
+                    <td class="p-4">
+                        {{ tipo.nombre }}
+                    </td>
+
+                    <td class="p-4">
+                        {{ tipo.descripcion }}
+                    </td>
+
+                    <td class="p-4">
+
+                        {% if tipo.activo %}
+
+                            <span class="text-green-600 font-semibold">
+                                Activo
+                            </span>
+
+                        {% else %}
+
+                            <span class="text-red-600 font-semibold">
+                                Inactivo
+                            </span>
+
+                        {% endif %}
+
+                    </td>
+
+                    <td class="text-center">
+
+                        <a href="{% url 'contracts:editar_tipo_contrato' tipo.id %}" class="text-blue-600 hover:underline">
+                            Editar
+                        </a>
+
+                    </td>
+
+                </tr>
+
+            {% empty %}
+
+                <tr>
+
+                    <td colspan="4" class="text-center p-6">
+
+                        No existen tipos de contrato registrados.
+
+                    </td>
+
+                </tr>
+
+            {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+{% endblock %}
