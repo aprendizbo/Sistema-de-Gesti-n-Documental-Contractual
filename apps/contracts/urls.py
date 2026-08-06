@@ -1,5 +1,6 @@
 from django.urls import path
 from . import views
+from .views.plantillas_documentales import *  # <-- Import de plantillas
 
 app_name = 'contracts'
 
@@ -18,7 +19,7 @@ urlpatterns = [
         name="crear_tercero"
     ),
     path(
-        "terceros/<int:pk>/json/",  # <-- Cambio aplicado aquí
+        "terceros/<int:pk>/json/",
         views.obtener_tercero,
         name="obtener_tercero"
     ),
@@ -84,7 +85,6 @@ urlpatterns = [
         views.editar_supervisor,
         name="editar_supervisor"
     ),
-    # NUEVA RUTA: Obtener JSON del supervisor
     path(
         "supervisores/<int:pk>/json/",
         views.obtener_supervisor,
@@ -111,24 +111,48 @@ urlpatterns = [
     ),
 
     # -------------------------
+    # Tipos de Documento Contractual
+    # -------------------------
+    path(
+        "tipos-documento/",
+        views.lista_tipos_documento,
+        name="lista_tipos_documento",
+    ),
+    path(
+        "tipos-documento/crear/",
+        views.crear_tipo_documento,
+        name="crear_tipo_documento",
+    ),
+    path(
+        "tipos-documento/<int:pk>/editar/",
+        views.editar_tipo_documento,
+        name="editar_tipo_documento",
+    ),
+
+    # -------------------------
     # Contratos
     # -------------------------
-    # Listar contratos (la que conecta con tu botón del menú lateral)
     path('lista/', views.lista_contratos, name='lista'),
-    
-    # Ruta para registrar un nuevo contrato
     path('crear/', views.crear_contrato, name='crear'),
-    
-    # Ruta para ver los detalles de un contrato individual
     path('contratos/<int:pk>/', views.detalle_contrato, name='detalle_contrato'),
-    
-    # Ruta para editar un contrato existente
     path('contratos/<int:pk>/editar/', views.editar_contrato, name='editar_contrato'),
-
-    # Ruta para subir documentos al contrato
     path(
         "contratos/<int:pk>/documentos/",
         views.subir_documento,
         name="subir_documento"
+    ),
+
+    # -------------------------
+    # Plantillas Documentales
+    # -------------------------
+    path(
+        "plantillas/",
+        lista_plantillas,
+        name="lista_plantillas",
+    ),
+    path(
+        "plantillas/<int:tipo_id>/",
+        detalle_plantilla,
+        name="detalle_plantilla",
     ),
 ]

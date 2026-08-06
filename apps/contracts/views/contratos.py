@@ -1,8 +1,13 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from django.http import JsonResponse, HttpResponse  # <-- Import agregado HttpResponse
+from django.http import JsonResponse, HttpResponse
 
-from contracts.models import Contrato, HistorialAuditoria, DocumentoContrato, TipoDocumento
+from contracts.models import (
+    Contrato,
+    HistorialAuditoria,
+    DocumentoContrato,
+    TipoContratoDocumento,
+)
 from contracts.forms import ContratoForm
 
 
@@ -28,17 +33,30 @@ def detalle_contrato(request, pk):
 
     documentos = DocumentoContrato.objects.filter(
         contrato=contrato
-    ).order_by(
-        "tipo_documento__nombre",
-        "-version"
+    ).select_related(
+        "tipo_documento"
     )
+
+    documentos_requeridos = TipoContratoDocumento.objects.filter(
+        tipo_contrato=contrato.tipo_contrato
+    ).select_related(
+        "tipo_documento"
+    ).order_by(
+        "orden"
+    )
+
+    documentos_dict = {}
+
+    for documento in documentos:
+        documentos_dict[documento.tipo_documento_id] = documento
 
     return render(
         request,
         "contracts/contratos/detalle_contrato.html",
         {
             "contrato": contrato,
-            "documentos": documentos,
+            "documentos_requeridos": documentos_requeridos,
+            "documentos_dict": documentos_dict,
         }
     )
 
@@ -46,7 +64,6 @@ def detalle_contrato(request, pk):
 @login_required
 def crear_contrato(request):
     if request.method == "POST":
-        # CAMBIO APLICADO AQUÍ: Se agregó request.FILES
         form = ContratoForm(
             request.POST,
             request.FILES
@@ -73,13 +90,13 @@ def crear_contrato(request):
     else:
         form = ContratoForm()
 
-    return render(
-        request,
-        "contracts/contratos/crear_contrato.html",
-        {
-            "form": form
-        }
-    )
+        return render(
+            request,
+            "contracts/contratos/crear_contrato.html",
+            {
+                "form": form
+            }
+        )
 
 
 @login_required
@@ -87,7 +104,6 @@ def editar_contrato(request, pk):
     contrato = get_object_or_404(Contrato, pk=pk)
 
     if request.method == "POST":
-        # CAMBIO APLICADO AQUÍ: Se agregó request.FILES
         form = ContratoForm(
             request.POST,
             request.FILES,
@@ -97,14 +113,6 @@ def editar_contrato(request, pk):
         if form.is_valid():
             contrato = form.save(commit=False)
             
-            # --- SE PUEDE APLICAR LA MISMA LÓGICA DE LECTURA AQUÍ SI ES NECESARIO ---
-            # print(">>>> ENTRO A FORM VALID (EDITAR)")
-            # if contrato.archivo_pdf:
-            #    print(">>>> SI HAY PDF")
-            #    print(">>>>", contrato.archivo_pdf)
-            # else:
-            #    print(">>>> NO HAY PDF")
-
             # Actualiza automáticamente la empresa y el NIT
             if contrato.tercero:
                 contrato.empresa = contrato.tercero.nombre

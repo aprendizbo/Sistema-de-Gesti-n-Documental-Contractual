@@ -1,0 +1,148 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="max-w-7xl mx-auto">
+
+    <div class="flex items-center justify-between mb-8">
+
+        <div>
+            <h1 class="text-3xl font-bold text-slate-800">
+                {{ tipo.nombre }}
+            </h1>
+
+            <p class="text-slate-500">
+                Documentos requeridos para este tipo de contrato
+            </p>
+        </div>
+
+        <a href="{% url 'contracts:lista_plantillas' %}"
+           class="px-4 py-2 bg-slate-200 rounded-lg hover:bg-slate-300">
+
+            ← Volver
+
+        </a>
+
+    </div>
+
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+
+        <!-- FORMULARIO -->
+
+        <div class="bg-white shadow rounded-xl p-6">
+
+            <h2 class="text-xl font-semibold mb-4">
+
+                Agregar Documento
+
+            </h2>
+
+            <form method="POST">
+
+                {% csrf_token %}
+
+                {{ form.as_p }}
+
+                <button
+                    type="submit"
+                    class="w-full mt-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded-lg">
+
+                    Guardar Documento
+
+                </button>
+
+            </form>
+
+        </div>
+
+
+
+        <!-- TABLA -->
+
+        <div class="lg:col-span-2">
+
+            <div class="bg-white shadow rounded-xl overflow-hidden">
+
+                <table class="min-w-full">
+
+                    <thead class="bg-slate-100">
+
+                        <tr>
+
+                            <th class="px-4 py-3 text-left">
+                                Orden
+                            </th>
+
+                            <th class="px-4 py-3 text-left">
+                                Documento
+                            </th>
+
+                            <th class="px-4 py-3 text-center">
+                                Obligatorio
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        {% for documento in documentos %}
+
+                        <tr class="border-b">
+
+                            <td class="px-4 py-3">
+                                {{ documento.orden }}
+                            </td>
+
+                            <td class="px-4 py-3">
+
+                                {{ documento.tipo_documento.nombre }}
+
+                            </td>
+
+                            <td class="px-4 py-3 text-center">
+
+                                {% if documento.obligatorio %}
+
+                                    ✅
+
+                                {% else %}
+
+                                    ❌
+
+                                {% endif %}
+
+                            </td>
+
+                        </tr>
+
+                        {% empty %}
+
+                        <tr>
+
+                            <td colspan="3"
+                                class="text-center py-8 text-slate-500">
+
+                                Este tipo de contrato aún no tiene documentos configurados.
+
+                            </td>
+
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+
+{% block title %}
+Agregar Documento
+{% endblock %}
+
+{% block content %}
+
+<div class="max-w-3xl mx-auto">
+
+    <div class="bg-white shadow rounded-xl">
+
+        <div class="border-b px-6 py-4">
+
+            <h1 class="text-2xl font-bold text-slate-800">
+                Agregar documento
+            </h1>
+
+            <p class="text-sm text-slate-500 mt-1">
+                Tipo de contrato:
+                <strong>{{ tipo.nombre }}</strong>
+            </p>
+
+        </div>
+
+        <form method="post" class="p-6 space-y-6">
+
+            {% csrf_token %}
+
+            <div>
+
+                <label class="block text-sm font-medium mb-2">
+                    Tipo de documento
+                </label>
+
+                {{ form.tipo_documento }}
+
+            </div>
+
+            <div>
+
+                <label class="block text-sm font-medium mb-2">
+                    Orden
+                </label>
+
+                {{ form.orden }}
+
+            </div>
+
+            <div class="flex items-center gap-3">
+
+                {{ form.obligatorio }}
+
+                <span class="text-sm">
+                    Documento obligatorio
+                </span>
+
+            </div>
+
+            <div class="flex justify-end gap-3">
+
+                <a
+                    href="{% url 'contracts:detalle_plantilla' tipo.id %}"
+                    class="px-5 py-2 rounded-lg border border-slate-300 hover:bg-slate-100"
+                >
+                    Cancelar
+                </a>
+
+                <button
+                    type="submit"
+                    class="px-5 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700"
+                >
+                    Guardar
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}

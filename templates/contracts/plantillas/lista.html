@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+
+{% block title %}Plantillas Documentales{% endblock %}
+
+{% block header_title %}
+Plantillas Documentales
+{% endblock %}
+
+{% block content %}
+
+<div class="max-w-7xl mx-auto">
+
+    <div class="mb-6">
+
+        <h2 class="text-2xl font-bold text-slate-800">
+            Plantillas Documentales
+        </h2>
+
+        <p class="text-slate-500 mt-1">
+            Configure los documentos requeridos para cada tipo de contrato.
+        </p>
+
+    </div>
+
+    <div class="bg-white rounded-xl shadow border border-slate-200 overflow-hidden">
+
+        <table class="min-w-full">
+
+            <thead class="bg-slate-100">
+
+                <tr>
+
+                    <th class="px-6 py-4 text-left">
+                        Tipo de contrato
+                    </th>
+
+                    <th class="px-6 py-4 text-center">
+                        Acción
+                    </th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+            {% for tipo in tipos %}
+
+                <tr class="border-t hover:bg-slate-50">
+
+                    <td class="px-6 py-4 font-medium text-slate-700">
+
+                        {{ tipo.nombre }}
+
+                    </td>
+
+                    <td class="px-6 py-4 text-center">
+
+                        <a href="{% url 'contracts:detalle_plantilla' tipo.id %}"
+                           class="inline-flex items-center gap-2
+                                  bg-blue-600 hover:bg-blue-700
+                                  text-white
+                                  px-4 py-2
+                                  rounded-lg
+                                  font-medium
+                                  transition">
+
+                            📄 Configurar documentos
+
+                        </a>
+
+                    </td>
+
+                </tr>
+
+            {% empty %}
+
+                <tr>
+
+                    <td colspan="2"
+                        class="text-center py-10 text-slate-500">
+
+                        No existen tipos de contrato registrados.
+
+                    </td>
+
+                </tr>
+
+            {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+{% endblock %}

@@ -14,8 +14,9 @@ class TipoContratoDocumento(models.Model):
     )
 
     tipo_documento = models.ForeignKey(
-        'TipoDocumento',
-        on_delete=models.CASCADE
+        'TipoDocumentoContractual',
+        on_delete=models.CASCADE,
+        related_name="tipos_contrato",
     )
 
     obligatorio = models.BooleanField(default=True)
@@ -37,7 +38,7 @@ class DocumentoContrato(models.Model):
     )
 
     tipo_documento = models.ForeignKey(
-        'TipoDocumento',
+        'TipoDocumentoContractual',
         on_delete=models.PROTECT,
         related_name="documentos",
         null=True,

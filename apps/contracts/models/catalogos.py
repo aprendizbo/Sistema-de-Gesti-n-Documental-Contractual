@@ -1,5 +1,6 @@
 from django.db import models
 
+
 class Area(models.Model):
     nombre = models.CharField(
         max_length=150,
@@ -54,15 +55,14 @@ class TipoContrato(models.Model):
         verbose_name_plural = "Tipos de contrato"
 
 
-class TipoDocumento(models.Model):
+class TipoDocumentoContractual(models.Model):
     nombre = models.CharField(max_length=150)
     descripcion = models.TextField(blank=True, null=True)
     obligatorio = models.BooleanField(default=False)
-    activo = models.BooleanField(default=True)
 
     class Meta:
-        verbose_name = "Tipo de Documento"
-        verbose_name_plural = "Tipos de Documentos"
+        verbose_name = "Tipo de Documento Contractual"
+        verbose_name_plural = "Tipos de Documentos Contractuales"
         ordering = ["nombre"]
 
     def __str__(self):

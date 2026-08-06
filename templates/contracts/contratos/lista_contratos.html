@@ -36,7 +36,7 @@
                     {% for contrato in contratos %}
                     <tr class="hover:bg-slate-50/80 transition">
                         <td class="py-4 px-6 font-semibold text-slate-900">
-                            <a href="#" class="text-blue-600 hover:underline flex items-center gap-2">
+                            <a href="{% url 'contracts:detalle_contrato' contrato.pk %}" class="text-blue-600 hover:underline flex items-center gap-2">
                                 <i class="fa-solid fa-folder-open text-amber-500"></i> {{ contrato.numero_contrato }}
                             </a>
                         </td>
@@ -62,7 +62,7 @@
                             </span>
                         </td>
                         <td class="py-4 px-6 text-center space-x-2">
-                            <a href="#" class="text-slate-400 hover:text-blue-600 transition" title="Ver Carpeta / Detalles">
+                            <a href="{% url 'contracts:detalle_contrato' contrato.pk %}" class="text-slate-400 hover:text-blue-600 transition" title="Ver Carpeta / Detalles">
                                 <i class="fa-solid fa-eye"></i>
                             </a>
                         </td>

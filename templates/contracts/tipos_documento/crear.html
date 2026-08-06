@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block title %}
+Nuevo Tipo de Documento
+{% endblock %}
+
+{% block header_title %}
+Nuevo Tipo de Documento Contractual
+{% endblock %}
+
+{% block content %}
+<div class="max-w-3xl mx-auto">
+
+    <div class="bg-white rounded-xl shadow border border-slate-200">
+
+        <div class="p-6 border-b">
+            <h2 class="text-2xl font-bold text-slate-800">
+                Nuevo Tipo de Documento
+            </h2>
+
+            <p class="text-slate-500 mt-1">
+                Configure un nuevo tipo de documento contractual.
+            </p>
+        </div>
+
+        <form method="POST" class="p-6 space-y-6">
+            {% csrf_token %}
+
+            <div>
+                <label class="block text-sm font-medium text-slate-700 mb-2">
+                    Nombre
+                </label>
+                {{ form.nombre }}
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-slate-700 mb-2">
+                    Descripción
+                </label>
+                {{ form.descripcion }}
+            </div>
+
+            <div class="flex items-center gap-3">
+                {{ form.obligatorio }}
+                <label class="font-medium">
+                    Documento obligatorio
+                </label>
+            </div>
+
+            <div class="flex justify-end gap-3 pt-6 border-t border-slate-200">
+                <a href="{% url 'contracts:lista_tipos_documento' %}"
+                   class="px-5 py-2 rounded-lg border border-slate-300 hover:bg-slate-100 transition">
+                    Cancelar
+                </a>
+
+                <button
+                    type="submit"
+                    class="px-6 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition">
+                    Guardar
+                </button>
+            </div>
+        </form>
+
+    </div>
+
+</div>
+{% endblock %}
