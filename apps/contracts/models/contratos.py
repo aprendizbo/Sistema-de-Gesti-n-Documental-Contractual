@@ -208,4 +208,3 @@ class NotificacionContrato(models.Model):
             f"{self.contrato.numero_contrato} - "
             f"{self.dias_anticipacion} días"
         )
-    

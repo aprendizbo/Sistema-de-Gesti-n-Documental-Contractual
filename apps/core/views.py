@@ -14,7 +14,7 @@ from contracts.services.notificaciones import ContratoNotificacionService
 def dashboard(request):
 
     actualizar_estados_contratos()
-    ContratoNotificacionService.crear_notificaciones_pendientes()
+    ContratoNotificacionService.procesar_alertas()
 
     hoy = timezone.localdate()
     limite_90_dias = hoy + timedelta(days=90)

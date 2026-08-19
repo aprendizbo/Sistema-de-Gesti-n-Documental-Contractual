@@ -2,8 +2,9 @@ from datetime import date
 import re
 
 from django.core.mail import EmailMessage
+from django.utils import timezone
 
-from contracts.models import Contrato
+from contracts.models import Contrato, NotificacionContrato
 
 
 class ContratoNotificacionService:
@@ -29,6 +30,9 @@ class ContratoNotificacionService:
 
         for contrato in contratos:
 
+            if not contrato.fecha_fin:
+                continue
+
             dias_restantes = (
                 contrato.fecha_fin - hoy
             ).days
@@ -43,12 +47,7 @@ class ContratoNotificacionService:
         """
         Crea las notificaciones internas de los contratos
         que están próximos a vencer.
-
-        Evita crear duplicados gracias a la restricción
-        única definida en el modelo NotificacionContrato.
         """
-
-        from contracts.models import NotificacionContrato
 
         hoy = date.today()
 
@@ -59,6 +58,9 @@ class ContratoNotificacionService:
         creadas = 0
 
         for contrato in contratos:
+
+            if not contrato.fecha_fin:
+                continue
 
             dias_restantes = (
                 contrato.fecha_fin - hoy
@@ -217,7 +219,11 @@ Gestión Documental Contractual. Por favor, no responda a este correo.
             contrato.correo_notificacion_principal
         ]
 
-        if contrato.correo_notificacion_secundario:
+        if (
+            contrato.correo_notificacion_secundario
+            and contrato.correo_notificacion_secundario
+            not in destinatarios
+        ):
             destinatarios.append(
                 contrato.correo_notificacion_secundario
             )
@@ -230,3 +236,102 @@ Gestión Documental Contractual. Por favor, no responda a este correo.
         )
 
         return correo.send()
+
+    @staticmethod
+    def procesar_alertas():
+        """
+        Procesa y envía las alertas de vencimiento.
+
+        Este método está diseñado para ejecutarse cuando un usuario
+        ingresa al sistema. No depende de Task Scheduler ni de un
+        proceso externo del sistema operativo.
+        """
+
+        hoy = date.today()
+
+        contratos = Contrato.objects.filter(
+            estado__in=["ACTIVO", "POR_VENCER"]
+        )
+
+        enviadas = 0
+        ya_enviadas = 0
+        errores = 0
+
+        for contrato in contratos:
+
+            if not contrato.fecha_fin:
+                continue
+
+            if not contrato.correo_notificacion_principal:
+                continue
+
+            dias_restantes = (
+                contrato.fecha_fin - hoy
+            ).days
+
+            dias_anticipacion = (
+                contrato.tiempo_notificacion
+            )
+
+            if dias_restantes != dias_anticipacion:
+                continue
+
+            notificacion, creada = (
+                NotificacionContrato.objects.get_or_create(
+                    contrato=contrato,
+                    tipo=NotificacionContrato.TIPO_VENCIMIENTO,
+                    dias_anticipacion=dias_anticipacion,
+                    defaults={
+                        "fecha_programada": hoy,
+                    },
+                )
+            )
+
+            # Ya fue enviada anteriormente.
+            if not creada and notificacion.enviada:
+                ya_enviadas += 1
+                continue
+
+            try:
+
+                ContratoNotificacionService.enviar_alerta(
+                    contrato
+                )
+
+                notificacion.fecha_programada = hoy
+                notificacion.fecha_envio = timezone.now()
+                notificacion.enviada = True
+                notificacion.error_envio = None
+
+                notificacion.save(
+                    update_fields=[
+                        "fecha_programada",
+                        "fecha_envio",
+                        "enviada",
+                        "error_envio",
+                    ]
+                )
+
+                enviadas += 1
+
+            except Exception as e:
+
+                notificacion.fecha_programada = hoy
+                notificacion.enviada = False
+                notificacion.error_envio = str(e)
+
+                notificacion.save(
+                    update_fields=[
+                        "fecha_programada",
+                        "enviada",
+                        "error_envio",
+                    ]
+                )
+
+                errores += 1
+
+        return {
+            "enviadas": enviadas,
+            "ya_enviadas": ya_enviadas,
+            "errores": errores,
+        }
