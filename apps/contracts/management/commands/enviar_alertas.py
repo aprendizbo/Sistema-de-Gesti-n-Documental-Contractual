@@ -1,61 +1,264 @@
 from datetime import date
+from django.utils import timezone
 from django.core.management.base import BaseCommand
 from django.core.mail import send_mail
 from django.conf import settings
-from contracts.models import Contrato
+
+from contracts.models import Contrato, NotificacionContrato
+
 
 class Command(BaseCommand):
-    help = 'Revisa los contratos próximos a vencer y envía alertas por correo electrónico.'
+    help = "Revisa contratos próximos a vencer, envía alertas y registra las notificaciones."
 
     def handle(self, *args, **options):
+
         hoy = date.today()
+
         contratos = Contrato.objects.all()
-        
+
         enviados = 0
+        ya_enviadas = 0
+        errores = 0
+
         for contrato in contratos:
+
+            # ==================================================
+            # VALIDACIONES
+            # ==================================================
+
             if not contrato.fecha_fin:
                 continue
-                
-            # Calculamos la fecha en que se debe enviar la alerta según los días de anticipación
-            dias_anticipacion = getattr(contrato, 'tiempo_notificacion', 30)
-            
-            # Si el contrato ya venció o está dentro del rango de notificación
-            delta_dias = (contrato.fecha_fin - hoy).days
-            
-            if 0 <= delta_dias <= int(dias_anticipacion):
-                asunto = f"[ALERTA CLM] Contrato No. {contrato.numero_contrato} próximo a vencer"
-                
-                mensaje = (
-                    f"Estimado equipo,\n\n"
-                    f"Se le notifica que el siguiente contrato está próximo a su fecha de vencimiento:\n\n"
-                    f"- Número de Contrato: {contrato.numero_contrato}\n"
-                    f"- Tipo de Contrato: {contrato.tipo_contrato}\n"
-                    f"- Empresa / Contratista: {contrato.empresa}\n"
-                    f"- NIT: {contrato.nit}\n"
-                    f"- Área de Destino: {contrato.area_destino}\n"
-                    f"- Responsable Asignado: {contrato.responsable}\n"
-                    f"- Fecha de Vencimiento: {contrato.fecha_fin.strftime('%d/%m/%Y')}\n\n"
-                    f"Por favor gestione la renovación o cierre oportuno.\n\n"
-                    f"Atentamente,\n"
-                    f"Sistema CLM Pro"
-                )
-                
-                # Recolectar destinatarios (El principal definido por el administrador y el opcional si existe)
-                destinatarios = [contrato.correo_notificacion_principal]
-                if contrato.correo_notificacion_opcional:
-                    destinatarios.append(contrato.correo_notificacion_opcional)
-                
-                try:
-                    send_mail(
-                        subject=asunto,
-                        message=mensaje,
-                        from_email=settings.DEFAULT_FROM_EMAIL,
-                        recipient_list=destinatarios,
-                        fail_silently=False,
-                    )
-                    enviados += 1
-                    self.stdout.write(self.style.SUCCESS(f"Alerta enviada para el contrato {contrato.numero_contrato} a {destinatarios}"))
-                except Exception as e:
-                    self.stdout.write(self.style.ERROR(f"Error al enviar correo para {contrato.numero_contrato}: {e}"))
 
-        self.stdout.write(self.style.SUCCESS(f"Proceso finalizado. Total de alertas enviadas: {enviados}"))
+            if not contrato.correo_notificacion_principal:
+                self.stdout.write(
+                    self.style.WARNING(
+                        f"{contrato.numero_contrato}: "
+                        "sin correo de notificación principal."
+                    )
+                )
+                continue
+
+            # ==================================================
+            # CONFIGURACIÓN DE LA ALERTA
+            # ==================================================
+
+            dias_anticipacion = int(
+                contrato.tiempo_notificacion or 30
+            )
+
+            dias_restantes = (
+                contrato.fecha_fin - hoy
+            ).days
+
+            # La alerta se genera únicamente el día exacto
+            # configurado por el usuario.
+            if dias_restantes != dias_anticipacion:
+                continue
+
+            # ==================================================
+            # REGISTRO DE NOTIFICACIÓN
+            # ==================================================
+
+            notificacion, creada = NotificacionContrato.objects.get_or_create(
+                contrato=contrato,
+                tipo=NotificacionContrato.TIPO_VENCIMIENTO,
+                dias_anticipacion=dias_anticipacion,
+                defaults={
+                    "fecha_programada": hoy,
+                }
+            )
+
+            # Si ya fue enviada, no volver a enviarla.
+            if not creada and notificacion.enviada:
+
+                ya_enviadas += 1
+
+                self.stdout.write(
+                    self.style.WARNING(
+                        f"{contrato.numero_contrato}: "
+                        f"alerta de {dias_anticipacion} días "
+                        "ya fue enviada anteriormente."
+                    )
+                )
+
+                continue
+
+            # ==================================================
+            # INFORMACIÓN DEL CONTRATO
+            # ==================================================
+
+            numero_contrato = contrato.numero_contrato
+            tipo_contrato = contrato.tipo_contrato
+            empresa = contrato.empresa
+            nit = contrato.nit
+            area = contrato.area_destino
+            responsable = contrato.responsable
+
+            fecha_vencimiento = contrato.fecha_fin.strftime(
+                "%d/%m/%Y"
+            )
+
+            if dias_restantes == 1:
+                texto_dias = "1 día"
+            else:
+                texto_dias = f"{dias_restantes} días"
+
+            # ==================================================
+            # CORREO
+            # ==================================================
+
+            asunto = (
+                f"[CLM Pro] Alerta de vencimiento contractual "
+                f"– {numero_contrato}"
+            )
+
+            mensaje = f"""
+Cordial saludo,
+
+Se ha generado una alerta de vencimiento contractual en el Sistema CLM Pro.
+
+INFORMACIÓN DEL CONTRATO
+
+Número de contrato: {numero_contrato}
+Tipo de contrato: {tipo_contrato}
+Empresa / Contratista: {empresa}
+NIT / Identificación: {nit}
+Área de destino: {area}
+Responsable: {responsable}
+
+INFORMACIÓN DE VENCIMIENTO
+
+Fecha de vencimiento: {fecha_vencimiento}
+Vencimiento en: {texto_dias}
+
+Se recomienda gestionar oportunamente la renovación, prórroga o cierre del contrato, según corresponda, con el fin de garantizar la continuidad y el adecuado control de las obligaciones contractuales.
+
+Este mensaje fue generado automáticamente por el Sistema CLM Pro.
+Por favor, no responda directamente a este correo.
+
+Atentamente,
+
+Sistema CLM Pro
+Gestión Documental Contractual
+Boccherini S.A.S.
+""".strip()
+
+            # ==================================================
+            # DESTINATARIOS
+            # ==================================================
+
+            destinatarios = [
+                contrato.correo_notificacion_principal
+            ]
+
+            if (
+                contrato.correo_notificacion_secundario
+                and contrato.correo_notificacion_secundario
+                not in destinatarios
+            ):
+                destinatarios.append(
+                    contrato.correo_notificacion_secundario
+                )
+
+            # ==================================================
+            # ENVÍO
+            # ==================================================
+
+            try:
+
+                send_mail(
+                    subject=asunto,
+                    message=mensaje,
+                    from_email=settings.DEFAULT_FROM_EMAIL,
+                    recipient_list=destinatarios,
+                    fail_silently=False,
+                )
+
+                # ==================================================
+                # ACTUALIZAR NOTIFICACIÓN
+                # ==================================================
+
+                notificacion.fecha_programada = hoy
+                notificacion.fecha_envio = timezone.now()
+                notificacion.enviada = True
+                notificacion.error_envio = None
+                notificacion.save(
+                    update_fields=[
+                        "fecha_programada",
+                        "fecha_envio",
+                        "enviada",
+                        "error_envio",
+                    ]
+                )
+
+                enviados += 1
+
+                self.stdout.write(
+                    self.style.SUCCESS(
+                        f"Alerta enviada correctamente: "
+                        f"{numero_contrato} → "
+                        f"{', '.join(destinatarios)}"
+                    )
+                )
+
+            except Exception as e:
+
+                # ==================================================
+                # REGISTRAR ERROR
+                # ==================================================
+
+                notificacion.fecha_programada = hoy
+                notificacion.enviada = False
+                notificacion.error_envio = str(e)
+                notificacion.save(
+                    update_fields=[
+                        "fecha_programada",
+                        "enviada",
+                        "error_envio",
+                    ]
+                )
+
+                errores += 1
+
+                self.stdout.write(
+                    self.style.ERROR(
+                        f"Error enviando alerta para "
+                        f"{numero_contrato}: {e}"
+                    )
+                )
+
+        # ==================================================
+        # RESULTADO
+        # ==================================================
+
+        self.stdout.write("")
+        self.stdout.write(
+            self.style.SUCCESS(
+                "=========================================="
+            )
+        )
+        self.stdout.write(
+            self.style.SUCCESS(
+                "PROCESO DE ALERTAS FINALIZADO"
+            )
+        )
+        self.stdout.write(
+            self.style.SUCCESS(
+                f"Alertas enviadas: {enviados}"
+            )
+        )
+        self.stdout.write(
+            self.style.WARNING(
+                f"Alertas ya enviadas: {ya_enviadas}"
+            )
+        )
+        self.stdout.write(
+            self.style.ERROR(
+                f"Errores: {errores}"
+            )
+        )
+        self.stdout.write(
+            self.style.SUCCESS(
+                "=========================================="
+            )
+        )

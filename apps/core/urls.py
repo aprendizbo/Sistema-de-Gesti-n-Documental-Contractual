@@ -4,6 +4,9 @@ from . import views
 app_name = 'core'
 
 urlpatterns = [
-    # Ruta principal del panel (Dashboard) que el login está buscando con 'core:dashboard'
-    path('', views.dashboard_view, name='dashboard'),
+    path(
+        '',
+        views.dashboard,
+        name='dashboard',
+    ),
 ]

@@ -35,6 +35,9 @@ def detalle_contrato(request, pk):
         contrato=contrato
     ).select_related(
         "tipo_documento"
+    ).order_by(
+        "tipo_documento_id",
+        "version"
     )
 
     documentos_requeridos = TipoContratoDocumento.objects.filter(
@@ -48,7 +51,10 @@ def detalle_contrato(request, pk):
     documentos_dict = {}
 
     for documento in documentos:
-        documentos_dict[documento.tipo_documento_id] = documento
+        documentos_dict.setdefault(
+            documento.tipo_documento_id,
+            []
+        ).append(documento)
 
     return render(
         request,
@@ -142,4 +148,4 @@ def editar_contrato(request, pk):
             "form": form,
             "contrato": contrato
         }
-    )
+    )                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   

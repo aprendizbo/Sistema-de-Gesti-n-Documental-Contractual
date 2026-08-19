@@ -2,6 +2,11 @@ from django.urls import path
 from . import views
 from .views.plantillas_documentales import *  # <-- Import de plantillas
 
+from .views.notificaciones import (
+    obtener_notificaciones,
+    marcar_notificacion_leida,
+)
+
 app_name = 'contracts'
 
 urlpatterns = [
@@ -154,5 +159,19 @@ urlpatterns = [
         "plantillas/<int:tipo_id>/",
         detalle_plantilla,
         name="detalle_plantilla",
+    ),
+
+    # -------------------------
+    # Notificaciones
+    # -------------------------
+    path(
+        "notificaciones/",
+        obtener_notificaciones,
+        name="obtener_notificaciones",
+    ),
+    path(
+        "notificaciones/<int:pk>/leer/",
+        marcar_notificacion_leida,
+        name="marcar_notificacion_leida",
     ),
 ]

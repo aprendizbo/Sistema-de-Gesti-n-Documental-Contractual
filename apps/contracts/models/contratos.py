@@ -16,6 +16,7 @@ class Contrato(models.Model):
         (30, '30 días antes'),
         (15, '15 días antes'),
         (5, '5 días antes'),
+        (1, '1 día antes'),
     ]
 
     numero_contrato = models.CharField(max_length=50, unique=True, verbose_name="Número de Contrato")
@@ -129,3 +130,82 @@ class Contrato(models.Model):
         ).values('tipo_documento').distinct().count()
         
         return int((docs_subidos / total_requisitos) * 100)
+
+
+class NotificacionContrato(models.Model):
+
+    TIPO_VENCIMIENTO = "VENCIMIENTO"
+
+    TIPOS = [
+        (TIPO_VENCIMIENTO, "Vencimiento contractual"),
+    ]
+
+    contrato = models.ForeignKey(
+        Contrato,
+        on_delete=models.CASCADE,
+        related_name="notificaciones",
+        verbose_name="Contrato"
+    )
+
+    tipo = models.CharField(
+        max_length=30,
+        choices=TIPOS,
+        default=TIPO_VENCIMIENTO
+    )
+
+    dias_anticipacion = models.PositiveIntegerField(
+        verbose_name="Días de anticipación"
+    )
+
+    fecha_programada = models.DateField(
+        verbose_name="Fecha programada"
+    )
+
+    fecha_envio = models.DateTimeField(
+        null=True,
+        blank=True,
+        verbose_name="Fecha de envío"
+    )
+
+    enviada = models.BooleanField(
+        default=False,
+        verbose_name="Enviada"
+    )
+
+    leida = models.BooleanField(
+        default=False,
+        verbose_name="Leída"
+    )
+
+    error_envio = models.TextField(
+        blank=True,
+        null=True,
+        verbose_name="Error de envío"
+    )
+
+    creado_en = models.DateTimeField(
+        auto_now_add=True
+    )
+
+    class Meta:
+        verbose_name = "Notificación de Contrato"
+        verbose_name_plural = "Notificaciones de Contratos"
+        ordering = ["-creado_en"]
+
+        constraints = [
+            models.UniqueConstraint(
+                fields=[
+                    "contrato",
+                    "tipo",
+                    "dias_anticipacion"
+                ],
+                name="unique_alerta_contrato_anticipacion"
+            )
+        ]
+
+    def __str__(self):
+        return (
+            f"{self.contrato.numero_contrato} - "
+            f"{self.dias_anticipacion} días"
+        )
+    

@@ -14,49 +14,119 @@
         <div class="p-5 text-xl font-bold tracking-wider border-b border-slate-800 flex items-center gap-3">
             <i class="fa-solid fa-file-contract text-blue-500"></i> CLM Pro
         </div>
+        
         <nav class="flex-1 p-4 space-y-2">
-            <a href="/" class="block px-4 py-2.5 rounded-lg bg-blue-600 text-white font-medium">
-                <i class="fa-solid fa-house mr-2"></i> Dashboard
+
+            <!-- Dashboard -->
+            <a href="/"
+               class="block px-4 py-2.5 rounded-lg transition
+               {% if request.resolver_match.url_name == 'dashboard' %}
+                   bg-blue-600 text-white font-medium
+               {% else %}
+                   text-slate-400 hover:bg-slate-800 hover:text-white
+               {% endif %}">
+                <i class="fa-solid fa-house mr-2"></i>
+                Dashboard
             </a>
-            <!-- URL ACTUALIZADA AQUÍ -->
-            <a href="{% url 'contracts:lista' %}" class="block px-4 py-2.5 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white transition">
-                <i class="fa-solid fa-folder-open mr-2"></i> Contratos
+
+            <!-- Contratos -->
+            <a href="{% url 'contracts:lista' %}"
+               class="block px-4 py-2.5 rounded-lg transition
+               {% if request.resolver_match.url_name in 'lista crear_contrato detalle_contrato editar_contrato' %}
+                   bg-blue-600 text-white font-medium
+               {% else %}
+                   text-slate-400 hover:bg-slate-800 hover:text-white
+               {% endif %}">
+                <i class="fa-solid fa-folder-open mr-2"></i>
+                Contratos
             </a>
-            <!-- ENLACE: Terceros -->
-            <a href="{% url 'contracts:lista_terceros' %}" class="block px-4 py-2.5 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white transition">
-                <i class="fa-solid fa-users mr-2"></i> Terceros
+
+            <!-- Terceros -->
+            <a href="{% url 'contracts:lista_terceros' %}"
+               class="block px-4 py-2.5 rounded-lg transition
+               {% if 'tercero' in request.resolver_match.url_name %}
+                   bg-blue-600 text-white font-medium
+               {% else %}
+                   text-slate-400 hover:bg-slate-800 hover:text-white
+               {% endif %}">
+                <i class="fa-solid fa-users mr-2"></i>
+                Terceros
             </a>
-            <!-- NUEVO ENLACE: Áreas -->
-            <a href="{% url 'contracts:lista_areas' %}" class="block px-4 py-2.5 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white transition">
-                <i class="fa-solid fa-layer-group mr-2"></i> Áreas
+
+            <!-- Áreas -->
+            <a href="{% url 'contracts:lista_areas' %}"
+               class="block px-4 py-2.5 rounded-lg transition
+               {% if 'area' in request.resolver_match.url_name %}
+                   bg-blue-600 text-white font-medium
+               {% else %}
+                   text-slate-400 hover:bg-slate-800 hover:text-white
+               {% endif %}">
+                <i class="fa-solid fa-layer-group mr-2"></i>
+                Áreas
             </a>
-            <!-- NUEVO ENLACE: Empresas -->
-            <a href="{% url 'contracts:lista_empresas' %}" class="block px-4 py-2.5 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white transition">
-                <i class="fa-solid fa-building mr-2"></i> Empresas
+
+            <!-- Empresas -->
+            <a href="{% url 'contracts:lista_empresas' %}"
+               class="block px-4 py-2.5 rounded-lg transition
+               {% if 'empresa' in request.resolver_match.url_name %}
+                   bg-blue-600 text-white font-medium
+               {% else %}
+                   text-slate-400 hover:bg-slate-800 hover:text-white
+               {% endif %}">
+                <i class="fa-solid fa-building mr-2"></i>
+                Empresas
             </a>
-            <!-- NUEVO ENLACE: Supervisores -->
-            <a href="{% url 'contracts:lista_supervisores' %}" class="block px-4 py-2.5 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white transition">
-                <i class="fa-solid fa-user-tie mr-2"></i> Supervisores
+
+            <!-- Supervisores -->
+            <a href="{% url 'contracts:lista_supervisores' %}"
+               class="block px-4 py-2.5 rounded-lg transition
+               {% if 'supervisor' in request.resolver_match.url_name %}
+                   bg-blue-600 text-white font-medium
+               {% else %}
+                   text-slate-400 hover:bg-slate-800 hover:text-white
+               {% endif %}">
+                <i class="fa-solid fa-user-tie mr-2"></i>
+                Supervisores
             </a>
-            <!-- NUEVO ENLACE: Tipos de Contrato -->
+
+            <!-- Tipos de Contrato -->
             <a href="{% url 'contracts:lista_tipos_contrato' %}"
-               class="block px-4 py-2.5 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white transition">
+               class="block px-4 py-2.5 rounded-lg transition
+               {% if 'tipos_contrato' in request.resolver_match.url_name %}
+                   bg-blue-600 text-white font-medium
+               {% else %}
+                   text-slate-400 hover:bg-slate-800 hover:text-white
+               {% endif %}">
                 <i class="fa-solid fa-file-signature mr-2"></i>
                 Tipos de Contrato
             </a>
+
             <!-- Tipos de Documentos Contractuales -->
             <a href="{% url 'contracts:lista_tipos_documento' %}"
-               class="block px-4 py-2.5 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white transition">
+               class="block px-4 py-2.5 rounded-lg transition
+               {% if 'tipos_documento' in request.resolver_match.url_name %}
+                   bg-blue-600 text-white font-medium
+               {% else %}
+                   text-slate-400 hover:bg-slate-800 hover:text-white
+               {% endif %}">
                 <i class="fa-solid fa-file-lines mr-2"></i>
                 Tipos de Documentos
             </a>
+
             <!-- Plantillas Documentales -->
             <a href="{% url 'contracts:lista_plantillas' %}"
-               class="block px-4 py-2.5 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white transition">
+               class="block px-4 py-2.5 rounded-lg transition
+               {% if 'plantilla' in request.resolver_match.url_name %}
+                   bg-blue-600 text-white font-medium
+               {% else %}
+                   text-slate-400 hover:bg-slate-800 hover:text-white
+               {% endif %}">
                 <i class="fa-solid fa-folder-tree mr-2"></i>
                 Plantillas Documentales
             </a>
+
         </nav>
+
         <div class="p-4 border-t border-slate-800">
             <form action="{% url 'authentication:logout' %}" method="POST">
                 {% csrf_token %}
@@ -72,19 +142,230 @@
         
         <!-- Header -->
         <header class="bg-white shadow-sm h-16 flex items-center justify-between px-8">
+
             <h1 class="text-xl font-bold text-slate-800">
                 {% block header_title %}Panel Principal{% endblock %}
             </h1>
-            <span class="text-sm font-semibold text-slate-600">Bienvenido, {{ request.user.username }}</span>
+
+            <div class="flex items-center gap-6">
+
+                <!-- CAMPANA DE NOTIFICACIONES -->
+                <div class="relative">
+
+                    <button
+                        id="btnNotificaciones"
+                        type="button"
+                        class="relative flex items-center justify-center w-10 h-10 rounded-full text-slate-500 hover:bg-slate-100 hover:text-slate-800 transition"
+                        title="Notificaciones"
+                    >
+
+                        <i class="fa-solid fa-bell text-lg"></i>
+
+                        <!-- CONTADOR -->
+                        <span
+                            id="contadorNotificaciones"
+                            class="hidden absolute -top-1 -right-1 min-w-[20px] h-5 px-1 bg-red-500 text-white text-xs font-bold rounded-full flex items-center justify-center"
+                        >
+                            0
+                        </span>
+
+                    </button>
+
+                    <!-- PANEL DE NOTIFICACIONES -->
+                    <div
+                        id="panelNotificaciones"
+                        class="hidden absolute right-0 mt-3 w-96 bg-white rounded-xl shadow-xl border border-slate-200 z-50 overflow-hidden"
+                    >
+
+                        <!-- ENCABEZADO -->
+                        <div class="px-5 py-4 border-b border-slate-200 flex items-center justify-between">
+
+                            <div>
+                                <h3 class="font-bold text-slate-800">
+                                    Notificaciones
+                                </h3>
+
+                                <p
+                                    id="textoContadorNotificaciones"
+                                    class="text-xs text-slate-500 mt-1"
+                                >
+                                    No hay notificaciones pendientes
+                                </p>
+                            </div>
+
+                            <i class="fa-solid fa-bell text-slate-400"></i>
+
+                        </div>
+
+                        <!-- LISTA -->
+                        <div
+                            id="listaNotificaciones"
+                            class="max-h-96 overflow-y-auto"
+                        >
+                            <div class="p-6 text-center text-sm text-slate-500">
+                                Cargando notificaciones...
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- USUARIO -->
+                <span class="text-sm font-semibold text-slate-600">
+                    Bienvenido, {{ request.user.username }}
+                </span>
+
+            </div>
+
         </header>
 
-        <!-- Contenido Dinámico (Aquí se inyectan las demás vistas) -->
+        <!-- Contenido Dinámico -->
         <div class="p-8">
             {% block content %}
             {% endblock content %}
         </div>
         
     </main>
+
+    <script>
+    document.addEventListener("DOMContentLoaded", function () {
+
+        const btnNotificaciones = document.getElementById("btnNotificaciones");
+        const panelNotificaciones = document.getElementById("panelNotificaciones");
+        const contador = document.getElementById("contadorNotificaciones");
+        const textoContador = document.getElementById("textoContadorNotificaciones");
+        const lista = document.getElementById("listaNotificaciones");
+
+        // --------------------------------------------------
+        // CARGAR NOTIFICACIONES
+        // --------------------------------------------------
+        function cargarNotificaciones() {
+            fetch("{% url 'contracts:obtener_notificaciones' %}")
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("Error en la respuesta del servidor");
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // Actualizar el contador numérico
+                    if (data.total > 0) {
+                        contador.textContent = data.total;
+                        contador.classList.remove("hidden");
+                        textoContador.textContent = `${data.total} notificaciones pendientes`;
+                    } else {
+                        contador.classList.add("hidden");
+                        textoContador.textContent = "No hay notificaciones pendientes";
+                    }
+
+                    // Limpiar la lista actual
+                    lista.innerHTML = "";
+
+                    // Si no hay notificaciones
+                    if (!data.notificaciones || data.notificaciones.length === 0) {
+                        lista.innerHTML = `<div class="p-6 text-center text-sm text-slate-500">No hay notificaciones pendientes.</div>`;
+                        return;
+                    }
+
+                    // Renderizar cada notificación (NUEVO BLOQUE REEMPLAZADO)
+                    data.notificaciones.forEach(notif => {
+                        const div = document.createElement("div");
+                        div.className = "p-4 border-b border-slate-100 hover:bg-slate-50 transition cursor-pointer";
+                        div.innerHTML = `
+                            <div>
+                                <p class="text-sm text-slate-800">${notif.mensaje || 'Nueva notificación de contrato'}</p>
+                                <p class="text-xs text-slate-400 mt-1">
+                                    Programada: ${notif.fecha_programada || ''}
+                                </p>
+                                
+                                <div class="mt-3 flex justify-end">
+                                    <button
+                                        type="button"
+                                        class="text-xs font-semibold text-blue-600 hover:text-blue-800"
+                                        data-url="${notif.url}"
+                                        data-id="${notif.id}"
+                                    >
+                                        Ver contrato
+                                    </button>
+                                </div>
+                            </div>
+                        `;
+
+                        // ------------------------------------------
+                        // VER CONTRATO
+                        // ------------------------------------------
+                        const botonVer = div.querySelector("button");
+
+                        botonVer.addEventListener("click", function (e) {
+                            e.stopPropagation();
+
+                            const id = this.dataset.id;
+                            const url = this.dataset.url;
+
+                            fetch(
+                                "{% url 'contracts:marcar_notificacion_leida' 0 %}"
+                                    .replace("/0/", `/${id}/`),
+                                {
+                                    method: "POST",
+                                    headers: {
+                                        "X-CSRFToken": "{{ csrf_token }}",
+                                        "X-Requested-With": "XMLHttpRequest"
+                                    }
+                                }
+                            )
+                            .then(response => {
+                                if (!response.ok) {
+                                    throw new Error("No se pudo marcar la notificación");
+                                }
+                                return response.json();
+                            })
+                            .then(() => {
+                                // Ir al contrato
+                                window.location.href = url;
+                            })
+                            .catch(error => {
+                                console.error("Error marcando notificación:", error);
+                                // Si falla marcarla como leída, igualmente permitimos abrir el contrato.
+                                window.location.href = url;
+                            });
+                        });
+
+                        lista.appendChild(div);
+                    });
+                })
+                .catch(error => {
+                    console.error("Error cargando notificaciones:", error);
+                    lista.innerHTML = `<div class="p-6 text-center text-sm text-red-500">Error al cargar. Inténtalo más tarde.</div>`;
+                });
+        }
+
+        // --------------------------------------------------
+        // EVENTOS DEL PANEL
+        // --------------------------------------------------
+        
+        // Alternar el panel al hacer clic en la campana
+        btnNotificaciones.addEventListener("click", function (e) {
+            e.stopPropagation();
+            panelNotificaciones.classList.toggle("hidden");
+            
+            // Si el panel se acaba de abrir, recargamos los datos
+            if (!panelNotificaciones.classList.contains("hidden")) {
+                cargarNotificaciones();
+            }
+        });
+
+        // Cerrar el panel al hacer clic fuera de él
+        document.addEventListener("click", function (e) {
+            if (!panelNotificaciones.contains(e.target) && !btnNotificaciones.contains(e.target)) {
+                panelNotificaciones.classList.add("hidden");
+            }
+        });
+
+        // Cargar las notificaciones iniciales para encender la campanita si hay pendientes
+        cargarNotificaciones();
+    });
+    </script>
 
 </body>
 </html>

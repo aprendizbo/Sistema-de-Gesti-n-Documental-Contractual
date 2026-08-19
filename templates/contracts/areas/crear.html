@@ -22,7 +22,7 @@ Gestión de Áreas
             {% endif %}
         </h2>
 
-        <form method="POST" enctype="multipart/form-data"></form>
+        <form method="POST" enctype="multipart/form-data">
 
             {% csrf_token %}
 
@@ -62,7 +62,7 @@ Gestión de Áreas
                     Cancelar
                 </a>
 
-                <button
+                <button type="submit"
                     class="px-5 py-2 bg-blue-600 text-white rounded-lg"
                 >
                     Guardar
