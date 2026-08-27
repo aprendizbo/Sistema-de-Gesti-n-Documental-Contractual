@@ -1,9 +1,10 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}CLM Corporativo{% endblock %}</title>
+    <title>{% block title %}Dashboard - Documentación Contractual{% endblock %}</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
@@ -11,8 +12,17 @@
 
     <!-- Sidebar (Menú Fijo) -->
     <aside class="w-64 bg-slate-900 text-white flex flex-col">
-        <div class="p-5 text-xl font-bold tracking-wider border-b border-slate-800 flex items-center gap-3">
-            <i class="fa-solid fa-file-contract text-blue-500"></i> CLM Pro
+        
+        <!-- LOGO Y NOMBRE DE LA EMPRESA CENTRADOS -->
+        <div class="p-5 border-b border-slate-800 flex flex-col items-center justify-center text-center">
+            <img
+                src="{% static 'img/logo_boccherini.jpg' %}"
+                alt="Boccherini S.A.S."
+                class="h-12 w-auto object-contain bg-white rounded p-1 mb-2"
+            >
+            <span class="text-sm font-bold text-slate-300 tracking-widest uppercase">
+                Boccherini S.A.S.
+            </span>
         </div>
         
         <nav class="flex-1 p-4 space-y-2">
@@ -144,7 +154,7 @@
         <header class="bg-white shadow-sm h-16 flex items-center justify-between px-8">
 
             <h1 class="text-xl font-bold text-slate-800">
-                {% block header_title %}Panel Principal{% endblock %}
+                {% block header_title %}Documentación Contractual{% endblock %}
             </h1>
 
             <div class="flex items-center gap-6">
@@ -268,7 +278,7 @@
                         return;
                     }
 
-                    // Renderizar cada notificación (NUEVO BLOQUE REEMPLAZADO)
+                    // Renderizar cada notificación
                     data.notificaciones.forEach(notif => {
                         const div = document.createElement("div");
                         div.className = "p-4 border-b border-slate-100 hover:bg-slate-50 transition cursor-pointer";
