@@ -1,145 +1,142 @@
 {% extends "base.html" %}
 
 {% block title %}
-{% if empresa %}
-Editar Empresa
-{% else %}
-Nueva Empresa
-{% endif %}
-| CLM Pro
+    {% if empresa %}Editar Empresa{% else %}Nueva Empresa{% endif %} | CLM Pro
 {% endblock %}
 
 {% block header_title %}
-Gestión de Empresas
+    Gestión de Empresas
 {% endblock %}
 
 {% block content %}
+<div class="max-w-4xl mx-auto space-y-6">
 
-<div class="max-w-4xl mx-auto">
+    <div>
+        <a href="{% url 'contracts:lista_empresas' %}" class="inline-flex items-center gap-2 text-sm font-semibold text-slate-500 hover:text-blue-600 transition-colors">
+            <i class="fa-solid fa-arrow-left text-xs"></i> Volver a la lista de empresas
+        </a>
+    </div>
 
-    <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-8">
+    <div class="bg-white rounded-2xl shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] border border-slate-100 p-8">
 
-        <div class="flex justify-between items-center mb-8">
-
-            <div>
-
-                <h2 class="text-3xl font-bold text-slate-800">
-
-                    {% if empresa %}
-                        Editar Empresa
-                    {% else %}
-                        Registrar Empresa
-                    {% endif %}
-
-                </h2>
-
-                <p class="text-slate-500 mt-2">
-
-                    Información general de la empresa.
-
-                </p>
-
+        <div class="flex items-center gap-4 pb-6 mb-6 border-b border-slate-100">
+            <div class="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center text-xl shadow-xs shrink-0">
+                <i class="fa-solid fa-building"></i>
             </div>
-
-            <a href="{% url 'contracts:lista_empresas' %}"
-               class="text-slate-600 hover:text-slate-900">
-
-                ← Volver
-
-            </a>
-
+            <div>
+                <h2 class="text-2xl font-bold text-slate-800 tracking-tight">
+                    {% if empresa %}Editar Empresa{% else %}Registrar Empresa{% endif %}
+                </h2>
+                <p class="text-sm text-slate-500 mt-0.5 font-medium">
+                    {% if empresa %}Modifique la información general de la empresa.{% else %}Complete la información para registrar una nueva empresa en el sistema.{% endif %}
+                </p>
+            </div>
         </div>
 
-        <form method="POST" enctype="multipart/form-data">
-
+        <form method="POST" enctype="multipart/form-data" class="form-styled">
             {% csrf_token %}
 
-            <div class="space-y-5">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 
-                <div>
-                    <label class="block font-semibold mb-2">
-                        Nombre
+                <div class="md:col-span-2">
+                    <label class="block text-sm font-bold text-slate-700 mb-2">
+                        Nombre de la Empresa <span class="text-rose-500">*</span>
                     </label>
-
                     {{ form.nombre }}
+                    {% if form.nombre.errors %}
+                        <p class="text-xs text-rose-500 mt-1.5 font-medium">{{ form.nombre.errors.0 }}</p>
+                    {% endif %}
                 </div>
 
                 <div>
-                    <label class="block font-semibold mb-2">
-                        NIT
+                    <label class="block text-sm font-bold text-slate-700 mb-2">
+                        NIT / Identificación Fiscal <span class="text-rose-500">*</span>
                     </label>
-
                     {{ form.nit }}
+                    {% if form.nit.errors %}
+                        <p class="text-xs text-rose-500 mt-1.5 font-medium">{{ form.nit.errors.0 }}</p>
+                    {% endif %}
                 </div>
 
                 <div>
-                    <label class="block font-semibold mb-2">
-                        Dirección
-                    </label>
-
-                    {{ form.direccion }}
-                </div>
-
-                <div>
-                    <label class="block font-semibold mb-2">
+                    <label class="block text-sm font-bold text-slate-700 mb-2">
                         Ciudad
                     </label>
-
                     {{ form.ciudad }}
+                    {% if form.ciudad.errors %}
+                        <p class="text-xs text-rose-500 mt-1.5 font-medium">{{ form.ciudad.errors.0 }}</p>
+                    {% endif %}
+                </div>
+
+                <div class="md:col-span-2">
+                    <label class="block text-sm font-bold text-slate-700 mb-2">
+                        Dirección Principal
+                    </label>
+                    {{ form.direccion }}
+                    {% if form.direccion.errors %}
+                        <p class="text-xs text-rose-500 mt-1.5 font-medium">{{ form.direccion.errors.0 }}</p>
+                    {% endif %}
                 </div>
 
                 <div>
-                    <label class="block font-semibold mb-2">
-                        Teléfono
+                    <label class="block text-sm font-bold text-slate-700 mb-2">
+                        Teléfono de Contacto
                     </label>
-
                     {{ form.telefono }}
+                    {% if form.telefono.errors %}
+                        <p class="text-xs text-rose-500 mt-1.5 font-medium">{{ form.telefono.errors.0 }}</p>
+                    {% endif %}
                 </div>
 
                 <div>
-                    <label class="block font-semibold mb-2">
-                        Correo
+                    <label class="block text-sm font-bold text-slate-700 mb-2">
+                        Correo Electrónico
                     </label>
-
                     {{ form.correo }}
+                    {% if form.correo.errors %}
+                        <p class="text-xs text-rose-500 mt-1.5 font-medium">{{ form.correo.errors.0 }}</p>
+                    {% endif %}
                 </div>
 
-                <div>
-                    <label class="block font-semibold mb-2">
+                <div class="md:col-span-2">
+                    <label class="block text-sm font-bold text-slate-700 mb-2">
                         Página Web
                     </label>
-
                     {{ form.pagina_web }}
+                    {% if form.pagina_web.errors %}
+                        <p class="text-xs text-rose-500 mt-1.5 font-medium">{{ form.pagina_web.errors.0 }}</p>
+                    {% endif %}
                 </div>
 
-                <div class="flex items-center gap-3">
-
-                    {{ form.activo }}
-
-                    <label>
-                        Empresa Activa
-                    </label>
-
+                <div class="md:col-span-2 p-4 rounded-xl bg-slate-50/80 border border-slate-200/80 flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center">
+                            <i class="fa-solid fa-power-off text-xs"></i>
+                        </div>
+                        <div>
+                            <label class="text-sm font-bold text-slate-800 cursor-pointer">
+                                Empresa Activa
+                            </label>
+                            <p class="text-xs text-slate-500 font-medium">Determine si esta empresa estará habilitada para asignación en contratos.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        {{ form.activo }}
+                    </div>
                 </div>
 
             </div>
 
-            <div class="flex justify-end gap-3 mt-10">
-
+            <div class="mt-8 pt-6 border-t border-slate-100 flex items-center justify-end gap-3">
                 <a href="{% url 'contracts:lista_empresas' %}"
-                   class="px-5 py-2 border rounded-lg hover:bg-slate-100">
-
+                   class="px-5 py-2.5 rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-50 hover:text-slate-800 text-sm font-semibold transition-all">
                     Cancelar
-
                 </a>
 
                 <button type="submit"
-                    class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg">
-
-                    Guardar
-
+                        class="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-xl transition-all shadow-[0_4px_14px_0_rgba(37,99,235,0.39)] hover:shadow-[0_6px_20px_rgba(37,99,235,0.23)] hover:-translate-y-0.5 flex items-center gap-2">
+                    <i class="fa-solid fa-floppy-disk text-xs"></i> Guardar
                 </button>
-
             </div>
 
         </form>
@@ -148,4 +145,48 @@ Gestión de Empresas
 
 </div>
 
+<style>
+    .form-styled input[type="text"],
+    .form-styled input[type="email"],
+    .form-styled input[type="url"],
+    .form-styled input[type="tel"],
+    .form-styled input[type="number"],
+    .form-styled select,
+    .form-styled textarea {
+        width: 100%;
+        padding: 0.625rem 1rem;
+        background-color: #f8fafc;
+        border: 1px solid #e2e8f0;
+        border-radius: 0.75rem;
+        font-size: 0.875rem;
+        color: #0f172a;
+        transition: all 0.2s ease-in-out;
+    }
+
+    .form-styled input[type="text"]:focus,
+    .form-styled input[type="email"]:focus,
+    .form-styled input[type="url"]:focus,
+    .form-styled input[type="tel"]:focus,
+    .form-styled input[type="number"]:focus,
+    .form-styled select:focus,
+    .form-styled textarea:focus {
+        outline: none;
+        background-color: #ffffff;
+        border-color: #2563eb;
+        box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+    }
+
+    .form-styled textarea {
+        min-height: 100px;
+        resize: vertical;
+    }
+
+    .form-styled input[type="checkbox"] {
+        width: 1.25rem;
+        height: 1.25rem;
+        accent-color: #2563eb;
+        border-radius: 0.375rem;
+        cursor: pointer;
+    }
+</style>
 {% endblock %}

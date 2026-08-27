@@ -1,138 +1,124 @@
 {% extends "base.html" %}
 
-{% block title %}Supervisores{% endblock %}
+{% block title %}Supervisores | CLM Pro{% endblock %}
+
+{% block header_title %}Gestión de Supervisores{% endblock %}
 
 {% block content %}
+<div class="space-y-6 max-w-7xl mx-auto">
 
-<div class="max-w-7xl mx-auto">
-
-    <div class="flex justify-between items-center mb-6">
-
+    <div class="bg-white rounded-2xl p-6 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] border border-slate-100 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-            <h1 class="text-3xl font-bold">
-                Gestión de Supervisores
-            </h1>
-
-            <p class="text-gray-500">
-                Administre los supervisores responsables de contratos.
-            </p>
+            <h2 class="text-2xl font-bold text-slate-800 tracking-tight">Gestión de Supervisores</h2>
+            <p class="text-sm text-slate-500 mt-1 font-medium">Administre los supervisores responsables de contratos.</p>
         </div>
 
         <a href="{% url 'contracts:crear_supervisor' %}"
-           class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg">
-
-            + Nuevo Supervisor
-
+           class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2.5 rounded-xl transition-all duration-300 flex items-center gap-2 shadow-[0_4px_14px_0_rgba(37,99,235,0.39)] hover:shadow-[0_6px_20px_rgba(37,99,235,0.23)] hover:-translate-y-0.5 text-sm shrink-0">
+            <i class="fa-solid fa-plus"></i> Nuevo Supervisor
         </a>
-
     </div>
 
-    <div class="bg-white rounded-xl shadow overflow-hidden">
+    <div class="bg-white rounded-2xl shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] border border-slate-100 overflow-hidden">
+        <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+                <thead>
+                    <tr class="bg-slate-50/80 border-b border-slate-100 text-slate-500 text-[11px] uppercase tracking-wider font-semibold">
+                        <th class="py-4 px-6">Nombre</th>
+                        <th class="py-4 px-6">Cargo</th>
+                        <th class="py-4 px-6">Correo</th>
+                        <th class="py-4 px-6">Teléfono</th>
+                        <th class="py-4 px-6 text-center">Estado</th>
+                        <th class="py-4 px-6 text-center">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100 text-sm text-slate-700">
+                    {% for supervisor in supervisores %}
+                    <tr class="hover:bg-blue-50/40 transition-colors group">
 
-        <table class="min-w-full">
+                        <td class="py-4 px-6 font-semibold text-slate-800">
+                            <div class="flex items-center gap-3">
+                                <div class="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center group-hover:scale-110 transition-transform">
+                                    <i class="fa-solid fa-user-tie text-xs"></i>
+                                </div>
+                                <span>{{ supervisor.nombre }}</span>
+                            </div>
+                        </td>
 
-            <thead class="bg-gray-100">
+                        <td class="py-4 px-6 text-slate-600 font-medium">
+                            {% if supervisor.cargo %}
+                                <span class="inline-flex items-center px-2.5 py-1 rounded-lg bg-slate-100 text-slate-700 text-xs border border-slate-200/60">
+                                    {{ supervisor.cargo }}
+                                </span>
+                            {% else %}
+                                <span class="text-slate-400 italic text-xs">Sin cargo asignado</span>
+                            {% endif %}
+                        </td>
 
-                <tr>
+                        <td class="py-4 px-6 text-slate-600">
+                            {% if supervisor.correo %}
+                                <span class="inline-flex items-center gap-1.5 text-slate-600">
+                                    <i class="fa-regular fa-envelope text-slate-400 text-xs"></i>
+                                    {{ supervisor.correo }}
+                                </span>
+                            {% else %}
+                                <span class="text-slate-400 italic text-xs">Sin correo</span>
+                            {% endif %}
+                        </td>
 
-                    <th class="text-left px-6 py-3">Nombre</th>
+                        <td class="py-4 px-6 text-slate-600">
+                            {% if supervisor.telefono %}
+                                <span class="inline-flex items-center gap-1.5 text-slate-600">
+                                    <i class="fa-solid fa-phone text-slate-400 text-xs"></i>
+                                    {{ supervisor.telefono }}
+                                </span>
+                            {% else %}
+                                <span class="text-slate-400 italic text-xs">Sin teléfono</span>
+                            {% endif %}
+                        </td>
 
-                    <th class="text-left px-6 py-3">Cargo</th>
+                        <td class="py-4 px-6 text-center">
+                            {% if supervisor.activo %}
+                                <span class="inline-flex items-center px-3 py-1 rounded-full text-[11px] uppercase tracking-wider font-bold bg-emerald-50 text-emerald-700 border border-emerald-200/80 shadow-xs">
+                                    <span class="w-1.5 h-1.5 rounded-full mr-1.5 bg-emerald-500"></span>
+                                    Activo
+                                </span>
+                            {% else %}
+                                <span class="inline-flex items-center px-3 py-1 rounded-full text-[11px] uppercase tracking-wider font-bold bg-rose-50 text-rose-700 border border-rose-200/80 shadow-xs">
+                                    <span class="w-1.5 h-1.5 rounded-full mr-1.5 bg-rose-500"></span>
+                                    Inactivo
+                                </span>
+                            {% endif %}
+                        </td>
 
-                    <th class="text-left px-6 py-3">Correo</th>
+                        <td class="py-4 px-6 text-center">
+                            <div class="flex items-center justify-center">
+                                <a href="{% url 'contracts:editar_supervisor' supervisor.id %}"
+                                   class="w-8 h-8 rounded-lg bg-slate-100 text-slate-500 hover:bg-blue-600 hover:text-white flex items-center justify-center transition-all shadow-xs"
+                                   title="Editar Supervisor">
+                                    <i class="fa-solid fa-pen-to-square text-xs"></i>
+                                </a>
+                            </div>
+                        </td>
 
-                    <th class="text-left px-6 py-3">Teléfono</th>
-
-                    <th class="text-center px-6 py-3">Estado</th>
-
-                    <th class="text-center px-6 py-3">Acciones</th>
-
-                </tr>
-
-            </thead>
-
-            <tbody>
-
-                {% for supervisor in supervisores %}
-
-                <tr class="border-b">
-
-                    <td class="px-6 py-4">
-
-                        {{ supervisor.nombre }}
-
-                    </td>
-
-                    <td class="px-6 py-4">
-
-                        {{ supervisor.cargo }}
-
-                    </td>
-
-                    <td class="px-6 py-4">
-
-                        {{ supervisor.correo }}
-
-                    </td>
-
-                    <td class="px-6 py-4">
-
-                        {{ supervisor.telefono }}
-
-                    </td>
-
-                    <td class="text-center">
-
-                        {% if supervisor.activo %}
-
-                            <span class="text-green-600 font-semibold">
-                                Activo
-                            </span>
-
-                        {% else %}
-
-                            <span class="text-red-600 font-semibold">
-                                Inactivo
-                            </span>
-
-                        {% endif %}
-
-                    </td>
-
-                    <td class="text-center">
-
-                        <a href="{% url 'contracts:editar_supervisor' supervisor.id %}"
-                           class="text-blue-600 font-semibold">
-
-                            Editar
-
-                        </a>
-
-                    </td>
-
-                </tr>
-
-                {% empty %}
-
-                <tr>
-
-                    <td colspan="6"
-                        class="text-center py-10 text-gray-500">
-
-                        No existen supervisores registrados.
-
-                    </td>
-
-                </tr>
-
-                {% endfor %}
-
-            </tbody>
-
-        </table>
-
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="6" class="py-16 text-center text-slate-400">
+                            <div class="flex flex-col items-center justify-center space-y-3">
+                                <div class="w-16 h-16 rounded-2xl bg-slate-50 flex items-center justify-center text-slate-300 border border-slate-100">
+                                    <i class="fa-solid fa-user-xmark text-3xl"></i>
+                                </div>
+                                <p class="text-base font-semibold text-slate-600">No existen supervisores registrados.</p>
+                                <p class="text-xs text-slate-400">Registre el primero utilizando el botón superior "Nuevo Supervisor".</p>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
 
 </div>
-
 {% endblock %}

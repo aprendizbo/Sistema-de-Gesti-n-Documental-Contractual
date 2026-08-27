@@ -1,101 +1,104 @@
 {% extends "base.html" %}
 
-{% block title %}Tipos de Documento{% endblock %}
+{% block title %}Tipos de Documento | CLM Pro{% endblock %}
 
-{% block header_title %}
-Tipos de Documento Contractual
-{% endblock %}
+{% block header_title %}Tipos de Documento Contractual{% endblock %}
 
 {% block content %}
+<div class="space-y-6 max-w-7xl mx-auto">
 
-<div class="max-w-7xl mx-auto">
-
-    <div class="flex justify-between items-center mb-6">
-
-        <h2 class="text-2xl font-bold">
-            Tipos de Documento
-        </h2>
+    <!-- ENCABEZADO Y BOTÓN DE ACCIÓN (Tarjeta Superior Refinada) -->
+    <div class="bg-white rounded-2xl p-6 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] border border-slate-100 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <div>
+            <h2 class="text-2xl font-bold text-slate-800 tracking-tight">Tipos de Documento</h2>
+            <p class="text-sm text-slate-500 mt-1 font-medium">Gestione las clasificaciones y características de los documentos que se pueden anexar.</p>
+        </div>
 
         <a href="{% url 'contracts:crear_tipo_documento' %}"
-           class="bg-blue-600 text-white px-5 py-2 rounded-lg hover:bg-blue-700">
-
-            Nuevo Tipo de Documento
-
+           class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2.5 rounded-xl transition-all duration-300 flex items-center gap-2 shadow-[0_4px_14px_0_rgba(37,99,235,0.39)] hover:shadow-[0_6px_20px_rgba(37,99,235,0.23)] hover:-translate-y-0.5 text-sm shrink-0">
+            <i class="fa-solid fa-plus"></i> Nuevo Tipo de Documento
         </a>
-
     </div>
 
-    <div class="bg-white rounded-xl shadow overflow-hidden">
+    <!-- TABLA DE TIPOS DE DOCUMENTO (Contenedor Estilizado 10/10) -->
+    <div class="bg-white rounded-2xl shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] border border-slate-100 overflow-hidden">
+        <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+                <thead>
+                    <tr class="bg-slate-50/80 border-b border-slate-100 text-slate-500 text-[11px] uppercase tracking-wider font-semibold">
+                        <th class="py-4 px-6">Nombre</th>
+                        <th class="py-4 px-6">Descripción</th>
+                        <th class="py-4 px-6 text-center">Obligatorio</th>
+                        <th class="py-4 px-6 text-center">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100 text-sm text-slate-700">
+                    {% for documento in documentos %}
+                    <tr class="hover:bg-blue-50/40 transition-colors group">
 
-        <table class="min-w-full">
+                        <!-- NOMBRE -->
+                        <td class="py-4 px-6 font-semibold text-slate-800">
+                            <div class="flex items-center gap-3">
+                                <div class="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center group-hover:scale-110 transition-transform">
+                                    <i class="fa-solid fa-file-lines text-xs"></i>
+                                </div>
+                                <span>{{ documento.nombre }}</span>
+                            </div>
+                        </td>
 
-            <thead class="bg-slate-100">
+                        <!-- DESCRIPCIÓN -->
+                        <td class="py-4 px-6 text-slate-500 font-medium">
+                            {% if documento.descripcion and documento.descripcion != "None" %}
+                                {{ documento.descripcion }}
+                            {% else %}
+                                <span class="text-slate-400 italic text-xs">Sin descripción</span>
+                            {% endif %}
+                        </td>
 
-                <tr>
+                        <!-- OBLIGATORIO (Badges Modernos) -->
+                        <td class="py-4 px-6 text-center">
+                            {% if documento.obligatorio %}
+                                <span class="inline-flex items-center px-3 py-1 rounded-full text-[11px] uppercase tracking-wider font-bold bg-amber-50 text-amber-700 border border-amber-200/80 shadow-xs" title="Es un documento requerido">
+                                    <span class="w-1.5 h-1.5 rounded-full mr-1.5 bg-amber-500"></span>
+                                    Sí
+                                </span>
+                            {% else %}
+                                <span class="inline-flex items-center px-3 py-1 rounded-full text-[11px] uppercase tracking-wider font-bold bg-slate-50 text-slate-600 border border-slate-200 shadow-xs" title="Es un documento opcional">
+                                    <span class="w-1.5 h-1.5 rounded-full mr-1.5 bg-slate-400"></span>
+                                    No
+                                </span>
+                            {% endif %}
+                        </td>
 
-                    <th class="px-6 py-3 text-left">Nombre</th>
-                    <th class="px-6 py-3 text-left">Descripción</th>
-                    <th class="px-6 py-3 text-center">Obligatorio</th>
-                    <th class="px-6 py-3 text-center">Acciones</th>
+                        <!-- ACCIONES -->
+                        <td class="py-4 px-6 text-center">
+                            <div class="flex items-center justify-center">
+                                <a href="{% url 'contracts:editar_tipo_documento' documento.id %}"
+                                   class="w-8 h-8 rounded-lg bg-slate-100 text-slate-500 hover:bg-blue-600 hover:text-white flex items-center justify-center transition-all shadow-xs"
+                                   title="Editar Tipo de Documento">
+                                    <i class="fa-solid fa-pen-to-square text-xs"></i>
+                                </a>
+                            </div>
+                        </td>
 
-                </tr>
-
-            </thead>
-
-            <tbody>
-
-                {% for documento in documentos %}
-
-                <tr class="border-t">
-
-                    <td class="px-6 py-4">
-                        {{ documento.nombre }}
-                    </td>
-
-                    <td class="px-6 py-4">
-                        {{ documento.descripcion }}
-                    </td>
-
-                    <td class="px-6 py-4 text-center">
-
-                        {% if documento.obligatorio %}
-                            Sí
-                        {% else %}
-                            No
-                        {% endif %}
-
-                    </td>
-
-                    <td class="px-6 py-4 text-center">
-
-                        <a href="{% url 'contracts:editar_tipo_documento' documento.id %}">
-                            Editar
-                        </a>
-
-                    </td>
-
-                </tr>
-
-                {% empty %}
-
-                <tr>
-
-                    <td colspan="4" class="text-center py-8">
-
-                        No existen tipos de documento registrados.
-
-                    </td>
-
-                </tr>
-
-                {% endfor %}
-
-            </tbody>
-
-        </table>
-
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="4" class="py-16 text-center text-slate-400">
+                            <div class="flex flex-col items-center justify-center space-y-3">
+                                <div class="w-16 h-16 rounded-2xl bg-slate-50 flex items-center justify-center text-slate-300 border border-slate-100">
+                                    <i class="fa-solid fa-file-circle-question text-3xl"></i>
+                                </div>
+                                <p class="text-base font-semibold text-slate-600">No existen tipos de documento registrados.</p>
+                                <p class="text-xs text-slate-400">Cree el primero utilizando el botón superior "Nuevo Tipo de Documento".</p>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
 
 </div>
-
 {% endblock %}

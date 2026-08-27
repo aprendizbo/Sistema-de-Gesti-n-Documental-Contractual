@@ -9,114 +9,94 @@ Gestión de Tipos de Contrato
 {% endblock %}
 
 {% block content %}
+<div class="space-y-6 max-w-7xl mx-auto">
 
-<div class="space-y-6">
+    <div class="bg-white rounded-2xl p-6 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] border border-slate-100 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <div>
+            <h2 class="text-2xl font-bold text-slate-800 tracking-tight">Tipos de Contrato</h2>
+            <p class="text-sm text-slate-500 mt-1 font-medium">Gestione las diferentes modalidades de contratación configuradas en el sistema.</p>
+        </div>
 
-    <div class="flex justify-between items-center">
-
-        <h2 class="text-2xl font-bold">
-            Tipos de Contrato
-        </h2>
-
-        <a
-            href="{% url 'contracts:crear_tipo_contrato' %}"
-            class="bg-blue-600 text-white px-5 py-2 rounded-lg"
-        >
-            Nuevo Tipo de Contrato
+        <a href="{% url 'contracts:crear_tipo_contrato' %}"
+           class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2.5 rounded-xl transition-all duration-300 flex items-center gap-2 shadow-[0_4px_14px_0_rgba(37,99,235,0.39)] hover:shadow-[0_6px_20px_rgba(37,99,235,0.23)] hover:-translate-y-0.5 text-sm shrink-0">
+            <i class="fa-solid fa-plus"></i> Nuevo Tipo de Contrato
         </a>
-
     </div>
 
-    <div class="bg-white rounded-xl shadow overflow-hidden">
+    <div class="bg-white rounded-2xl shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] border border-slate-100 overflow-hidden">
+        <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+                <thead>
+                    <tr class="bg-slate-50/80 border-b border-slate-100 text-slate-500 text-[11px] uppercase tracking-wider font-semibold">
+                        <th class="py-4 px-6">Nombre</th>
+                        <th class="py-4 px-6">Descripción</th>
+                        <th class="py-4 px-6">Estado</th>
+                        <th class="py-4 px-6 text-center">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100 text-sm text-slate-700">
+                    {% for tipo in tipos %}
+                    <tr class="hover:bg-blue-50/40 transition-colors group">
 
-        <table class="w-full">
+                        <td class="py-4 px-6 font-semibold text-slate-800">
+                            <div class="flex items-center gap-3">
+                                <div class="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center group-hover:scale-110 transition-transform">
+                                    <i class="fa-solid fa-file-signature text-xs"></i>
+                                </div>
+                                <span>{{ tipo.nombre }}</span>
+                            </div>
+                        </td>
 
-            <thead class="bg-slate-100">
+                        <td class="py-4 px-6 text-slate-500 font-medium">
+                            {% if tipo.descripcion and tipo.descripcion != "None" %}
+                                {{ tipo.descripcion }}
+                            {% else %}
+                                <span class="text-slate-400 italic text-xs">Sin descripción</span>
+                            {% endif %}
+                        </td>
 
-                <tr>
+                        <td class="py-4 px-6">
+                            {% if tipo.activo %}
+                                <span class="inline-flex items-center px-3 py-1 rounded-full text-[11px] uppercase tracking-wider font-bold bg-emerald-50 text-emerald-700 border border-emerald-200/80 shadow-xs">
+                                    <span class="w-1.5 h-1.5 rounded-full mr-1.5 bg-emerald-500"></span>
+                                    Activo
+                                </span>
+                            {% else %}
+                                <span class="inline-flex items-center px-3 py-1 rounded-full text-[11px] uppercase tracking-wider font-bold bg-rose-50 text-rose-700 border border-rose-200/80 shadow-xs">
+                                    <span class="w-1.5 h-1.5 rounded-full mr-1.5 bg-rose-500"></span>
+                                    Inactivo
+                                </span>
+                            {% endif %}
+                        </td>
 
-                    <th class="text-left p-4">
-                        Nombre
-                    </th>
+                        <td class="py-4 px-6 text-center">
+                            <div class="flex items-center justify-center">
+                                <a href="{% url 'contracts:editar_tipo_contrato' tipo.id %}"
+                                   class="w-8 h-8 rounded-lg bg-slate-100 text-slate-500 hover:bg-blue-600 hover:text-white flex items-center justify-center transition-all shadow-xs"
+                                   title="Editar Tipo de Contrato">
+                                    <i class="fa-solid fa-pen-to-square text-xs"></i>
+                                </a>
+                            </div>
+                        </td>
 
-                    <th class="text-left p-4">
-                        Descripción
-                    </th>
-
-                    <th class="text-left p-4">
-                        Estado
-                    </th>
-
-                    <th class="text-center p-4">
-                        Acciones
-                    </th>
-
-                </tr>
-
-            </thead>
-
-            <tbody>
-
-            {% for tipo in tipos %}
-
-                <tr class="border-t">
-
-                    <td class="p-4">
-                        {{ tipo.nombre }}
-                    </td>
-
-                    <td class="p-4">
-                        {{ tipo.descripcion }}
-                    </td>
-
-                    <td class="p-4">
-
-                        {% if tipo.activo %}
-
-                            <span class="text-green-600 font-semibold">
-                                Activo
-                            </span>
-
-                        {% else %}
-
-                            <span class="text-red-600 font-semibold">
-                                Inactivo
-                            </span>
-
-                        {% endif %}
-
-                    </td>
-
-                    <td class="text-center">
-
-                        <a href="{% url 'contracts:editar_tipo_contrato' tipo.id %}" class="text-blue-600 hover:underline">
-                            Editar
-                        </a>
-
-                    </td>
-
-                </tr>
-
-            {% empty %}
-
-                <tr>
-
-                    <td colspan="4" class="text-center p-6">
-
-                        No existen tipos de contrato registrados.
-
-                    </td>
-
-                </tr>
-
-            {% endfor %}
-
-            </tbody>
-
-        </table>
-
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="4" class="py-16 text-center text-slate-400">
+                            <div class="flex flex-col items-center justify-center space-y-3">
+                                <div class="w-16 h-16 rounded-2xl bg-slate-50 flex items-center justify-center text-slate-300 border border-slate-100">
+                                    <i class="fa-solid fa-file-circle-xmark text-3xl"></i>
+                                </div>
+                                <p class="text-base font-semibold text-slate-600">No existen tipos de contrato registrados.</p>
+                                <p class="text-xs text-slate-400">Cree el primero utilizando el botón superior "Nuevo Tipo de Contrato".</p>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
 
 </div>
-
 {% endblock %}
