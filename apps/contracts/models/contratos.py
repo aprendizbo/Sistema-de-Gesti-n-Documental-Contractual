@@ -91,6 +91,16 @@ class Contrato(models.Model):
     )
 
     estado = models.CharField(max_length=20, choices=ESTADOS, default='ACTIVO', verbose_name="Estado")
+
+    contrato_anterior = models.ForeignKey(
+        'self',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='renovaciones',
+        verbose_name="Contrato anterior"
+    )
+
     observaciones = models.TextField(blank=True, null=True, verbose_name="Observaciones")
 
     archivo_pdf = models.FileField(

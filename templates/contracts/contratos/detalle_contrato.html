@@ -21,9 +21,40 @@
             </div>
             <p class="text-sm text-slate-500 mt-1">Información completa y configuración de alertas del contrato.</p>
         </div>
+        
         <div class="flex items-center gap-2">
-            <a href="{% url 'contracts:lista' %}" class="bg-white hover:bg-slate-50 border border-slate-300 text-slate-700 font-medium px-4 py-2 rounded-lg text-sm transition flex items-center gap-1">
-                <i class="fa-solid fa-arrow-left"></i> Volver
+            {% if contrato.estado != 'RENOVADO' and contrato.estado != 'FINALIZADO' %}
+
+                <a
+                    href="{% url 'contracts:renovar_contrato' contrato.pk %}"
+                    class="bg-blue-600 hover:bg-blue-700 text-white font-medium px-4 py-2 rounded-lg text-sm transition flex items-center gap-2">
+                    <i class="fa-solid fa-rotate"></i>
+                    Renovar
+                </a>
+
+                <form
+                    method="POST"
+                    action="{% url 'contracts:finalizar_contrato' contrato.pk %}"
+                    onsubmit="return confirm('¿Está seguro de finalizar definitivamente este contrato? Esta acción no podrá utilizarse para renovarlo posteriormente.');">
+
+                    {% csrf_token %}
+
+                    <button
+                        type="submit"
+                        class="bg-rose-600 hover:bg-rose-700 text-white font-medium px-4 py-2 rounded-lg text-sm transition flex items-center gap-2">
+                        <i class="fa-solid fa-lock"></i>
+                        Finalizar
+                    </button>
+
+                </form>
+
+            {% endif %}
+
+            <a
+                href="{% url 'contracts:lista' %}"
+                class="bg-white hover:bg-slate-50 border border-slate-300 text-slate-700 font-medium px-4 py-2 rounded-lg text-sm transition flex items-center gap-1">
+                <i class="fa-solid fa-arrow-left"></i>
+                Volver
             </a>
         </div>
     </div>
@@ -103,6 +134,81 @@
             </div>
         </div>
     </div>
+
+    <!-- ===================== -->
+    <!-- HISTORIAL CONTRACTUAL -->
+    <!-- ===================== -->
+    {% if contrato.contrato_anterior or contrato.renovaciones.exists %}
+    <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 space-y-5">
+        <div>
+            <h3 class="text-lg font-bold text-slate-800 flex items-center gap-2">
+                <i class="fa-solid fa-clock-rotate-left text-blue-600"></i>
+                Historial Contractual
+            </h3>
+            <p class="text-sm text-slate-500 mt-1">
+                Consulta los contratos anteriores y las renovaciones relacionadas.
+            </p>
+        </div>
+
+        <div class="space-y-3">
+            {% if contrato.contrato_anterior %}
+            <div class="flex items-center justify-between p-4 bg-slate-50 border border-slate-200 rounded-lg">
+                <div>
+                    <p class="text-xs font-semibold text-slate-400 uppercase">
+                        Contrato anterior
+                    </p>
+                    <p class="font-semibold text-slate-800 mt-1">
+                        {{ contrato.contrato_anterior.numero_contrato }}
+                    </p>
+                    <p class="text-sm text-slate-500">
+                        {{ contrato.contrato_anterior.fecha_inicio|date:"d/m/Y" }}
+                        →
+                        {{ contrato.contrato_anterior.fecha_fin|date:"d/m/Y" }}
+                    </p>
+                    <span class="inline-block mt-2 px-2 py-1 text-xs font-semibold rounded-full bg-slate-100 text-slate-600">
+                        {{ contrato.contrato_anterior.get_estado_display }}
+                    </span>
+                </div>
+
+                <a
+                    href="{% url 'contracts:detalle_contrato' contrato.contrato_anterior.pk %}"
+                    class="bg-slate-700 hover:bg-slate-800 text-white px-4 py-2 rounded-lg text-sm font-medium">
+                    <i class="fa-solid fa-eye"></i>
+                    Ver contrato
+                </a>
+            </div>
+            {% endif %}
+
+            {% for renovacion in contrato.renovaciones.all %}
+            <div class="flex items-center justify-between p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                <div>
+                    <p class="text-xs font-semibold text-blue-600 uppercase">
+                        Renovación
+                    </p>
+                    <p class="font-semibold text-slate-800 mt-1">
+                        {{ renovacion.numero_contrato }}
+                    </p>
+                    <p class="text-sm text-slate-500">
+                        {{ renovacion.fecha_inicio|date:"d/m/Y" }}
+                        →
+                        {{ renovacion.fecha_fin|date:"d/m/Y" }}
+                    </p>
+                    <span class="inline-block mt-2 px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-700">
+                        {{ renovacion.get_estado_display }}
+                    </span>
+                </div>
+
+                <a
+                    href="{% url 'contracts:detalle_contrato' renovacion.pk %}"
+                    class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium">
+                    <i class="fa-solid fa-eye"></i>
+                    Ver contrato
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
 
     <!-- Observaciones -->
     {% if contrato.observaciones %}

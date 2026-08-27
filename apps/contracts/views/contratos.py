@@ -148,4 +148,120 @@ def editar_contrato(request, pk):
             "form": form,
             "contrato": contrato
         }
-    )                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
+    )
+
+
+@login_required
+def renovar_contrato(request, pk):
+    contrato_anterior = get_object_or_404(
+        Contrato,
+        pk=pk
+    )
+
+    if request.method == "POST":
+        form = ContratoForm(
+            request.POST,
+            request.FILES
+        )
+
+        if form.is_valid():
+            nuevo_contrato = form.save(commit=False)
+
+            if nuevo_contrato.tercero:
+                nuevo_contrato.empresa = nuevo_contrato.tercero.nombre
+                nuevo_contrato.nit = nuevo_contrato.tercero.identificacion
+
+            nuevo_contrato.contrato_anterior = contrato_anterior
+            nuevo_contrato.save()
+
+            contrato_anterior.estado = "RENOVADO"
+            contrato_anterior.save(update_fields=["estado"])
+
+            HistorialAuditoria.objects.create(
+                contrato=contrato_anterior,
+                usuario=request.user,
+                accion="RENOVAR",
+                descripcion=(
+                    f"El contrato {contrato_anterior.numero_contrato} "
+                    f"fue renovado mediante el contrato "
+                    f"{nuevo_contrato.numero_contrato}."
+                )
+            )
+
+            HistorialAuditoria.objects.create(
+                contrato=nuevo_contrato,
+                usuario=request.user,
+                accion="CREAR",
+                descripcion=(
+                    f"Se creó el contrato {nuevo_contrato.numero_contrato} "
+                    f"como renovación del contrato "
+                    f"{contrato_anterior.numero_contrato}."
+                )
+            )
+
+            return redirect(
+                "contracts:detalle_contrato",
+                pk=nuevo_contrato.pk
+            )
+
+    else:
+        form = ContratoForm(
+            initial={
+                "tipo_contrato": contrato_anterior.tipo_contrato,
+                "tercero": contrato_anterior.tercero,
+                "area_destino": contrato_anterior.area_destino,
+                "area": contrato_anterior.area,
+                "responsable": contrato_anterior.responsable,
+                "supervisor": contrato_anterior.supervisor,
+                "correo_notificacion_principal": (
+                    contrato_anterior.correo_notificacion_principal
+                ),
+                "correo_notificacion_secundario": (
+                    contrato_anterior.correo_notificacion_secundario
+                ),
+                "tiempo_notificacion": (
+                    contrato_anterior.tiempo_notificacion
+                ),
+            }
+        )
+
+    return render(
+        request,
+        "contracts/contratos/renovar_contrato.html",
+        {
+            "form": form,
+            "contrato_anterior": contrato_anterior,
+        }
+    )
+
+
+@login_required
+def finalizar_contrato(request, pk):
+    contrato = get_object_or_404(
+        Contrato,
+        pk=pk
+    )
+
+    if request.method == "POST":
+        contrato.estado = "FINALIZADO"
+        contrato.save(update_fields=["estado"])
+
+        HistorialAuditoria.objects.create(
+            contrato=contrato,
+            usuario=request.user,
+            accion="FINALIZAR",
+            descripcion=(
+                f"El contrato {contrato.numero_contrato} "
+                f"fue finalizado definitivamente."
+            )
+        )
+
+        return redirect(
+            "contracts:detalle_contrato",
+            pk=contrato.pk
+        )
+
+    return redirect(
+        "contracts:detalle_contrato",
+        pk=contrato.pk
+    )

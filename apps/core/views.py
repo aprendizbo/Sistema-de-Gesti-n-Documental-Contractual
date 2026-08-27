@@ -20,19 +20,54 @@ def dashboard(request):
     limite_90_dias = hoy + timedelta(days=90)
 
     # ==========================================================
-    # CONTRATOS
+    # CONTRATOS ACTUALES
     # ==========================================================
+    
+    contratos_actuales = Contrato.objects.exclude(
+        estado__in=["RENOVADO", "FINALIZADO"]
+    )
 
-    total_contratos = Contrato.objects.count()
+    contratos_activos_lista = contratos_actuales.filter(
+        estado="ACTIVO"
+    ).select_related(
+        "tipo_contrato",
+        "tercero",
+        "area_destino",
+        "responsable",
+        "supervisor",
+    ).order_by("fecha_fin")
 
-    contratos_activos = Contrato.objects.filter(
+    contratos_por_vencer_lista = contratos_actuales.filter(
+        fecha_fin__gte=hoy,
+        fecha_fin__lte=limite_90_dias
+    ).select_related(
+        "tipo_contrato",
+        "tercero",
+        "area_destino",
+        "responsable",
+        "supervisor",
+    ).order_by("fecha_fin")
+
+    contratos_vencidos_lista = contratos_actuales.filter(
+        fecha_fin__lt=hoy
+    ).select_related(
+        "tipo_contrato",
+        "tercero",
+        "area_destino",
+        "responsable",
+        "supervisor",
+    ).order_by("-fecha_fin")
+    
+    total_contratos = contratos_actuales.count()
+    
+    contratos_activos = contratos_actuales.filter(
         estado="ACTIVO"
     ).count()
-
+    
     contratos_renovados = Contrato.objects.filter(
         estado="RENOVADO"
     ).count()
-
+    
     contratos_finalizados = Contrato.objects.filter(
         estado="FINALIZADO"
     ).count()
@@ -40,34 +75,18 @@ def dashboard(request):
     # ==========================================================
     # VENCIDOS REALES
     # ==========================================================
-    #
-    # No dependemos únicamente del campo estado.
-    # Si la fecha ya pasó, el contrato está vencido.
-    #
 
-    contratos_vencidos = Contrato.objects.filter(
+    contratos_vencidos = contratos_actuales.filter(
         fecha_fin__lt=hoy
-    ).exclude(
-        estado="FINALIZADO"
-    ).exclude(
-        estado="RENOVADO"
     ).count()
 
     # ==========================================================
     # PRÓXIMOS A VENCER
     # ==========================================================
-    #
-    # Contratos cuya fecha de vencimiento está entre hoy y
-    # los próximos 90 días.
-    #
 
-    contratos_por_vencer = Contrato.objects.filter(
+    contratos_por_vencer = contratos_actuales.filter(
         fecha_fin__gte=hoy,
         fecha_fin__lte=limite_90_dias
-    ).exclude(
-        estado="FINALIZADO"
-    ).exclude(
-        estado="RENOVADO"
     ).count()
 
     # ==========================================================
@@ -78,7 +97,7 @@ def dashboard(request):
     # en el model Contrato.
     #
 
-    contratos = Contrato.objects.all()
+    contratos = contratos_actuales
 
     contratos_pendientes_documentacion = 0
 
@@ -87,20 +106,40 @@ def dashboard(request):
             contratos_pendientes_documentacion += 1
 
     # ==========================================================
+    # LISTADOS ADICIONALES PARA DASHBOARD
+    # ==========================================================
+
+    contratos_renovados_lista = (
+        Contrato.objects
+        .filter(estado="RENOVADO")
+        .select_related(
+            "tipo_contrato",
+            "tercero",
+            "contrato_anterior",
+        )
+        .order_by("-fecha_fin")
+    )
+
+    contratos_finalizados_lista = (
+        Contrato.objects
+        .filter(estado="FINALIZADO")
+        .select_related(
+            "tipo_contrato",
+            "tercero",
+            "contrato_anterior",
+        )
+        .order_by("-fecha_fin")
+    )
+
+    # ==========================================================
     # PRÓXIMOS VENCIMIENTOS
     # ==========================================================
 
     proximos_vencimientos = (
-        Contrato.objects
+        contratos_actuales
         .filter(
             fecha_fin__gte=hoy,
             fecha_fin__lte=limite_90_dias,
-        )
-        .exclude(
-            estado="FINALIZADO"
-        )
-        .exclude(
-            estado="RENOVADO"
         )
         .select_related(
             "tipo_contrato",
@@ -165,6 +204,14 @@ def dashboard(request):
         "contratos_pendientes_documentacion": contratos_pendientes_documentacion,
         "contratos_finalizados": contratos_finalizados,
         "contratos_renovados": contratos_renovados,
+        
+        # Listas para el dashboard interactivo
+        "contratos_actuales": contratos_actuales,
+        "contratos_activos_lista": contratos_activos_lista,
+        "contratos_por_vencer_lista": contratos_por_vencer_lista,
+        "contratos_vencidos_lista": contratos_vencidos_lista,
+        "contratos_renovados_lista": contratos_renovados_lista,
+        "contratos_finalizados_lista": contratos_finalizados_lista,
 
         # Vencimientos
         "proximos_vencimientos": proximos_vencimientos,
