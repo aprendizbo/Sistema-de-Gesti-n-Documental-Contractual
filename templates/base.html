@@ -240,8 +240,11 @@
                             {{ request.user.username }}
                         </span>
                         <span class="text-xs text-slate-500">
-                            Bienvenido
-                        </span>
+                            {% if request.user.username|lower == "daniela" %}
+                                Bienvenida
+                            {% else %}
+                                Bienvenido
+                            {% endif %}</span>
                     </div>
                 </div>
 
