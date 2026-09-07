@@ -27,6 +27,15 @@ class Area(models.Model):
         verbose_name = "Área"
         verbose_name_plural = "Áreas"
 
+    def save(self, *args, **kwargs):
+        if self.nombre:
+            self.nombre = self.nombre.strip().upper()
+
+        if self.descripcion:
+            self.descripcion = self.descripcion.strip()
+
+        super().save(*args, **kwargs)
+
     def __str__(self):
         return self.nombre
 

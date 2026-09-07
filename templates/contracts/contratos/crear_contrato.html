@@ -297,6 +297,28 @@
 document.addEventListener("DOMContentLoaded", function () {
     cargarTercero();
     cargarSupervisor();
+
+    // ==========================================
+    // BUSCADOR DE ÁREAS
+    // ==========================================
+    const areaDestino = document.getElementById("id_area_destino");
+    const areaResponsable = document.getElementById("id_area"); // Nota: Si tu campo es form.responsable, el id de Django suele ser id_responsable, ajustalo si es necesario.
+
+    if (areaDestino) {
+        new TomSelect(areaDestino, {
+            placeholder: "Buscar área...",
+            allowEmptyOption: true,
+            create: false
+        });
+    }
+
+    if (areaResponsable) {
+        new TomSelect(areaResponsable, {
+            placeholder: "Buscar área...",
+            allowEmptyOption: true,
+            create: false
+        });
+    }
 });
 
 function cargarTercero() {
