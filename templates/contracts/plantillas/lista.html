@@ -1,58 +1,62 @@
 {% extends "base.html" %}
 
-{% block title %}Plantillas Documentales | CLM Pro{% endblock %}
+{% block title %}Plantillas Documentales | Gestión Contractual{% endblock %}
 
 {% block header_title %}Plantillas Documentales{% endblock %}
 
 {% block content %}
-<div class="space-y-6 max-w-7xl mx-auto">
+<div class="space-y-5 max-w-7xl mx-auto">
 
-    <div class="bg-white rounded-2xl p-6 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] border border-slate-100 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+    <!-- Tarjeta de Cabecera -->
+    <div class="bg-white rounded-[11px] p-5 shadow-[0_2px_8px_rgba(30,42,48,0.06)] border border-[#e7e7e2] flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-            <h2 class="text-2xl font-bold text-slate-800 tracking-tight">Plantillas Documentales</h2>
-            <p class="text-sm text-slate-500 mt-1 font-medium">Configure los documentos requeridos para cada tipo de contrato.</p>
+            <h2 class="text-[16px] font-bold text-[#20262b] tracking-tight">Plantillas Documentales</h2>
+            <p class="text-[11px] text-[#737b80] mt-0.5 font-medium">Configure los documentos requeridos para cada tipo de contrato.</p>
         </div>
     </div>
 
-    <div class="bg-white rounded-2xl shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] border border-slate-100 overflow-hidden">
+    <!-- Contenedor de la Tabla -->
+    <div class="bg-white rounded-[11px] shadow-[0_2px_8px_rgba(30,42,48,0.06)] border border-[#e7e7e2] overflow-hidden">
         <div class="overflow-x-auto">
             <table class="w-full text-left border-collapse">
                 <thead>
-                    <tr class="bg-slate-50/80 border-b border-slate-100 text-slate-500 text-[11px] uppercase tracking-wider font-semibold">
-                        <th class="py-4 px-6">Tipo de Contrato</th>
-                        <th class="py-4 px-6 text-center">Acción</th>
+                    <tr class="bg-[#f5f3e8] border-b border-[#e7e7e2] text-[#59636a] text-[10px] uppercase tracking-wider font-bold">
+                        <th class="py-3 px-5">Tipo de Contrato</th>
+                        <th class="py-3 px-5 text-center">Acción</th>
                     </tr>
                 </thead>
-                <tbody class="divide-y divide-slate-100 text-sm text-slate-700">
+                <tbody class="divide-y divide-[#e7e7e2] text-[12px] text-[#59636a]">
                     {% for tipo in tipos %}
-                    <tr class="hover:bg-blue-50/40 transition-colors group">
+                    <tr class="hover:bg-[#fafaf7] transition-colors group">
                         
-                        <td class="py-4 px-6 font-semibold text-slate-800">
+                        <!-- NOMBRE DEL TIPO DE CONTRATO -->
+                        <td class="py-3 px-5 font-bold text-[#20262b]">
                             <div class="flex items-center gap-3">
-                                <div class="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center group-hover:scale-110 transition-transform">
-                                    <i class="fa-solid fa-folder-tree text-xs"></i>
+                                <div class="w-7 h-7 rounded-[6px] bg-[#e8f0f6] text-[#0f4d7d] flex items-center justify-center group-hover:scale-110 transition-transform">
+                                    <i class="fa-solid fa-folder-tree text-[10px]"></i>
                                 </div>
                                 <span>{{ tipo.nombre }}</span>
                             </div>
                         </td>
 
-                        <td class="py-4 px-6 text-center">
+                        <!-- BOTÓN CONFIGURAR -->
+                        <td class="py-3 px-5 text-center">
                             <a href="{% url 'contracts:detalle_plantilla' tipo.id %}"
-                               class="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold px-4 py-2 rounded-xl transition-all shadow-[0_4px_14px_0_rgba(37,99,235,0.3)] hover:shadow-[0_6px_20px_rgba(37,99,235,0.2)] hover:-translate-y-0.5">
-                                <i class="fa-solid fa-file-gear text-sm"></i> Configurar documentos
+                               class="inline-flex items-center gap-2 bg-[#0f4d7d] hover:bg-[#0c416b] text-white text-[11px] font-bold px-4 py-2 rounded-[8px] transition-all shadow-[0_4px_10px_rgba(15,77,125,0.2)] hover:shadow-[0_6px_15px_rgba(15,77,125,0.25)] hover:-translate-y-0.5 mx-auto">
+                                <i class="fa-solid fa-file-gear text-[12px]"></i> Configurar documentos
                             </a>
                         </td>
 
                     </tr>
                     {% empty %}
                     <tr>
-                        <td colspan="2" class="py-16 text-center text-slate-400">
-                            <div class="flex flex-col items-center justify-center space-y-3">
-                                <div class="w-16 h-16 rounded-2xl bg-slate-50 flex items-center justify-center text-slate-300 border border-slate-100">
-                                    <i class="fa-solid fa-folder-xmark text-3xl"></i>
+                        <td colspan="2" class="py-12 text-center text-[#737b80]">
+                            <div class="flex flex-col items-center justify-center space-y-2">
+                                <div class="w-14 h-14 rounded-[12px] bg-[#fafaf7] flex items-center justify-center text-[#a0aab2] border border-[#e7e7e2]">
+                                    <i class="fa-solid fa-folder-xmark text-[24px]"></i>
                                 </div>
-                                <p class="text-base font-semibold text-slate-600">No existen tipos de contrato registrados.</p>
-                                <p class="text-xs text-slate-400">Registre primero tipos de contrato para configurar sus plantillas.</p>
+                                <p class="text-[13px] font-bold text-[#59636a] mt-2">No existen tipos de contrato registrados.</p>
+                                <p class="text-[11px] text-[#737b80]">Registre primero tipos de contrato para configurar sus plantillas.</p>
                             </div>
                         </td>
                     </tr>

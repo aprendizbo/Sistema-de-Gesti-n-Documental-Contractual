@@ -1,102 +1,104 @@
 {% extends "base.html" %}
 
-{% block title %}Supervisores | CLM Pro{% endblock %}
+{% block title %}Supervisores | Gestión Contractual{% endblock %}
 
 {% block header_title %}Gestión de Supervisores{% endblock %}
 
 {% block content %}
-<div class="space-y-6 max-w-7xl mx-auto">
+<div class="space-y-5 max-w-7xl mx-auto">
 
-    <div class="bg-white rounded-2xl p-6 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] border border-slate-100 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+    <!-- Tarjeta de Cabecera -->
+    <div class="bg-white rounded-[11px] p-5 shadow-[0_2px_8px_rgba(30,42,48,0.06)] border border-[#e7e7e2] flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-            <h2 class="text-2xl font-bold text-slate-800 tracking-tight">Gestión de Supervisores</h2>
-            <p class="text-sm text-slate-500 mt-1 font-medium">Administre los supervisores responsables de contratos.</p>
+            <h2 class="text-[16px] font-bold text-[#20262b] tracking-tight">Gestión de Supervisores</h2>
+            <p class="text-[11px] text-[#737b80] mt-0.5 font-medium">Administre los supervisores responsables de contratos.</p>
         </div>
 
         <a href="{% url 'contracts:crear_supervisor' %}"
-           class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2.5 rounded-xl transition-all duration-300 flex items-center gap-2 shadow-[0_4px_14px_0_rgba(37,99,235,0.39)] hover:shadow-[0_6px_20px_rgba(37,99,235,0.23)] hover:-translate-y-0.5 text-sm shrink-0">
-            <i class="fa-solid fa-plus"></i> Nuevo Supervisor
+           class="bg-[#0f4d7d] hover:bg-[#0c416b] text-white font-bold px-5 py-2.5 rounded-[8px] transition-all duration-300 flex items-center gap-2 shadow-[0_4px_10px_rgba(15,77,125,0.2)] hover:shadow-[0_6px_15px_rgba(15,77,125,0.25)] hover:-translate-y-0.5 text-[12px] shrink-0">
+            <i class="fa-solid fa-plus text-[10px]"></i> Nuevo Supervisor
         </a>
     </div>
 
-    <div class="bg-white rounded-2xl shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] border border-slate-100 overflow-hidden">
+    <!-- Contenedor de la Tabla -->
+    <div class="bg-white rounded-[11px] shadow-[0_2px_8px_rgba(30,42,48,0.06)] border border-[#e7e7e2] overflow-hidden">
         <div class="overflow-x-auto">
             <table class="w-full text-left border-collapse">
                 <thead>
-                    <tr class="bg-slate-50/80 border-b border-slate-100 text-slate-500 text-[11px] uppercase tracking-wider font-semibold">
-                        <th class="py-4 px-6">Nombre</th>
-                        <th class="py-4 px-6">Cargo</th>
-                        <th class="py-4 px-6">Correo</th>
-                        <th class="py-4 px-6">Teléfono</th>
-                        <th class="py-4 px-6 text-center">Estado</th>
-                        <th class="py-4 px-6 text-center">Acciones</th>
+                    <tr class="bg-[#f5f3e8] border-b border-[#e7e7e2] text-[#59636a] text-[10px] uppercase tracking-wider font-bold">
+                        <th class="py-3 px-5">Nombre</th>
+                        <th class="py-3 px-5">Cargo</th>
+                        <th class="py-3 px-5">Correo</th>
+                        <th class="py-3 px-5">Teléfono</th>
+                        <th class="py-3 px-5 text-center">Estado</th>
+                        <th class="py-3 px-5 text-center">Acciones</th>
                     </tr>
                 </thead>
-                <tbody class="divide-y divide-slate-100 text-sm text-slate-700">
+                <tbody class="divide-y divide-[#e7e7e2] text-[12px] text-[#59636a]">
                     {% for supervisor in supervisores %}
-                    <tr class="hover:bg-blue-50/40 transition-colors group">
+                    <tr class="hover:bg-[#fafaf7] transition-colors group">
 
-                        <td class="py-4 px-6 font-semibold text-slate-800">
+                        <td class="py-3 px-5 font-bold text-[#20262b]">
                             <div class="flex items-center gap-3">
-                                <div class="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center group-hover:scale-110 transition-transform">
-                                    <i class="fa-solid fa-user-tie text-xs"></i>
+                                <div class="w-7 h-7 rounded-[6px] bg-[#e8f0f6] text-[#0f4d7d] flex items-center justify-center group-hover:scale-110 transition-transform">
+                                    <i class="fa-solid fa-user-tie text-[10px]"></i>
                                 </div>
                                 <span>{{ supervisor.nombre }}</span>
                             </div>
                         </td>
 
-                        <td class="py-4 px-6 text-slate-600 font-medium">
+                        <td class="py-3 px-5 font-medium text-[#737b80]">
                             {% if supervisor.cargo %}
-                                <span class="inline-flex items-center px-2.5 py-1 rounded-lg bg-slate-100 text-slate-700 text-xs border border-slate-200/60">
+                                <span class="inline-flex items-center px-2 py-0.5 rounded-[4px] bg-[#f0f0ed] text-[#59636a] text-[10px] font-bold border border-[#e7e7e2]">
                                     {{ supervisor.cargo }}
                                 </span>
                             {% else %}
-                                <span class="text-slate-400 italic text-xs">Sin cargo asignado</span>
+                                <span class="text-[#a0aab2] italic text-[11px]">Sin cargo asignado</span>
                             {% endif %}
                         </td>
 
-                        <td class="py-4 px-6 text-slate-600">
+                        <td class="py-3 px-5 font-medium text-[#737b80]">
                             {% if supervisor.correo %}
-                                <span class="inline-flex items-center gap-1.5 text-slate-600">
-                                    <i class="fa-regular fa-envelope text-slate-400 text-xs"></i>
+                                <span class="inline-flex items-center gap-1.5">
+                                    <i class="fa-regular fa-envelope text-[#a0aab2] text-[10px]"></i>
                                     {{ supervisor.correo }}
                                 </span>
                             {% else %}
-                                <span class="text-slate-400 italic text-xs">Sin correo</span>
+                                <span class="text-[#a0aab2] italic text-[11px]">Sin correo</span>
                             {% endif %}
                         </td>
 
-                        <td class="py-4 px-6 text-slate-600">
+                        <td class="py-3 px-5 font-medium text-[#737b80]">
                             {% if supervisor.telefono %}
-                                <span class="inline-flex items-center gap-1.5 text-slate-600">
-                                    <i class="fa-solid fa-phone text-slate-400 text-xs"></i>
+                                <span class="inline-flex items-center gap-1.5">
+                                    <i class="fa-solid fa-phone text-[#a0aab2] text-[10px]"></i>
                                     {{ supervisor.telefono }}
                                 </span>
                             {% else %}
-                                <span class="text-slate-400 italic text-xs">Sin teléfono</span>
+                                <span class="text-[#a0aab2] italic text-[11px]">Sin teléfono</span>
                             {% endif %}
                         </td>
 
-                        <td class="py-4 px-6 text-center">
+                        <td class="py-3 px-5 text-center">
                             {% if supervisor.activo %}
-                                <span class="inline-flex items-center px-3 py-1 rounded-full text-[11px] uppercase tracking-wider font-bold bg-emerald-50 text-emerald-700 border border-emerald-200/80 shadow-xs">
-                                    <span class="w-1.5 h-1.5 rounded-full mr-1.5 bg-emerald-500"></span>
+                                <span class="inline-flex items-center px-2 py-0.5 rounded-[4px] text-[9px] uppercase tracking-wider font-bold bg-[#e8f3f0] text-[#2f7d70] border border-[#cce4dd]">
+                                    <span class="w-1.5 h-1.5 rounded-full mr-1.5 bg-[#2f7d70]"></span>
                                     Activo
                                 </span>
                             {% else %}
-                                <span class="inline-flex items-center px-3 py-1 rounded-full text-[11px] uppercase tracking-wider font-bold bg-rose-50 text-rose-700 border border-rose-200/80 shadow-xs">
-                                    <span class="w-1.5 h-1.5 rounded-full mr-1.5 bg-rose-500"></span>
+                                <span class="inline-flex items-center px-2 py-0.5 rounded-[4px] text-[9px] uppercase tracking-wider font-bold bg-[#f7e7e9] text-[#9f2431] border border-[#f0cdd1]">
+                                    <span class="w-1.5 h-1.5 rounded-full mr-1.5 bg-[#9f2431]"></span>
                                     Inactivo
                                 </span>
                             {% endif %}
                         </td>
 
-                        <td class="py-4 px-6 text-center">
+                        <td class="py-3 px-5 text-center">
                             <div class="flex items-center justify-center">
                                 <a href="{% url 'contracts:editar_supervisor' supervisor.id %}"
-                                   class="w-8 h-8 rounded-lg bg-slate-100 text-slate-500 hover:bg-blue-600 hover:text-white flex items-center justify-center transition-all shadow-xs"
+                                   class="w-7 h-7 rounded-[6px] bg-[#f0f0ed] text-[#59636a] hover:bg-[#0f4d7d] hover:text-white flex items-center justify-center transition-all"
                                    title="Editar Supervisor">
-                                    <i class="fa-solid fa-pen-to-square text-xs"></i>
+                                    <i class="fa-solid fa-pen-to-square text-[11px]"></i>
                                 </a>
                             </div>
                         </td>
@@ -104,13 +106,13 @@
                     </tr>
                     {% empty %}
                     <tr>
-                        <td colspan="6" class="py-16 text-center text-slate-400">
-                            <div class="flex flex-col items-center justify-center space-y-3">
-                                <div class="w-16 h-16 rounded-2xl bg-slate-50 flex items-center justify-center text-slate-300 border border-slate-100">
-                                    <i class="fa-solid fa-user-xmark text-3xl"></i>
+                        <td colspan="6" class="py-12 text-center text-[#737b80]">
+                            <div class="flex flex-col items-center justify-center space-y-2">
+                                <div class="w-14 h-14 rounded-[12px] bg-[#fafaf7] flex items-center justify-center text-[#a0aab2] border border-[#e7e7e2]">
+                                    <i class="fa-solid fa-user-xmark text-[24px]"></i>
                                 </div>
-                                <p class="text-base font-semibold text-slate-600">No existen supervisores registrados.</p>
-                                <p class="text-xs text-slate-400">Registre el primero utilizando el botón superior "Nuevo Supervisor".</p>
+                                <p class="text-[13px] font-bold text-[#59636a] mt-2">No existen supervisores registrados.</p>
+                                <p class="text-[11px] text-[#737b80]">Registre el primero utilizando el botón superior "Nuevo Supervisor".</p>
                             </div>
                         </td>
                     </tr>

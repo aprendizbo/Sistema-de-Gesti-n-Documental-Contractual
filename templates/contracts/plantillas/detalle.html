@@ -1,61 +1,61 @@
 {% extends "base.html" %}
 
-{% block title %}Configurar Plantilla {{ tipo.nombre }} | CLM Pro{% endblock %}
+{% block title %}Configurar Plantilla {{ tipo.nombre }} | Gestión Contractual{% endblock %}
 
 {% block header_title %}Plantillas Documentales{% endblock %}
 
 {% block content %}
-<div class="space-y-6 max-w-7xl mx-auto">
+<div class="space-y-5 max-w-7xl mx-auto">
 
     <!-- BOTÓN DE REGRESO / BREADCRUMB -->
     <div>
-        <a href="{% url 'contracts:lista_plantillas' %}" class="inline-flex items-center gap-2 text-sm font-semibold text-slate-500 hover:text-blue-600 transition-colors">
-            <i class="fa-solid fa-arrow-left text-xs"></i> Volver a plantillas documentales
+        <a href="{% url 'contracts:lista_plantillas' %}" class="inline-flex items-center gap-2 text-[12px] font-semibold text-[#737b80] hover:text-[#0f4d7d] transition-colors">
+            <i class="fa-solid fa-arrow-left text-[10px]"></i> Volver a plantillas documentales
         </a>
     </div>
 
     <!-- TARJETA DE ENCABEZADO -->
-    <div class="bg-white rounded-2xl p-6 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] border border-slate-100 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+    <div class="bg-white rounded-[11px] p-5 shadow-[0_2px_8px_rgba(30,42,48,0.06)] border border-[#e7e7e2] flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div class="flex items-center gap-4">
-            <div class="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center text-xl shadow-xs shrink-0">
+            <div class="w-[42px] h-[42px] rounded-[10px] bg-[#e8f0f6] text-[#0f4d7d] flex items-center justify-center text-[18px] shadow-inner shrink-0">
                 <i class="fa-solid fa-folder-tree"></i>
             </div>
             <div>
-                <h2 class="text-2xl font-bold text-slate-800 tracking-tight">{{ tipo.nombre }}</h2>
-                <p class="text-sm text-slate-500 mt-0.5 font-medium">Configuración de documentos requeridos para este tipo de contrato.</p>
+                <h2 class="text-[18px] font-bold text-[#20262b] tracking-tight">{{ tipo.nombre }}</h2>
+                <p class="text-[11px] text-[#737b80] mt-0.5 font-medium">Configuración de documentos requeridos para este tipo de contrato.</p>
             </div>
         </div>
 
         <a href="{% url 'contracts:lista_plantillas' %}"
-           class="bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold px-4 py-2.5 rounded-xl text-xs transition-colors flex items-center gap-1.5 shrink-0">
-            <i class="fa-solid fa-arrow-left"></i> Volver
+           class="bg-[#f5f3e8] hover:bg-[#e7e7e2] text-[#59636a] font-bold px-4 py-2.5 rounded-[8px] text-[12px] transition-colors flex items-center gap-1.5 shrink-0">
+            <i class="fa-solid fa-arrow-left text-[10px]"></i> Volver
         </a>
     </div>
 
     <!-- REJILLA PRINCIPAL (FORMULARIO Y TABLA) -->
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
 
         <!-- FORMULARIO DE AGREGAR DOCUMENTO -->
         <div class="lg:col-span-1">
-            <div class="bg-white rounded-2xl shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] border border-slate-100 p-6 sticky top-6">
+            <div class="bg-white rounded-[11px] shadow-[0_2px_8px_rgba(30,42,48,0.06)] border border-[#e7e7e2] p-5 sticky top-6">
                 
-                <div class="flex items-center gap-3 pb-4 mb-5 border-b border-slate-100">
-                    <div class="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center text-xs">
+                <div class="flex items-center gap-3 pb-4 mb-4 border-b border-[#eeeeea]">
+                    <div class="w-8 h-8 rounded-[8px] bg-[#e8f0f6] text-[#0f4d7d] flex items-center justify-center text-[13px]">
                         <i class="fa-solid fa-file-circle-plus"></i>
                     </div>
-                    <h3 class="text-base font-bold text-slate-800">Agregar Documento</h3>
+                    <h3 class="text-[14px] font-bold text-[#20262b]">Agregar Documento</h3>
                 </div>
 
                 <form method="POST" class="form-styled">
                     {% csrf_token %}
 
-                    <div class="space-y-4">
+                    <div class="space-y-4 text-[12px]">
                         {{ form.as_p }}
                     </div>
 
                     <button type="submit"
-                            class="w-full mt-6 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 px-4 rounded-xl transition-all duration-200 text-sm shadow-[0_4px_14px_0_rgba(37,99,235,0.39)] hover:shadow-[0_6px_20px_rgba(37,99,235,0.23)] hover:-translate-y-0.5 flex items-center justify-center gap-2">
-                        <i class="fa-solid fa-floppy-disk text-xs"></i> Guardar Documento
+                            class="w-full mt-5 bg-[#0f4d7d] hover:bg-[#0c416b] text-white font-bold py-2.5 px-4 rounded-[8px] transition-all duration-200 text-[12px] shadow-[0_4px_10px_rgba(15,77,125,0.2)] hover:shadow-[0_6px_15px_rgba(15,77,125,0.25)] hover:-translate-y-0.5 flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-floppy-disk text-[11px]"></i> Guardar Documento
                     </button>
                 </form>
 
@@ -64,12 +64,12 @@
 
         <!-- TABLA DE DOCUMENTOS CONFIGURADOS -->
         <div class="lg:col-span-2">
-            <div class="bg-white rounded-2xl shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] border border-slate-100 overflow-hidden">
-                <div class="p-5 border-b border-slate-100 bg-slate-50/50 flex items-center justify-between">
-                    <h3 class="font-bold text-slate-800 text-sm flex items-center gap-2">
-                        <i class="fa-solid fa-list-check text-blue-600"></i> Documentos Configurados
+            <div class="bg-white rounded-[11px] shadow-[0_2px_8px_rgba(30,42,48,0.06)] border border-[#e7e7e2] overflow-hidden">
+                <div class="p-4 border-b border-[#e7e7e2] bg-[#f5f3e8] flex items-center justify-between">
+                    <h3 class="font-bold text-[#293137] text-[13px] flex items-center gap-2">
+                        <i class="fa-solid fa-list-check text-[#0f4d7d]"></i> Documentos Configurados
                     </h3>
-                    <span class="text-xs font-semibold text-slate-400 bg-white px-2.5 py-1 rounded-md border border-slate-200">
+                    <span class="text-[10px] font-bold text-[#737b80] bg-white px-2 py-0.5 rounded-[4px] border border-[#e7e7e2]">
                         Total: {{ documentos|length }}
                     </span>
                 </div>
@@ -77,43 +77,43 @@
                 <div class="overflow-x-auto">
                     <table class="w-full text-left border-collapse">
                         <thead>
-                            <tr class="bg-slate-50/80 border-b border-slate-100 text-slate-500 text-[11px] uppercase tracking-wider font-semibold">
-                                <th class="py-4 px-6 w-20">Orden</th>
-                                <th class="py-4 px-6">Documento</th>
-                                <th class="py-4 px-6 text-center">Obligatorio</th>
+                            <tr class="bg-white border-b border-[#e7e7e2] text-[#59636a] text-[10px] uppercase tracking-wider font-bold">
+                                <th class="py-3 px-5 w-20">Orden</th>
+                                <th class="py-3 px-5">Documento</th>
+                                <th class="py-3 px-5 text-center">Obligatorio</th>
                             </tr>
                         </thead>
 
-                        <tbody class="divide-y divide-slate-100 text-sm text-slate-700">
+                        <tbody class="divide-y divide-[#e7e7e2] text-[12px] text-[#59636a]">
                             {% for documento in documentos %}
-                            <tr class="hover:bg-blue-50/40 transition-colors group">
+                            <tr class="hover:bg-[#fafaf7] transition-colors group">
 
                                 <!-- ORDEN -->
-                                <td class="py-4 px-6">
-                                    <span class="inline-flex items-center justify-center w-7 h-7 rounded-lg bg-slate-100 text-slate-700 font-bold text-xs border border-slate-200">
+                                <td class="py-3 px-5">
+                                    <span class="inline-flex items-center justify-center w-7 h-7 rounded-[6px] bg-[#f5f3e8] text-[#293137] font-bold text-[11px] border border-[#e7e7e2]">
                                         {{ documento.orden }}
                                     </span>
                                 </td>
 
                                 <!-- DOCUMENTO -->
-                                <td class="py-4 px-6 font-semibold text-slate-800">
+                                <td class="py-3 px-5 font-bold text-[#20262b]">
                                     <div class="flex items-center gap-3">
-                                        <div class="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center group-hover:scale-110 transition-transform">
-                                            <i class="fa-solid fa-file-lines text-xs"></i>
+                                        <div class="w-7 h-7 rounded-[6px] bg-[#e8f0f6] text-[#0f4d7d] flex items-center justify-center group-hover:scale-110 transition-transform">
+                                            <i class="fa-solid fa-file-lines text-[10px]"></i>
                                         </div>
                                         <span>{{ documento.tipo_documento.nombre }}</span>
                                     </div>
                                 </td>
 
                                 <!-- OBLIGATORIO -->
-                                <td class="py-4 px-6 text-center">
+                                <td class="py-3 px-5 text-center">
                                     {% if documento.obligatorio %}
-                                        <span class="inline-flex items-center px-3 py-1 rounded-full text-[11px] uppercase tracking-wider font-bold bg-rose-50 text-rose-700 border border-rose-200/80 shadow-xs">
-                                            <span class="w-1.5 h-1.5 rounded-full mr-1.5 bg-rose-500"></span> Sí
+                                        <span class="inline-flex items-center px-2 py-0.5 rounded-[4px] text-[9px] uppercase tracking-wider font-bold bg-[#f7e7e9] text-[#9f2431] border border-[#f0cdd1]">
+                                            <span class="w-1.5 h-1.5 rounded-full mr-1.5 bg-[#9f2431]"></span> Sí
                                         </span>
                                     {% else %}
-                                        <span class="inline-flex items-center px-3 py-1 rounded-full text-[11px] uppercase tracking-wider font-bold bg-slate-100 text-slate-600 border border-slate-200 shadow-xs">
-                                            <span class="w-1.5 h-1.5 rounded-full mr-1.5 bg-slate-400"></span> No
+                                        <span class="inline-flex items-center px-2 py-0.5 rounded-[4px] text-[9px] uppercase tracking-wider font-bold bg-[#f0f0ed] text-[#59636a] border border-[#e7e7e2]">
+                                            <span class="w-1.5 h-1.5 rounded-full mr-1.5 bg-[#a0aab2]"></span> No
                                         </span>
                                     {% endif %}
                                 </td>
@@ -121,13 +121,13 @@
                             </tr>
                             {% empty %}
                             <tr>
-                                <td colspan="3" class="py-16 text-center text-slate-400">
-                                    <div class="flex flex-col items-center justify-center space-y-3">
-                                        <div class="w-16 h-16 rounded-2xl bg-slate-50 flex items-center justify-center text-slate-300 border border-slate-100">
-                                            <i class="fa-solid fa-folder-open text-3xl"></i>
+                                <td colspan="3" class="py-12 text-center text-[#737b80]">
+                                    <div class="flex flex-col items-center justify-center space-y-2">
+                                        <div class="w-14 h-14 rounded-[12px] bg-[#fafaf7] flex items-center justify-center text-[#a0aab2] border border-[#e7e7e2]">
+                                            <i class="fa-solid fa-folder-open text-[24px]"></i>
                                         </div>
-                                        <p class="text-base font-semibold text-slate-600">Este tipo de contrato aún no tiene documentos configurados.</p>
-                                        <p class="text-xs text-slate-400">Utiliza el formulario de la izquierda para agregar el primer documento.</p>
+                                        <p class="text-[13px] font-bold text-[#59636a] mt-2">Este tipo de contrato aún no tiene documentos configurados.</p>
+                                        <p class="text-[11px] text-[#737b80]">Utiliza el formulario de la izquierda para agregar el primer documento.</p>
                                     </div>
                                 </td>
                             </tr>
@@ -145,15 +145,15 @@
 <!-- ESTILOS AUTOMÁTICOS PARA EL FORMULARIO (form.as_p) -->
 <style>
     .form-styled p {
-        margin-bottom: 1rem;
+        margin-bottom: 0.75rem;
     }
 
     .form-styled label {
         display: block;
-        font-size: 0.875rem;
+        font-size: 11px !important;
         font-weight: 700;
-        color: #334155;
-        margin-bottom: 0.375rem;
+        color: #293137;
+        margin-bottom: 0.25rem;
     }
 
     .form-styled input[type="text"],
@@ -161,12 +161,12 @@
     .form-styled select,
     .form-styled textarea {
         width: 100% !important;
-        padding: 0.625rem 0.875rem !important;
-        background-color: #f8fafc !important;
-        border: 1px solid #e2e8f0 !important;
-        border-radius: 0.75rem !important;
-        font-size: 0.875rem !important;
-        color: #0f172a !important;
+        padding: 0.5rem 0.875rem !important;
+        background-color: #f5f3e8 !important;
+        border: 1px solid #e7e7e2 !important;
+        border-radius: 8px !important;
+        font-size: 12px !important;
+        color: #20262b !important;
         transition: all 0.2s ease-in-out !important;
     }
 
@@ -176,15 +176,15 @@
     .form-styled textarea:focus {
         outline: none !important;
         background-color: #ffffff !important;
-        border-color: #2563eb !important;
-        box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1) !important;
+        border-color: #0f4d7d !important;
+        box-shadow: 0 0 0 3px rgba(15, 77, 125, 0.15) !important;
     }
 
     .form-styled input[type="checkbox"] {
-        width: 1.25rem !important;
-        height: 1.25rem !important;
-        accent-color: #2563eb !important;
-        border-radius: 0.375rem !important;
+        width: 1.125rem !important;
+        height: 1.125rem !important;
+        accent-color: #0f4d7d !important;
+        border-radius: 4px !important;
         cursor: pointer !important;
         vertical-align: middle !important;
         margin-right: 0.5rem !important;
@@ -192,15 +192,15 @@
 
     .form-styled .helptext {
         display: block;
-        font-size: 0.75rem;
-        color: #94a3b8;
+        font-size: 10px;
+        color: #737b80;
         margin-top: 0.25rem;
     }
 
     .form-styled .errorlist {
-        color: #ef4444;
-        font-size: 0.75rem;
-        font-weight: 500;
+        color: #9f2431;
+        font-size: 10px;
+        font-weight: 700;
         margin-top: 0.25rem;
         list-style: none;
         padding-left: 0;

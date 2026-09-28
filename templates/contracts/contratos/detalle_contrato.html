@@ -1,45 +1,48 @@
 {% extends 'base.html' %}
 {% load contracts_tags %}
 
-{% block title %}Detalle del Contrato {{ contrato.numero_contrato }} | CLM Pro{% endblock %}
+{% block title %}Detalle del Contrato {{ contrato.numero_contrato }} | Gestión Contractual{% endblock %}
 
 {% block header_title %}Detalles del Contrato{% endblock %}
 
 {% block content %}
-<div class="space-y-6 max-w-7xl mx-auto">
+<div class="space-y-5 max-w-7xl mx-auto">
 
     <div>
-        <a href="{% url 'contracts:lista' %}" class="inline-flex items-center gap-2 text-sm font-semibold text-slate-500 hover:text-blue-600 transition-colors">
-            <i class="fa-solid fa-arrow-left text-xs"></i> Volver al listado de contratos
+        <a href="{% url 'contracts:lista' %}" class="inline-flex items-center gap-2 text-[12px] font-semibold text-[#737b80] hover:text-[#0f4d7d] transition-colors">
+            <i class="fa-solid fa-arrow-left text-[10px]"></i> Volver al listado de contratos
         </a>
     </div>
 
-    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center bg-white p-6 rounded-2xl shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] border border-slate-100 gap-4">
+    <!-- CABECERA DEL CONTRATO -->
+    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center bg-white p-5 rounded-[11px] shadow-[0_2px_8px_rgba(30,42,48,0.06)] border border-[#e7e7e2] gap-4">
         <div>
             <div class="flex items-center gap-3 flex-wrap">
-                <div class="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center text-lg shrink-0">
+                <div class="w-10 h-10 rounded-[8px] bg-[#e8f0f6] text-[#0f4d7d] flex items-center justify-center text-[18px] shrink-0">
                     <i class="fa-solid fa-file-contract"></i>
                 </div>
-                <h2 class="text-2xl font-bold text-slate-800 tracking-tight">{{ contrato.numero_contrato }}</h2>
-                <span class="inline-flex items-center px-3 py-1 rounded-full text-[11px] uppercase tracking-wider font-bold border shadow-xs
-                    {% if contrato.estado == 'Activo' or contrato.estado == 'ACTIVO' %} bg-emerald-50 text-emerald-700 border-emerald-200/80
-                    {% elif contrato.estado == 'Próximo a Vencer' or contrato.estado == 'POR_VENCER' %} bg-amber-50 text-amber-700 border-amber-200/80
-                    {% else %} bg-rose-50 text-rose-700 border-rose-200/80 {% endif %}">
+                <h2 class="text-[20px] font-bold text-[#20262b] tracking-tight">{{ contrato.numero_contrato }}</h2>
+                
+                <!-- BADGE ESTADO -->
+                <span class="inline-flex items-center px-2.5 py-1 rounded-[4px] text-[10px] uppercase tracking-wider font-bold border
+                    {% if contrato.estado == 'Activo' or contrato.estado == 'ACTIVO' %} bg-[#e8f3f0] text-[#2f7d70] border-[#cce4dd]
+                    {% elif contrato.estado == 'Próximo a Vencer' or contrato.estado == 'POR_VENCER' %} bg-[#f6eee0] text-[#c29135] border-[#ead9bd]
+                    {% else %} bg-[#f7e7e9] text-[#9f2431] border-[#f0cdd1] {% endif %}">
                     <span class="w-1.5 h-1.5 rounded-full mr-1.5
-                        {% if contrato.estado == 'Activo' or contrato.estado == 'ACTIVO' %} bg-emerald-500
-                        {% elif contrato.estado == 'Próximo a Vencer' or contrato.estado == 'POR_VENCER' %} bg-amber-500
-                        {% else %} bg-rose-500 {% endif %}"></span>
+                        {% if contrato.estado == 'Activo' or contrato.estado == 'ACTIVO' %} bg-[#2f7d70]
+                        {% elif contrato.estado == 'Próximo a Vencer' or contrato.estado == 'POR_VENCER' %} bg-[#c29135]
+                        {% else %} bg-[#9f2431] {% endif %}"></span>
                     {{ contrato.estado }}
                 </span>
             </div>
-            <p class="text-sm text-slate-500 mt-1 font-medium">Información completa y configuración de alertas del contrato.</p>
+            <p class="text-[11px] text-[#737b80] mt-1.5 font-medium">Información completa y configuración de alertas del contrato.</p>
         </div>
         
         <div class="flex items-center gap-2 shrink-0">
             {% if contrato.estado != 'RENOVADO' and contrato.estado != 'FINALIZADO' %}
 
                 <a href="{% url 'contracts:renovar_contrato' contrato.pk %}"
-                   class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4 py-2.5 rounded-xl text-xs transition-all shadow-[0_4px_14px_0_rgba(37,99,235,0.39)] hover:shadow-[0_6px_20px_rgba(37,99,235,0.23)] hover:-translate-y-0.5 flex items-center gap-2">
+                   class="bg-[#0f4d7d] hover:bg-[#0c416b] text-white font-bold px-4 py-2 rounded-[8px] text-[12px] transition-all shadow-[0_4px_10px_rgba(15,77,125,0.2)] hover:shadow-[0_6px_15px_rgba(15,77,125,0.25)] hover:-translate-y-0.5 flex items-center gap-2">
                     <i class="fa-solid fa-rotate"></i> Renovar
                 </a>
 
@@ -48,7 +51,7 @@
                       onsubmit="return confirm('¿Está seguro de finalizar definitivamente este contrato? Esta acción no podrá utilizarse para renovarlo posteriormente.');">
                     {% csrf_token %}
                     <button type="submit"
-                            class="bg-rose-600 hover:bg-rose-700 text-white font-semibold px-4 py-2.5 rounded-xl text-xs transition-all shadow-[0_4px_14px_0_rgba(225,29,72,0.3)] hover:-translate-y-0.5 flex items-center gap-2">
+                            class="bg-[#9f2431] hover:bg-[#892328] text-white font-bold px-4 py-2 rounded-[8px] text-[12px] transition-all shadow-[0_4px_10px_rgba(159,36,49,0.2)] hover:shadow-[0_6px_15px_rgba(159,36,49,0.25)] hover:-translate-y-0.5 flex items-center gap-2">
                         <i class="fa-solid fa-lock"></i> Finalizar
                     </button>
                 </form>
@@ -56,73 +59,76 @@
             {% endif %}
 
             <a href="{% url 'contracts:lista' %}"
-               class="bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold px-4 py-2.5 rounded-xl text-xs transition-colors flex items-center gap-1.5">
+               class="bg-[#f5f3e8] hover:bg-[#e7e7e2] text-[#59636a] font-bold px-4 py-2 rounded-[8px] text-[12px] transition-colors flex items-center gap-1.5">
                 <i class="fa-solid fa-arrow-left"></i> Volver
             </a>
         </div>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <!-- TARJETAS DE DATOS PRINCIPALES -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
         
-        <div class="bg-white p-6 rounded-2xl shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] border border-slate-100 space-y-4">
-            <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider border-b border-slate-100 pb-3 flex items-center gap-2">
-                <div class="w-6 h-6 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center text-xs">
+        <!-- DATOS GENERALES -->
+        <div class="bg-white p-5 rounded-[11px] shadow-[0_2px_8px_rgba(30,42,48,0.06)] border border-[#e7e7e2] space-y-4">
+            <h3 class="text-[12px] font-bold text-[#293137] uppercase tracking-wider border-b border-[#eeeeea] pb-3 flex items-center gap-2">
+                <div class="w-6 h-6 rounded-[6px] bg-[#e8f0f6] text-[#0f4d7d] flex items-center justify-center text-[11px]">
                     <i class="fa-solid fa-file-contract"></i>
                 </div>
                 Datos Generales
             </h3>
-            <div class="grid grid-cols-1 gap-3.5 text-sm">
-                <div class="p-2.5 rounded-xl bg-slate-50/60 border border-slate-100/80">
-                    <span class="block text-[11px] font-bold uppercase tracking-wider text-slate-400">Tipo de Contrato</span>
-                    <span class="text-slate-800 font-bold text-sm">{{ contrato.tipo_contrato }}</span>
+            <div class="grid grid-cols-1 gap-3 text-[12px]">
+                <div class="p-3 rounded-[8px] bg-[#fafaf7] border border-[#e7e7e2]">
+                    <span class="block text-[9px] font-bold uppercase tracking-wider text-[#737b80]">Tipo de Contrato</span>
+                    <span class="text-[#20262b] font-bold mt-0.5 block">{{ contrato.tipo_contrato }}</span>
                 </div>
-                <div class="p-2.5 rounded-xl bg-slate-50/60 border border-slate-100/80">
-                    <span class="block text-[11px] font-bold uppercase tracking-wider text-slate-400">Empresa / Contratista</span>
-                    <span class="text-slate-800 font-bold text-sm">{{ contrato.empresa }}</span>
+                <div class="p-3 rounded-[8px] bg-[#fafaf7] border border-[#e7e7e2]">
+                    <span class="block text-[9px] font-bold uppercase tracking-wider text-[#737b80]">Empresa / Contratista</span>
+                    <span class="text-[#20262b] font-bold mt-0.5 block">{{ contrato.empresa }}</span>
                 </div>
                 <div class="grid grid-cols-2 gap-3">
-                    <div class="p-2.5 rounded-xl bg-slate-50/60 border border-slate-100/80">
-                        <span class="block text-[11px] font-bold uppercase tracking-wider text-slate-400">NIT / Identificación</span>
-                        <span class="text-slate-800 font-bold text-sm">{{ contrato.nit }}</span>
+                    <div class="p-3 rounded-[8px] bg-[#fafaf7] border border-[#e7e7e2]">
+                        <span class="block text-[9px] font-bold uppercase tracking-wider text-[#737b80]">NIT / Identificación</span>
+                        <span class="text-[#20262b] font-bold mt-0.5 block">{{ contrato.nit }}</span>
                     </div>
-                    <div class="p-2.5 rounded-xl bg-slate-50/60 border border-slate-100/80">
-                        <span class="block text-[11px] font-bold uppercase tracking-wider text-slate-400">Área de Destino</span>
-                        <span class="text-slate-800 font-bold text-sm">{{ contrato.area_destino }}</span>
+                    <div class="p-3 rounded-[8px] bg-[#fafaf7] border border-[#e7e7e2]">
+                        <span class="block text-[9px] font-bold uppercase tracking-wider text-[#737b80]">Área de Destino</span>
+                        <span class="text-[#20262b] font-bold mt-0.5 block">{{ contrato.area_destino }}</span>
                     </div>
                 </div>
-                <div class="p-2.5 rounded-xl bg-slate-50/60 border border-slate-100/80">
-                    <span class="block text-[11px] font-bold uppercase tracking-wider text-slate-400">Responsable Asignado</span>
-                    <span class="text-slate-800 font-bold text-sm">{{ contrato.responsable }}</span>
+                <div class="p-3 rounded-[8px] bg-[#fafaf7] border border-[#e7e7e2]">
+                    <span class="block text-[9px] font-bold uppercase tracking-wider text-[#737b80]">Responsable Asignado</span>
+                    <span class="text-[#20262b] font-bold mt-0.5 block">{{ contrato.responsable }}</span>
                 </div>
             </div>
         </div>
 
-        <div class="bg-white p-6 rounded-2xl shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] border border-slate-100 space-y-4">
-            <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider border-b border-slate-100 pb-3 flex items-center gap-2">
-                <div class="w-6 h-6 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center text-xs">
+        <!-- VIGENCIA Y PLAZOS -->
+        <div class="bg-white p-5 rounded-[11px] shadow-[0_2px_8px_rgba(30,42,48,0.06)] border border-[#e7e7e2] space-y-4">
+            <h3 class="text-[12px] font-bold text-[#293137] uppercase tracking-wider border-b border-[#eeeeea] pb-3 flex items-center gap-2">
+                <div class="w-6 h-6 rounded-[6px] bg-[#f6eee0] text-[#c29135] flex items-center justify-center text-[11px]">
                     <i class="fa-solid fa-calendar-days"></i>
                 </div>
                 Vigencia y Plazos
             </h3>
-            <div class="grid grid-cols-1 gap-3.5 text-sm">
-                <div class="p-2.5 rounded-xl bg-slate-50/60 border border-slate-100/80">
-                    <span class="block text-[11px] font-bold uppercase tracking-wider text-slate-400">Fecha de Inicio</span>
-                    <span class="text-slate-800 font-bold text-sm flex items-center gap-1.5 mt-0.5">
-                        <i class="fa-regular fa-calendar-check text-slate-400"></i>
+            <div class="grid grid-cols-1 gap-3 text-[12px]">
+                <div class="p-3 rounded-[8px] bg-[#fafaf7] border border-[#e7e7e2]">
+                    <span class="block text-[9px] font-bold uppercase tracking-wider text-[#737b80]">Fecha de Inicio</span>
+                    <span class="text-[#20262b] font-bold flex items-center gap-1.5 mt-0.5">
+                        <i class="fa-regular fa-calendar-check text-[#737b80]"></i>
                         {{ contrato.fecha_inicio|date:"d/m/Y" }}
                     </span>
                 </div>
-                <div class="p-2.5 rounded-xl bg-slate-50/60 border border-slate-100/80">
-                    <span class="block text-[11px] font-bold uppercase tracking-wider text-slate-400">Fecha de Vencimiento (Fin)</span>
-                    <span class="text-amber-600 font-bold text-sm flex items-center gap-1.5 mt-0.5">
-                        <i class="fa-regular fa-calendar-xmark text-amber-500"></i>
+                <div class="p-3 rounded-[8px] bg-[#fafaf7] border border-[#e7e7e2]">
+                    <span class="block text-[9px] font-bold uppercase tracking-wider text-[#737b80]">Fecha de Vencimiento (Fin)</span>
+                    <span class="text-[#c29135] font-bold flex items-center gap-1.5 mt-0.5">
+                        <i class="fa-regular fa-calendar-xmark text-[#c29135]"></i>
                         {{ contrato.fecha_fin|date:"d/m/Y" }}
                     </span>
                 </div>
-                <div class="p-2.5 rounded-xl bg-slate-50/60 border border-slate-100/80">
-                    <span class="block text-[11px] font-bold uppercase tracking-wider text-slate-400">Anticipación de Notificación</span>
-                    <span class="text-slate-800 font-bold text-sm flex items-center gap-1.5 mt-0.5">
-                        <i class="fa-regular fa-bell text-slate-400"></i>
+                <div class="p-3 rounded-[8px] bg-[#fafaf7] border border-[#e7e7e2]">
+                    <span class="block text-[9px] font-bold uppercase tracking-wider text-[#737b80]">Anticipación de Notificación</span>
+                    <span class="text-[#20262b] font-bold flex items-center gap-1.5 mt-0.5">
+                        <i class="fa-regular fa-bell text-[#737b80]"></i>
                         {{ contrato.tiempo_notificacion }} día{{ contrato.tiempo_notificacion|pluralize }} antes
                     </span>
                 </div>
@@ -130,34 +136,35 @@
         </div>
     </div>
 
-    <div class="bg-white p-6 rounded-2xl shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] border border-slate-100 space-y-4">
-        <h3 class="text-xs font-bold text-slate-800 uppercase tracking-wider flex items-center gap-2">
-            <div class="w-6 h-6 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center text-xs">
+    <!-- CORREOS ASIGNADOS -->
+    <div class="bg-white p-5 rounded-[11px] shadow-[0_2px_8px_rgba(30,42,48,0.06)] border border-[#e7e7e2] space-y-4">
+        <h3 class="text-[12px] font-bold text-[#293137] uppercase tracking-wider flex items-center gap-2">
+            <div class="w-6 h-6 rounded-[6px] bg-[#e8f0f6] text-[#0f4d7d] flex items-center justify-center text-[11px]">
                 <i class="fa-solid fa-envelope"></i>
             </div>
             Correos Asignados para Alertas de Vencimiento
         </h3>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div class="bg-slate-50/80 p-4 rounded-xl border border-slate-100 flex items-center gap-3">
-                <div class="w-8 h-8 rounded-lg bg-blue-100/80 text-blue-600 flex items-center justify-center text-xs shrink-0">
+            <div class="bg-[#fafaf7] p-3 rounded-[8px] border border-[#e7e7e2] flex items-center gap-3">
+                <div class="w-8 h-8 rounded-[6px] bg-[#e8f0f6] text-[#0f4d7d] flex items-center justify-center text-[12px] shrink-0">
                     <i class="fa-solid fa-at"></i>
                 </div>
                 <div>
-                    <span class="block text-[11px] font-bold uppercase tracking-wider text-slate-400">Correo Principal</span>
-                    <span class="text-sm font-semibold text-slate-800">{{ contrato.correo_notificacion_principal }}</span>
+                    <span class="block text-[9px] font-bold uppercase tracking-wider text-[#737b80]">Correo Principal</span>
+                    <span class="text-[12px] font-bold text-[#20262b]">{{ contrato.correo_notificacion_principal }}</span>
                 </div>
             </div>
-            <div class="bg-slate-50/80 p-4 rounded-xl border border-slate-100 flex items-center gap-3">
-                <div class="w-8 h-8 rounded-lg bg-slate-200/80 text-slate-500 flex items-center justify-center text-xs shrink-0">
+            <div class="bg-[#fafaf7] p-3 rounded-[8px] border border-[#e7e7e2] flex items-center gap-3">
+                <div class="w-8 h-8 rounded-[6px] bg-[#f0f0ed] text-[#59636a] flex items-center justify-center text-[12px] shrink-0">
                     <i class="fa-solid fa-envelope-open"></i>
                 </div>
                 <div>
-                    <span class="block text-[11px] font-bold uppercase tracking-wider text-slate-400">Correo Opcional</span>
-                    <span class="text-sm font-semibold text-slate-800">
+                    <span class="block text-[9px] font-bold uppercase tracking-wider text-[#737b80]">Correo Opcional</span>
+                    <span class="text-[12px] font-bold text-[#20262b]">
                         {% if contrato.correo_notificacion_opcional %}
                             {{ contrato.correo_notificacion_opcional }}
                         {% else %}
-                            <span class="text-slate-400 italic font-normal text-xs">No configurado</span>
+                            <span class="text-[#a0aab2] italic font-medium">No configurado</span>
                         {% endif %}
                     </span>
                 </div>
@@ -165,62 +172,53 @@
         </div>
     </div>
 
+    <!-- HISTORIAL CONTRACTUAL -->
     {% if contrato.contrato_anterior or contrato.renovaciones.exists %}
-    <div class="bg-white p-6 rounded-2xl shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] border border-slate-100 space-y-5">
+    <div class="bg-white p-5 rounded-[11px] shadow-[0_2px_8px_rgba(30,42,48,0.06)] border border-[#e7e7e2] space-y-4">
         <div>
-            <h3 class="text-lg font-bold text-slate-800 flex items-center gap-2 tracking-tight">
-                <i class="fa-solid fa-clock-rotate-left text-blue-600"></i>
+            <h3 class="text-[14px] font-bold text-[#20262b] flex items-center gap-2 tracking-tight">
+                <i class="fa-solid fa-clock-rotate-left text-[#0f4d7d]"></i>
                 Historial Contractual
             </h3>
-            <p class="text-sm text-slate-500 mt-0.5 font-medium">
+            <p class="text-[11px] text-[#737b80] mt-0.5 font-medium">
                 Consulta los contratos anteriores y las renovaciones relacionadas.
             </p>
         </div>
 
         <div class="space-y-3">
             {% if contrato.contrato_anterior %}
-            <div class="flex items-center justify-between p-4 bg-slate-50/80 border border-slate-200/80 rounded-xl">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between p-4 bg-[#fafaf7] border border-[#e7e7e2] rounded-[8px] gap-3">
                 <div>
-                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
-                        Contrato anterior
-                    </p>
-                    <p class="font-bold text-slate-800 mt-0.5 text-sm">
-                        {{ contrato.contrato_anterior.numero_contrato }}
-                    </p>
-                    <p class="text-xs text-slate-500 font-medium mt-0.5">
+                    <p class="text-[9px] font-bold text-[#737b80] uppercase tracking-wider">Contrato anterior</p>
+                    <p class="font-bold text-[#20262b] mt-0.5 text-[13px]">{{ contrato.contrato_anterior.numero_contrato }}</p>
+                    <p class="text-[11px] text-[#59636a] font-medium mt-0.5">
                         {{ contrato.contrato_anterior.fecha_inicio|date:"d/m/Y" }} → {{ contrato.contrato_anterior.fecha_fin|date:"d/m/Y" }}
                     </p>
-                    <span class="inline-block mt-2 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider rounded-full bg-slate-200/80 text-slate-600">
+                    <span class="inline-block mt-2 px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider rounded-[4px] bg-[#f0f0ed] text-[#59636a]">
                         {{ contrato.contrato_anterior.get_estado_display }}
                     </span>
                 </div>
-
                 <a href="{% url 'contracts:detalle_contrato' contrato.contrato_anterior.pk %}"
-                   class="bg-slate-800 hover:bg-slate-900 text-white px-4 py-2 rounded-xl text-xs font-semibold transition-all shadow-xs flex items-center gap-1.5">
+                   class="bg-[#29333b] hover:bg-[#20262b] text-white px-4 py-2.5 rounded-[8px] text-[11px] font-bold transition-all shadow-sm flex items-center gap-1.5 self-start sm:self-auto shrink-0">
                     <i class="fa-solid fa-eye"></i> Ver contrato
                 </a>
             </div>
             {% endif %}
 
             {% for renovacion in contrato.renovaciones.all %}
-            <div class="flex items-center justify-between p-4 bg-blue-50/50 border border-blue-100 rounded-xl">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between p-4 bg-[#e8f0f6] border border-[#c5d5e1] rounded-[8px] gap-3">
                 <div>
-                    <p class="text-[10px] font-bold text-blue-600 uppercase tracking-wider">
-                        Renovación
-                    </p>
-                    <p class="font-bold text-slate-800 mt-0.5 text-sm">
-                        {{ renovacion.numero_contrato }}
-                    </p>
-                    <p class="text-xs text-slate-500 font-medium mt-0.5">
+                    <p class="text-[9px] font-bold text-[#0f4d7d] uppercase tracking-wider">Renovación</p>
+                    <p class="font-bold text-[#20262b] mt-0.5 text-[13px]">{{ renovacion.numero_contrato }}</p>
+                    <p class="text-[11px] text-[#59636a] font-medium mt-0.5">
                         {{ renovacion.fecha_inicio|date:"d/m/Y" }} → {{ renovacion.fecha_fin|date:"d/m/Y" }}
                     </p>
-                    <span class="inline-block mt-2 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider rounded-full bg-blue-100 text-blue-700">
+                    <span class="inline-block mt-2 px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider rounded-[4px] bg-[#c5d5e1] text-[#0f4d7d]">
                         {{ renovacion.get_estado_display }}
                     </span>
                 </div>
-
                 <a href="{% url 'contracts:detalle_contrato' renovacion.pk %}"
-                   class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl text-xs font-semibold transition-all shadow-xs flex items-center gap-1.5">
+                   class="bg-[#0f4d7d] hover:bg-[#0c416b] text-white px-4 py-2.5 rounded-[8px] text-[11px] font-bold transition-all shadow-sm flex items-center gap-1.5 self-start sm:self-auto shrink-0">
                     <i class="fa-solid fa-eye"></i> Ver contrato
                 </a>
             </div>
@@ -229,106 +227,103 @@
     </div>
     {% endif %}
 
+    <!-- OBSERVACIONES -->
     {% if contrato.observaciones %}
-    <div class="bg-white p-6 rounded-2xl shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] border border-slate-100 space-y-2">
-        <h3 class="text-xs font-bold text-slate-800 uppercase tracking-wider flex items-center gap-2">
-            <div class="w-6 h-6 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center text-xs">
+    <div class="bg-white p-5 rounded-[11px] shadow-[0_2px_8px_rgba(30,42,48,0.06)] border border-[#e7e7e2] space-y-2">
+        <h3 class="text-[12px] font-bold text-[#293137] uppercase tracking-wider flex items-center gap-2">
+            <div class="w-6 h-6 rounded-[6px] bg-[#e8f0f6] text-[#0f4d7d] flex items-center justify-center text-[11px]">
                 <i class="fa-solid fa-note-sticky"></i>
             </div>
             Observaciones
         </h3>
-        <p class="text-sm text-slate-600 font-medium whitespace-pre-line leading-relaxed pl-8">{{ contrato.observaciones }}</p>
+        <p class="text-[12px] text-[#59636a] font-medium whitespace-pre-line leading-relaxed pl-8">{{ contrato.observaciones }}</p>
     </div>
     {% endif %}
 
-    <div class="bg-white rounded-2xl shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] border border-slate-100 p-6">
+    <!-- CARPETA DOCUMENTAL -->
+    <div class="bg-white rounded-[11px] shadow-[0_2px_8px_rgba(30,42,48,0.06)] border border-[#e7e7e2] p-5">
 
-        <div class="mb-6 pb-4 border-b border-slate-100">
-            <h3 class="text-xl font-bold text-slate-800 tracking-tight">
-                Carpeta Documental
-            </h3>
-            <p class="text-sm text-slate-500 font-medium mt-0.5">
-                Administra los documentos y sus diferentes versiones asociados a este contrato.
-            </p>
+        <div class="mb-5 pb-4 border-b border-[#eeeeea]">
+            <h3 class="text-[16px] font-bold text-[#20262b] tracking-tight">Carpeta Documental</h3>
+            <p class="text-[11px] text-[#737b80] font-medium mt-0.5">Administra los documentos y sus diferentes versiones asociados a este contrato.</p>
         </div>
 
         <div class="overflow-x-auto">
             <table class="w-full text-left border-collapse">
                 <thead>
-                    <tr class="bg-slate-50/80 border-b border-slate-100 text-slate-500 text-[11px] uppercase tracking-wider font-semibold">
-                        <th class="py-4 px-6">Tipo</th>
-                        <th class="py-4 px-6 text-center">Obligatorio</th>
-                        <th class="py-4 px-6">Versiones</th>
-                        <th class="py-4 px-6">Fecha última carga</th>
-                        <th class="py-4 px-6 text-center">Acción</th>
+                    <tr class="bg-[#f5f3e8] border-b border-[#e7e7e2] text-[#59636a] text-[10px] uppercase tracking-wider font-bold">
+                        <th class="py-3 px-5">Tipo</th>
+                        <th class="py-3 px-5 text-center">Obligatorio</th>
+                        <th class="py-3 px-5">Versiones</th>
+                        <th class="py-3 px-5">Fecha última carga</th>
+                        <th class="py-3 px-5 text-center">Acción</th>
                     </tr>
                 </thead>
 
-                <tbody class="divide-y divide-slate-100 text-sm text-slate-700">
+                <tbody class="divide-y divide-[#e7e7e2] text-[12px] text-[#59636a]">
 
                     {% for requerido in documentos_requeridos %}
                         {% with documentos=documentos_dict|get_item:requerido.tipo_documento.id %}
 
-                        <tr class="hover:bg-blue-50/30 transition-colors">
+                        <tr class="hover:bg-[#fafaf7] transition-colors">
 
-                            <td class="px-6 py-4">
+                            <td class="px-5 py-3">
                                 <div class="flex items-center gap-3">
-                                    <div class="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center">
-                                        <i class="fa-solid fa-file text-xs"></i>
+                                    <div class="w-7 h-7 rounded-[6px] bg-[#e8f0f6] text-[#0f4d7d] flex items-center justify-center shrink-0">
+                                        <i class="fa-solid fa-file text-[11px]"></i>
                                     </div>
-                                    <span class="font-semibold text-slate-800">
+                                    <span class="font-bold text-[#20262b]">
                                         {{ requerido.tipo_documento.nombre }}
                                     </span>
                                 </div>
                             </td>
 
-                            <td class="px-6 py-4 text-center">
+                            <td class="px-5 py-3 text-center">
                                 {% if requerido.obligatorio %}
-                                    <span class="inline-flex items-center px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider text-rose-700 bg-rose-50 border border-rose-200/80">
-                                        <span class="w-1.5 h-1.5 rounded-full mr-1.5 bg-rose-500"></span> Sí
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded-[4px] text-[9px] font-bold uppercase tracking-wider text-[#9f2431] bg-[#f7e7e9] border border-[#f0cdd1]">
+                                        <span class="w-1.5 h-1.5 rounded-full mr-1.5 bg-[#9f2431]"></span> Sí
                                     </span>
                                 {% else %}
-                                    <span class="inline-flex items-center px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider text-slate-600 bg-slate-100 border border-slate-200">
-                                        <span class="w-1.5 h-1.5 rounded-full mr-1.5 bg-slate-400"></span> No
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded-[4px] text-[9px] font-bold uppercase tracking-wider text-[#59636a] bg-[#f0f0ed] border border-[#e7e7e2]">
+                                        <span class="w-1.5 h-1.5 rounded-full mr-1.5 bg-[#a0aab2]"></span> No
                                     </span>
                                 {% endif %}
                             </td>
 
-                            <td class="px-6 py-4">
+                            <td class="px-5 py-3">
                                 {% if documentos %}
                                     <button type="button"
                                             onclick="toggleVersiones('versiones-{{ requerido.tipo_documento.id }}')"
-                                            class="inline-flex items-center gap-2 bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-200/80 px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all">
-                                        <i class="fa-solid fa-folder-open"></i>
-                                        Ver versiones
-                                        <span class="bg-blue-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">
+                                            class="inline-flex items-center gap-2 bg-[#e8f0f6] hover:bg-[#c5d5e1] text-[#0f4d7d] border border-[#c5d5e1] px-3 py-1.5 rounded-[6px] text-[11px] font-bold transition-all">
+                                        <i class="fa-solid fa-folder-open"></i> Ver versiones
+                                        <span class="bg-[#0f4d7d] text-white text-[9px] font-bold px-1.5 py-0.5 rounded-full">
                                             {{ documentos|length }}
                                         </span>
-                                        <i id="icono-{{ requerido.tipo_documento.id }}" class="fa-solid fa-chevron-down text-[10px] transition-transform"></i>
+                                        <i id="icono-{{ requerido.tipo_documento.id }}" class="fa-solid fa-chevron-down text-[9px] transition-transform"></i>
                                     </button>
                                 {% else %}
-                                    <span class="inline-flex items-center px-2.5 py-1 rounded-md bg-rose-50 text-rose-600 text-xs font-bold border border-rose-100">
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded-[4px] bg-[#f7e7e9] text-[#9f2431] text-[9px] font-bold border border-[#f0cdd1]">
                                         Pendiente
                                     </span>
                                 {% endif %}
                             </td>
 
-                            <td class="px-6 py-4 text-xs font-medium text-slate-600">
+                            <td class="px-5 py-3 text-[11px] font-medium text-[#737b80]">
                                 {% if documentos %}
                                     {% with ultima_version=documentos|last %}
-                                        <i class="fa-regular fa-clock text-slate-400 mr-1"></i>
+                                        <i class="fa-regular fa-clock text-[#a0aab2] mr-1"></i>
                                         {{ ultima_version.fecha_carga|date:"d/m/Y H:i" }}
                                     {% endwith %}
                                 {% else %}
-                                    <span class="text-slate-400 italic">—</span>
+                                    <span class="text-[#a0aab2] italic">—</span>
                                 {% endif %}
                             </td>
 
-                            <td class="px-6 py-4 text-center">
+                            <td class="px-5 py-3 text-center">
                                 {% if documentos %}
                                     <button type="button"
                                             onclick="toggleVersiones('versiones-{{ requerido.tipo_documento.id }}')"
-                                            class="bg-emerald-600 hover:bg-emerald-700 text-white px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all shadow-xs flex items-center gap-1.5 mx-auto">
+                                            class="bg-[#2f7d70] hover:bg-[#25665b] text-white px-3 py-1.5 rounded-[6px] text-[11px] font-bold transition-all shadow-sm flex items-center gap-1.5 mx-auto">
                                         <i class="fa-solid fa-eye"></i> Gestionar
                                     </button>
                                 {% else %}
@@ -344,10 +339,10 @@
                                         <input type="file"
                                                name="archivo"
                                                required
-                                               class="text-xs text-slate-500 file:mr-2 file:py-1.5 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 cursor-pointer">
+                                               class="w-full max-w-[150px] text-[10px] text-[#737b80] file:mr-2 file:py-1 file:px-2 file:rounded-[4px] file:border-0 file:text-[10px] file:font-bold file:bg-[#e8f0f6] file:text-[#0f4d7d] hover:file:bg-[#c5d5e1] cursor-pointer">
 
                                         <button type="submit"
-                                                class="bg-blue-600 hover:bg-blue-700 text-white px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all shadow-xs whitespace-nowrap flex items-center gap-1.5">
+                                                class="bg-[#2f7d70] hover:bg-[#25665b] text-white px-3 py-1.5 rounded-[6px] text-[11px] font-bold transition-all shadow-sm whitespace-nowrap flex items-center gap-1.5">
                                             <i class="fa-solid fa-upload"></i> Subir V1
                                         </button>
                                     </form>
@@ -356,74 +351,77 @@
 
                         </tr>
 
+                        <!-- SECCIÓN DESPLEGABLE DE VERSIONES -->
                         {% if documentos %}
-                        <tr id="versiones-{{ requerido.tipo_documento.id }}" class="hidden bg-slate-50/60">
-                            <td colspan="5" class="px-6 py-5">
-                                <div class="border border-slate-200/80 rounded-2xl bg-white p-5 shadow-xs">
+                        <tr id="versiones-{{ requerido.tipo_documento.id }}" class="hidden bg-[#fafaf7]">
+                            <td colspan="5" class="px-5 py-4">
+                                <div class="border border-[#e7e7e2] rounded-[8px] bg-white p-4 shadow-sm">
                                     
-                                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-5 pb-3 border-b border-slate-100">
+                                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-4 pb-3 border-b border-[#eeeeea]">
                                         <div>
-                                            <h4 class="font-bold text-slate-800 text-sm flex items-center gap-2">
-                                                <i class="fa-solid fa-layer-group text-blue-600"></i>
+                                            <h4 class="font-bold text-[#20262b] text-[12px] flex items-center gap-2">
+                                                <i class="fa-solid fa-layer-group text-[#0f4d7d]"></i>
                                                 Historial de versiones
                                             </h4>
-                                            <p class="text-xs text-slate-500 font-medium mt-0.5">
+                                            <p class="text-[10px] text-[#737b80] font-medium mt-0.5">
                                                 {{ requerido.tipo_documento.nombre }}
                                             </p>
                                         </div>
 
                                         <button type="button"
                                                 onclick="toggleSubirVersion('subir-version-{{ requerido.tipo_documento.id }}')"
-                                                class="bg-blue-600 hover:bg-blue-700 text-white px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all shadow-xs flex items-center gap-1.5">
+                                                class="bg-[#0f4d7d] hover:bg-[#0c416b] text-white px-3 py-1.5 rounded-[6px] text-[11px] font-bold transition-all shadow-sm flex items-center gap-1.5">
                                             <i class="fa-solid fa-plus"></i> Nueva versión
                                         </button>
                                     </div>
 
-                                    <div id="subir-version-{{ requerido.tipo_documento.id }}" class="hidden mb-5 p-4 bg-blue-50/60 border border-blue-200/80 rounded-xl">
+                                    <!-- FORMULARIO NUEVA VERSIÓN (OCULTO) -->
+                                    <div id="subir-version-{{ requerido.tipo_documento.id }}" class="hidden mb-4 p-3 bg-[#e8f0f6] border border-[#c5d5e1] rounded-[8px]">
                                         <form action="{% url 'contracts:subir_documento' contrato.id %}"
                                               method="POST"
                                               enctype="multipart/form-data"
-                                              class="flex flex-col sm:flex-row items-start sm:items-center gap-3">
+                                              class="flex flex-col sm:flex-row items-start sm:items-end gap-3">
                                             {% csrf_token %}
                                             <input type="hidden" name="tipo_documento" value="{{ requerido.tipo_documento.id }}">
                                             <input type="hidden" name="observaciones" value="">
 
                                             <div class="flex-1 w-full">
-                                                <label class="block text-xs font-bold text-slate-700 mb-1">
+                                                <label class="block text-[11px] font-bold text-[#293137] mb-1">
                                                     Seleccionar archivo
                                                 </label>
                                                 <input type="file"
                                                        name="archivo"
                                                        required
-                                                       class="w-full text-xs text-slate-500 bg-white border border-slate-200 rounded-xl p-2 file:mr-3 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 cursor-pointer">
+                                                       class="w-full text-[11px] text-[#737b80] bg-white border border-[#e7e7e2] rounded-[6px] p-1.5 file:mr-2 file:py-1 file:px-2 file:rounded-[4px] file:border-0 file:text-[10px] file:font-bold file:bg-[#f5f3e8] file:text-[#20262b] hover:file:bg-[#e7e7e2] cursor-pointer">
                                             </div>
 
                                             <button type="submit"
-                                                    class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2.5 rounded-xl text-xs font-semibold transition-all shadow-xs whitespace-nowrap mt-2 sm:mt-5 flex items-center gap-1.5">
+                                                    class="bg-[#2f7d70] hover:bg-[#25665b] text-white px-4 py-2 rounded-[6px] text-[11px] font-bold transition-all shadow-sm whitespace-nowrap flex items-center gap-1.5">
                                                 <i class="fa-solid fa-upload"></i> Subir nueva versión
                                             </button>
                                         </form>
-                                        <p class="text-[11px] text-slate-500 font-medium mt-2">
+                                        <p class="text-[9px] text-[#737b80] font-medium mt-1.5">
                                             La plataforma asignará automáticamente la siguiente versión.
                                         </p>
                                     </div>
 
-                                    <div class="space-y-2.5">
+                                    <!-- LISTA DE VERSIONES -->
+                                    <div class="space-y-2">
                                         {% for documento in documentos %}
-                                        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 p-3.5 border border-slate-100 rounded-xl hover:bg-slate-50 transition-colors">
+                                        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 p-3 border border-[#e7e7e2] rounded-[8px] hover:bg-[#fafaf7] transition-colors">
                                             
                                             <div class="flex items-center gap-3">
-                                                <div class="w-9 h-9 rounded-xl bg-rose-50 border border-rose-100 flex items-center justify-center text-rose-500 shrink-0">
+                                                <div class="w-8 h-8 rounded-[6px] bg-[#f7e7e9] border border-[#f0cdd1] flex items-center justify-center text-[#9f2431] shrink-0">
                                                     <i class="fa-solid fa-file-pdf"></i>
                                                 </div>
                                                 <div>
-                                                    <div class="font-bold text-slate-800 text-xs">
+                                                    <div class="font-bold text-[#20262b] text-[11px]">
                                                         Versión {{ documento.version }}
                                                     </div>
-                                                    <div class="text-xs text-slate-500 font-medium line-clamp-1">
+                                                    <div class="text-[10px] text-[#59636a] font-medium line-clamp-1">
                                                         {{ documento.archivo.name|cut:"contratos/documentos/" }}
                                                     </div>
-                                                    <div class="text-[10px] text-slate-400 mt-0.5">
+                                                    <div class="text-[9px] text-[#a0aab2] mt-0.5">
                                                         Cargado: {{ documento.fecha_carga|date:"d/m/Y H:i" }}
                                                     </div>
                                                 </div>
@@ -431,7 +429,7 @@
 
                                             <a href="{{ documento.archivo.url }}"
                                                target="_blank"
-                                               class="bg-emerald-600 hover:bg-emerald-700 text-white px-3.5 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all shadow-xs flex items-center gap-1.5">
+                                               class="bg-[#f5f3e8] hover:bg-[#e7e7e2] text-[#20262b] border border-[#e7e7e2] px-3 py-1.5 rounded-[6px] text-[11px] font-bold whitespace-nowrap transition-all shadow-sm flex items-center gap-1.5">
                                                 <i class="fa-solid fa-eye"></i> Ver V{{ documento.version }}
                                             </a>
                                         </div>
@@ -447,10 +445,10 @@
 
                     {% empty %}
                         <tr>
-                            <td colspan="5" class="py-12 text-center text-slate-400">
+                            <td colspan="5" class="py-10 text-center text-[#737b80]">
                                 <div class="flex flex-col items-center justify-center space-y-2">
-                                    <i class="fa-solid fa-folder-xmark text-3xl text-slate-300"></i>
-                                    <p class="text-sm font-semibold text-slate-600">Este tipo de contrato no tiene documentos configurados.</p>
+                                    <i class="fa-solid fa-folder-xmark text-[24px] text-[#a0aab2]"></i>
+                                    <p class="text-[12px] font-bold text-[#59636a]">Este tipo de contrato no tiene documentos configurados.</p>
                                 </div>
                             </td>
                         </tr>

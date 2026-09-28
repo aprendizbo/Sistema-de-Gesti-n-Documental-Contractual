@@ -1,89 +1,91 @@
 {% extends 'base.html' %}
 
-{% block title %}Gestión de Contratos | CLM Pro{% endblock %}
+{% block title %}Gestión de Contratos | Gestión Contractual{% endblock %}
 
 {% block header_title %}Módulo de Contratos{% endblock %}
 
 {% block content %}
-<div class="space-y-6 max-w-7xl mx-auto">
+<div class="space-y-5 max-w-7xl mx-auto">
 
-    <div class="bg-white rounded-2xl p-6 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] border border-slate-100 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+    <!-- Tarjeta de Cabecera -->
+    <div class="bg-white rounded-[11px] p-5 shadow-[0_2px_8px_rgba(30,42,48,0.06)] border border-[#e7e7e2] flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-            <h2 class="text-2xl font-bold text-slate-800 tracking-tight">Listado General de Contratos</h2>
-            <p class="text-sm text-slate-500 mt-1 font-medium">Administra, filtra y consulta todas las carpetas y documentos contractuales.</p>
+            <h2 class="text-[16px] font-bold text-[#20262b] tracking-tight">Listado General de Contratos</h2>
+            <p class="text-[11px] text-[#737b80] mt-0.5 font-medium">Administra, filtra y consulta todas las carpetas y documentos contractuales.</p>
         </div>
         
-        <a href="{% url 'contracts:crear' %}" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2.5 rounded-xl transition-all duration-300 flex items-center gap-2 shadow-[0_4px_14px_0_rgba(37,99,235,0.39)] hover:shadow-[0_6px_20px_rgba(37,99,235,0.23)] hover:-translate-y-0.5 text-sm shrink-0">
-            <i class="fa-solid fa-plus"></i> Nuevo Contrato
+        <a href="{% url 'contracts:crear' %}" class="bg-[#0f4d7d] hover:bg-[#0c416b] text-white font-bold px-5 py-2.5 rounded-[8px] transition-all duration-300 flex items-center gap-2 shadow-[0_4px_10px_rgba(15,77,125,0.2)] hover:shadow-[0_6px_15px_rgba(15,77,125,0.25)] hover:-translate-y-0.5 text-[12px] shrink-0">
+            <i class="fa-solid fa-plus text-[10px]"></i> Nuevo Contrato
         </a>
     </div>
 
-    <div class="bg-white rounded-2xl shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] border border-slate-100 overflow-hidden">
+    <!-- Contenedor de la Tabla -->
+    <div class="bg-white rounded-[11px] shadow-[0_2px_8px_rgba(30,42,48,0.06)] border border-[#e7e7e2] overflow-hidden">
         <div class="overflow-x-auto">
             <table class="w-full text-left border-collapse">
                 <thead>
-                    <tr class="bg-slate-50/80 border-b border-slate-100 text-slate-500 text-[11px] uppercase tracking-wider font-semibold">
-                        <th class="py-4 px-6">Nº Contrato</th>
-                        <th class="py-4 px-6">Empresa / Contratista</th>
-                        <th class="py-4 px-6">Área de Destino</th>
-                        <th class="py-4 px-6">Tipo</th>
-                        <th class="py-4 px-6">Vigencia (Fin)</th>
-                        <th class="py-4 px-6">Estado</th>
-                        <th class="py-4 px-6 text-center">Acciones</th>
+                    <tr class="bg-[#f5f3e8] border-b border-[#e7e7e2] text-[#59636a] text-[10px] uppercase tracking-wider font-bold">
+                        <th class="py-3 px-5">Nº Contrato</th>
+                        <th class="py-3 px-5">Empresa / Contratista</th>
+                        <th class="py-3 px-5">Área de Destino</th>
+                        <th class="py-3 px-5">Tipo</th>
+                        <th class="py-3 px-5">Vigencia (Fin)</th>
+                        <th class="py-3 px-5">Estado</th>
+                        <th class="py-3 px-5 text-center">Acciones</th>
                     </tr>
                 </thead>
-                <tbody class="divide-y divide-slate-100 text-sm text-slate-700">
+                <tbody class="divide-y divide-[#e7e7e2] text-[12px] text-[#59636a]">
                     {% for contrato in contratos %}
-                    <tr class="hover:bg-blue-50/40 transition-colors group">
+                    <tr class="hover:bg-[#fafaf7] transition-colors group">
                         
-                        <td class="py-4 px-6 font-semibold">
-                            <a href="{% url 'contracts:detalle_contrato' contrato.pk %}" class="text-blue-600 hover:text-blue-800 transition-colors inline-flex items-center gap-2">
-                                <div class="w-7 h-7 rounded-lg bg-amber-50 text-amber-500 flex items-center justify-center group-hover:scale-110 transition-transform">
-                                    <i class="fa-solid fa-folder-open text-xs"></i>
+                        <td class="py-3 px-5 font-bold">
+                            <a href="{% url 'contracts:detalle_contrato' contrato.pk %}" class="text-[#0f4d7d] hover:text-[#0c416b] transition-colors inline-flex items-center gap-2">
+                                <div class="w-7 h-7 rounded-[6px] bg-[#f6eee0] text-[#c29135] flex items-center justify-center group-hover:scale-110 transition-transform">
+                                    <i class="fa-solid fa-folder-open text-[10px]"></i>
                                 </div>
                                 <span>{{ contrato.numero_contrato }}</span>
                             </a>
                         </td>
 
-                        <td class="py-4 px-6 font-medium text-slate-800">
+                        <td class="py-3 px-5 font-bold text-[#20262b]">
                             {{ contrato.empresa }}
                         </td>
 
-                        <td class="py-4 px-6">
-                            <span class="inline-flex items-center px-2.5 py-1 rounded-lg bg-slate-100 text-slate-700 font-medium text-xs border border-slate-200/60">
+                        <td class="py-3 px-5">
+                            <span class="inline-flex items-center px-2 py-0.5 rounded-[4px] bg-[#f0f0ed] text-[#59636a] font-bold text-[9px] border border-[#e7e7e2]">
                                 {{ contrato.area_destino }}
                             </span>
                         </td>
 
-                        <td class="py-4 px-6">
-                            <span class="inline-flex items-center px-2.5 py-1 rounded-lg bg-blue-50 text-blue-700 font-medium text-xs border border-blue-100">
+                        <td class="py-3 px-5">
+                            <span class="inline-flex items-center px-2 py-0.5 rounded-[4px] bg-[#e8f0f6] text-[#0f4d7d] font-bold text-[9px] border border-[#c5d5e1]">
                                 {{ contrato.tipo_contrato.nombre }}
                             </span>
                         </td>
 
-                        <td class="py-4 px-6 text-slate-600 font-medium">
-                            <i class="fa-regular fa-calendar text-slate-400 mr-1.5 text-xs"></i>{{ contrato.fecha_fin|date:"d/m/Y" }}
+                        <td class="py-3 px-5 text-[#59636a] font-medium text-[11px]">
+                            <i class="fa-regular fa-calendar text-[#a0aab2] mr-1.5 text-[10px]"></i>{{ contrato.fecha_fin|date:"d/m/Y" }}
                         </td>
 
-                        <td class="py-4 px-6">
-                            <span class="inline-flex items-center px-3 py-1 rounded-full text-[11px] uppercase tracking-wider font-bold border shadow-xs
-                                {% if contrato.estado == 'ACTIVO' %} bg-emerald-50 text-emerald-700 border-emerald-200/80
-                                {% elif contrato.estado == 'POR_VENCER' %} bg-amber-50 text-amber-700 border-amber-200/80
-                                {% elif contrato.estado == 'VENCIDO' %} bg-rose-50 text-rose-700 border-rose-200/80
-                                {% else %} bg-slate-100 text-slate-600 border-slate-200 {% endif %}">
+                        <td class="py-3 px-5">
+                            <span class="inline-flex items-center px-2 py-0.5 rounded-[4px] text-[9px] uppercase tracking-wider font-bold border
+                                {% if contrato.estado == 'ACTIVO' %} bg-[#e8f3f0] text-[#2f7d70] border-[#cce4dd]
+                                {% elif contrato.estado == 'POR_VENCER' %} bg-[#f6eee0] text-[#c29135] border-[#ead9bd]
+                                {% elif contrato.estado == 'VENCIDO' %} bg-[#f7e7e9] text-[#9f2431] border-[#f0cdd1]
+                                {% else %} bg-[#f0f0ed] text-[#59636a] border-[#e7e7e2] {% endif %}">
                                 <span class="w-1.5 h-1.5 rounded-full mr-1.5
-                                    {% if contrato.estado == 'ACTIVO' %} bg-emerald-500
-                                    {% elif contrato.estado == 'POR_VENCER' %} bg-amber-500
-                                    {% elif contrato.estado == 'VENCIDO' %} bg-rose-500
-                                    {% else %} bg-slate-400 {% endif %}"></span>
+                                    {% if contrato.estado == 'ACTIVO' %} bg-[#2f7d70]
+                                    {% elif contrato.estado == 'POR_VENCER' %} bg-[#c29135]
+                                    {% elif contrato.estado == 'VENCIDO' %} bg-[#9f2431]
+                                    {% else %} bg-[#a0aab2] {% endif %}"></span>
                                 {{ contrato.get_estado_display }}
                             </span>
                         </td>
 
-                        <td class="py-4 px-6 text-center">
+                        <td class="py-3 px-5 text-center">
                             <div class="flex items-center justify-center">
-                                <a href="{% url 'contracts:detalle_contrato' contrato.pk %}" class="w-8 h-8 rounded-lg bg-slate-100 text-slate-500 hover:bg-blue-600 hover:text-white flex items-center justify-center transition-all shadow-xs" title="Ver Carpeta / Detalles">
-                                    <i class="fa-solid fa-eye text-xs"></i>
+                                <a href="{% url 'contracts:detalle_contrato' contrato.pk %}" class="w-7 h-7 rounded-[6px] bg-[#f0f0ed] text-[#59636a] hover:bg-[#0f4d7d] hover:text-white flex items-center justify-center transition-all" title="Ver Carpeta / Detalles">
+                                    <i class="fa-solid fa-eye text-[11px]"></i>
                                 </a>
                             </div>
                         </td>
@@ -91,13 +93,13 @@
                     </tr>
                     {% empty %}
                     <tr>
-                        <td colspan="7" class="py-16 text-center text-slate-400">
-                            <div class="flex flex-col items-center justify-center space-y-3">
-                                <div class="w-16 h-16 rounded-2xl bg-slate-50 flex items-center justify-center text-slate-300 border border-slate-100">
-                                    <i class="fa-solid fa-folder-closed text-3xl"></i>
+                        <td colspan="7" class="py-12 text-center text-[#737b80]">
+                            <div class="flex flex-col items-center justify-center space-y-2">
+                                <div class="w-14 h-14 rounded-[12px] bg-[#fafaf7] flex items-center justify-center text-[#a0aab2] border border-[#e7e7e2]">
+                                    <i class="fa-solid fa-folder-closed text-[24px]"></i>
                                 </div>
-                                <p class="text-base font-semibold text-slate-600">No hay contratos registrados en el sistema.</p>
-                                <p class="text-xs text-slate-400">Crea el primero usando el botón superior "Nuevo Contrato".</p>
+                                <p class="text-[13px] font-bold text-[#59636a] mt-2">No hay contratos registrados en el sistema.</p>
+                                <p class="text-[11px] text-[#737b80]">Crea el primero usando el botón superior "Nuevo Contrato".</p>
                             </div>
                         </td>
                     </tr>

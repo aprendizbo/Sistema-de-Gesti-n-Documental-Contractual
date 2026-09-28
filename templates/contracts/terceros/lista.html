@@ -1,120 +1,129 @@
 {% extends "base.html" %}
 
-{% block title %}Terceros | CLM Pro{% endblock %}
+{% block title %}Terceros | Gestión Contractual{% endblock %}
 
 {% block header_title %}Gestión de Terceros{% endblock %}
 
 {% block content %}
-<div class="space-y-6 max-w-7xl mx-auto">
+<div class="space-y-5 max-w-7xl mx-auto">
 
-    <div class="bg-white rounded-2xl p-6 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] border border-slate-100 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+    <!-- Tarjeta de Cabecera -->
+    <div class="bg-white rounded-[11px] p-5 shadow-[0_2px_8px_rgba(30,42,48,0.06)] border border-[#e7e7e2] flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-            <h2 class="text-2xl font-bold text-slate-800 tracking-tight">Terceros</h2>
-            <p class="text-sm text-slate-500 mt-1 font-medium">Empresas, contratistas, clientes y demás terceros registrados.</p>
+            <h2 class="text-[16px] font-bold text-[#20262b] tracking-tight">Terceros</h2>
+            <p class="text-[11px] text-[#737b80] mt-0.5 font-medium">Empresas, contratistas, clientes y demás terceros registrados.</p>
         </div>
 
         <a href="{% url 'contracts:crear_tercero' %}"
-           class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2.5 rounded-xl transition-all duration-300 flex items-center gap-2 shadow-[0_4px_14px_0_rgba(37,99,235,0.39)] hover:shadow-[0_6px_20px_rgba(37,99,235,0.23)] hover:-translate-y-0.5 text-sm shrink-0">
-            <i class="fa-solid fa-plus"></i> Nuevo tercero
+           class="bg-[#0f4d7d] hover:bg-[#0c416b] text-white font-bold px-5 py-2.5 rounded-[8px] transition-all duration-300 flex items-center gap-2 shadow-[0_4px_10px_rgba(15,77,125,0.2)] hover:shadow-[0_6px_15px_rgba(15,77,125,0.25)] hover:-translate-y-0.5 text-[12px] shrink-0">
+            <i class="fa-solid fa-plus text-[10px]"></i> Nuevo tercero
         </a>
     </div>
 
-    <div class="bg-white rounded-2xl p-4 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] border border-slate-100">
+    <!-- Buscador -->
+    <div class="bg-white rounded-[11px] p-4 shadow-[0_2px_8px_rgba(30,42,48,0.06)] border border-[#e7e7e2]">
         <form method="get">
             <div class="flex gap-3">
                 <div class="relative flex-1">
-                    <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
-                        <i class="fa-solid fa-magnifying-glass text-sm"></i>
+                    <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-[#737b80]">
+                        <i class="fa-solid fa-magnifying-glass text-[13px]"></i>
                     </div>
                     <input
                         type="text"
                         name="q"
-                        value="{{ request.GET.q }}"
+                        value="{{ request.GET.q|default_if_none:'' }}"
                         placeholder="Buscar por nombre o NIT..."
-                        class="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 text-sm text-slate-800 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 focus:bg-white transition-all placeholder:text-slate-400">
+                        class="w-full pl-10 pr-4 py-2 bg-[#f5f3e8] border border-[#e7e7e2] text-[13px] text-[#20262b] rounded-[8px] focus:outline-none focus:ring-2 focus:ring-[#0f4d7d]/20 focus:border-[#0f4d7d] focus:bg-white transition-all placeholder:text-[#a0aab2]">
                 </div>
 
                 <button type="submit"
-                        class="bg-slate-800 hover:bg-slate-900 text-white font-semibold px-6 py-2.5 rounded-xl text-sm transition-all duration-200 shadow-sm flex items-center gap-2 shrink-0">
-                    <i class="fa-solid fa-search text-xs"></i> Buscar
+                        class="bg-[#29333b] hover:bg-[#20262b] text-white font-bold px-5 py-2 rounded-[8px] text-[12px] transition-all duration-200 shadow-sm flex items-center gap-2 shrink-0">
+                    <i class="fa-solid fa-search text-[11px]"></i> Buscar
                 </button>
             </div>
         </form>
     </div>
 
-    <div class="bg-white rounded-2xl shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] border border-slate-100 overflow-hidden">
+    <!-- Contenedor de la Tabla -->
+    <div class="bg-white rounded-[11px] shadow-[0_2px_8px_rgba(30,42,48,0.06)] border border-[#e7e7e2] overflow-hidden">
         <div class="overflow-x-auto">
             <table class="w-full text-left border-collapse">
                 <thead>
-                    <tr class="bg-slate-50/80 border-b border-slate-100 text-slate-500 text-[11px] uppercase tracking-wider font-semibold">
-                        <th class="py-4 px-6">Nombre</th>
-                        <th class="py-4 px-6">Tipo</th>
-                        <th class="py-4 px-6">Documento</th>
-                        <th class="py-4 px-6">Ciudad</th>
-                        <th class="py-4 px-6 text-center">Estado</th>
-                        <th class="py-4 px-6 text-center">Acciones</th>
+                    <tr class="bg-[#f5f3e8] border-b border-[#e7e7e2] text-[#59636a] text-[10px] uppercase tracking-wider font-bold">
+                        <th class="py-3 px-5">Nombre</th>
+                        <th class="py-3 px-5">Tipo</th>
+                        <th class="py-3 px-5">Documento</th>
+                        <th class="py-3 px-5">Ciudad</th>
+                        <th class="py-3 px-5 text-center">Estado</th>
+                        <th class="py-3 px-5 text-center">Acciones</th>
                     </tr>
                 </thead>
-                <tbody class="divide-y divide-slate-100 text-sm text-slate-700">
+                <tbody class="divide-y divide-[#e7e7e2] text-[12px] text-[#59636a]">
                     {% for tercero in terceros %}
-                    <tr class="hover:bg-blue-50/40 transition-colors group">
+                    <tr class="hover:bg-[#fafaf7] transition-colors group">
 
-                        <td class="py-4 px-6 font-semibold text-slate-800">
+                        <!-- NOMBRE -->
+                        <td class="py-3 px-5 font-bold text-[#20262b]">
                             <div class="flex items-center gap-3">
-                                <div class="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center group-hover:scale-110 transition-transform">
-                                    <i class="fa-solid fa-users text-xs"></i>
+                                <div class="w-7 h-7 rounded-[6px] bg-[#e8f0f6] text-[#0f4d7d] flex items-center justify-center group-hover:scale-110 transition-transform">
+                                    <i class="fa-solid fa-users text-[10px]"></i>
                                 </div>
                                 <span>{{ tercero.nombre }}</span>
                             </div>
                         </td>
 
-                        <td class="py-4 px-6">
-                            <span class="inline-flex items-center px-2.5 py-1 rounded-lg bg-slate-100 text-slate-700 font-medium text-xs border border-slate-200/60">
+                        <!-- TIPO -->
+                        <td class="py-3 px-5">
+                            <span class="inline-flex items-center px-2 py-0.5 rounded-[4px] bg-[#f0f0ed] text-[#59636a] font-bold text-[9px] border border-[#e7e7e2]">
                                 {{ tercero.get_tipo_display }}
                             </span>
                         </td>
 
-                        <td class="py-4 px-6 text-slate-600 font-medium">
+                        <!-- DOCUMENTO / NIT -->
+                        <td class="py-3 px-5 font-medium text-[#737b80]">
                             {% if tercero.identificacion %}
                                 <span class="inline-flex items-center gap-1.5">
-                                    <i class="fa-regular fa-id-card text-slate-400 text-xs"></i>
+                                    <i class="fa-regular fa-id-card text-[#a0aab2] text-[10px]"></i>
                                     {{ tercero.identificacion }}
                                 </span>
                             {% else %}
-                                <span class="text-slate-400 italic text-xs">Sin documento</span>
+                                <span class="text-[#a0aab2] italic text-[11px]">Sin documento</span>
                             {% endif %}
                         </td>
 
-                        <td class="py-4 px-6 text-slate-600">
+                        <!-- CIUDAD -->
+                        <td class="py-3 px-5 font-medium text-[#737b80]">
                             {% if tercero.ciudad %}
-                                <span class="inline-flex items-center gap-1">
-                                    <i class="fa-solid fa-location-dot text-slate-400 text-xs"></i>
+                                <span class="inline-flex items-center gap-1.5">
+                                    <i class="fa-solid fa-location-dot text-[#a0aab2] text-[10px]"></i>
                                     {{ tercero.ciudad }}
                                 </span>
                             {% else %}
-                                <span class="text-slate-400 italic text-xs">No registrada</span>
+                                <span class="text-[#a0aab2] italic text-[11px]">No registrada</span>
                             {% endif %}
                         </td>
 
-                        <td class="py-4 px-6 text-center">
-                            <span class="inline-flex items-center px-3 py-1 rounded-full text-[11px] uppercase tracking-wider font-bold
-                                {% if 'activo' in tercero.get_estado_display|lower or 'activa' in tercero.get_estado_display|lower %} bg-emerald-50 text-emerald-700 border border-emerald-200/80
-                                {% elif 'inactivo' in tercero.get_estado_display|lower or 'inactiva' in tercero.get_estado_display|lower %} bg-rose-50 text-rose-700 border border-rose-200/80
-                                {% else %} bg-slate-100 text-slate-700 border border-slate-200 {% endif %} shadow-xs">
+                        <!-- ESTADO -->
+                        <td class="py-3 px-5 text-center">
+                            <span class="inline-flex items-center px-2 py-0.5 rounded-[4px] text-[9px] uppercase tracking-wider font-bold
+                                {% if 'activo' in tercero.get_estado_display|lower or 'activa' in tercero.get_estado_display|lower %} bg-[#e8f3f0] text-[#2f7d70] border border-[#cce4dd]
+                                {% elif 'inactivo' in tercero.get_estado_display|lower or 'inactiva' in tercero.get_estado_display|lower %} bg-[#f7e7e9] text-[#9f2431] border border-[#f0cdd1]
+                                {% else %} bg-[#f0f0ed] text-[#59636a] border border-[#e7e7e2] {% endif %}">
                                 <span class="w-1.5 h-1.5 rounded-full mr-1.5
-                                    {% if 'activo' in tercero.get_estado_display|lower or 'activa' in tercero.get_estado_display|lower %} bg-emerald-500
-                                    {% elif 'inactivo' in tercero.get_estado_display|lower or 'inactiva' in tercero.get_estado_display|lower %} bg-rose-500
-                                    {% else %} bg-slate-400 {% endif %}"></span>
+                                    {% if 'activo' in tercero.get_estado_display|lower or 'activa' in tercero.get_estado_display|lower %} bg-[#2f7d70]
+                                    {% elif 'inactivo' in tercero.get_estado_display|lower or 'inactiva' in tercero.get_estado_display|lower %} bg-[#9f2431]
+                                    {% else %} bg-[#a0aab2] {% endif %}"></span>
                                 {{ tercero.get_estado_display }}
                             </span>
                         </td>
 
-                        <td class="py-4 px-6 text-center">
+                        <!-- ACCIONES -->
+                        <td class="py-3 px-5 text-center">
                             <div class="flex items-center justify-center">
                                 <a href="{% url 'contracts:editar_tercero' tercero.id %}"
-                                   class="w-8 h-8 rounded-lg bg-slate-100 text-slate-500 hover:bg-blue-600 hover:text-white flex items-center justify-center transition-all shadow-xs"
+                                   class="w-7 h-7 rounded-[6px] bg-[#f0f0ed] text-[#59636a] hover:bg-[#0f4d7d] hover:text-white flex items-center justify-center transition-all"
                                    title="Editar Tercero">
-                                    <i class="fa-solid fa-pen-to-square text-xs"></i>
+                                    <i class="fa-solid fa-pen-to-square text-[11px]"></i>
                                 </a>
                             </div>
                         </td>
@@ -122,13 +131,13 @@
                     </tr>
                     {% empty %}
                     <tr>
-                        <td colspan="6" class="py-16 text-center text-slate-400">
-                            <div class="flex flex-col items-center justify-center space-y-3">
-                                <div class="w-16 h-16 rounded-2xl bg-slate-50 flex items-center justify-center text-slate-300 border border-slate-100">
-                                    <i class="fa-solid fa-users-slash text-3xl"></i>
+                        <td colspan="6" class="py-12 text-center text-[#737b80]">
+                            <div class="flex flex-col items-center justify-center space-y-2">
+                                <div class="w-14 h-14 rounded-[12px] bg-[#fafaf7] flex items-center justify-center text-[#a0aab2] border border-[#e7e7e2]">
+                                    <i class="fa-solid fa-users-slash text-[24px]"></i>
                                 </div>
-                                <p class="text-base font-semibold text-slate-600">No existen terceros registrados.</p>
-                                <p class="text-xs text-slate-400">Registre el primero utilizando el botón superior "Nuevo tercero".</p>
+                                <p class="text-[13px] font-bold text-[#59636a] mt-2">No existen terceros registrados.</p>
+                                <p class="text-[11px] text-[#737b80]">Registre el primero utilizando el botón superior "Nuevo tercero".</p>
                             </div>
                         </td>
                     </tr>

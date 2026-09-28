@@ -5,24 +5,229 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Dashboard - Documentación Contractual{% endblock %}</title>
+    
+    <!-- Tailwind y FontAwesome -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        /* Define the primary blue color and gradient used across the design */
-        :root {
-            --primary-blue: #2563eb;
-            --primary-blue-gradient: linear-gradient(to right, #2563eb, #3b82f6);
-        }
-    </style>
+    
+    <!-- Tom Select -->
     <link href="https://cdn.jsdelivr.net/npm/tom-select@2.4.3/dist/css/tom-select.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/tom-select@2.4.3/dist/js/tom-select.complete.min.js"></script>
+
+    <!-- Estilos Corporativos (Boccherini Theme) -->
+    <style id="boccherini-theme">
+        :root {
+            --bc-bg: #f5f3e8;
+            --bc-sidebar: #29333b;
+            --bc-sidebar-hover: #34414a;
+            --bc-navy: #0f4d7d;
+            --bc-teal: #2f7d70;
+            --bc-gold: #c29135;
+            --bc-red: #9f2431;
+            --bc-text: #20262b;
+            --bc-muted: #6d757b;
+            --bc-border: #e7e7e2;
+        }
+
+        html, body {
+            background: var(--bc-bg) !important;
+            color: var(--bc-text) !important;
+            font-family: 'Inter', sans-serif, system-ui !important;
+        }
+
+        body {
+            min-height: 100vh;
+        }
+
+        /* =========================================================
+           SIDEBAR
+           ========================================================= */
+        body > aside {
+            width: 230px !important;
+            min-width: 230px !important;
+            background: var(--bc-sidebar) !important;
+            box-shadow: none !important;
+            border-right: 1px solid rgba(255,255,255,.05) !important;
+        }
+
+        body > aside > div:first-child {
+            padding: 12px 14px !important;
+            height: 82px !important;
+            background: #ffffff !important;
+            border-bottom: 1px solid #e2e5e7 !important;
+        }
+
+        body > aside > div:first-child img {
+            height: 54px !important;
+            max-width: 185px !important;
+            width: auto !important;
+            padding: 3px !important;
+            margin-bottom: 0 !important;
+            border-radius: 5px !important;
+            box-shadow: none !important;
+        }
+
+        body > aside > div:first-child span {
+            display: none !important; /* Ocultamos el texto corporativo si ya está en el logo */
+        }
+
+        body > aside > nav {
+            padding: 12px 10px !important;
+            gap: 3px !important;
+        }
+
+        body > aside > nav a {
+            color: #e1e5e7 !important;
+            padding: 9px 12px !important;
+            border-radius: 7px !important;
+            font-size: 13px !important;
+            font-weight: 500 !important;
+            background: transparent !important;
+            box-shadow: none !important;
+            transition: all 0.2s ease-in-out;
+        }
+
+        body > aside > nav a:hover {
+            background: rgba(255,255,255,.07) !important;
+            color: #ffffff !important;
+        }
+
+        body > aside > nav a[class*="bg-gradient-to-r"] {
+            background: var(--bc-red) !important;
+            color: #ffffff !important;
+            box-shadow: 0 2px 7px rgba(0,0,0,.13) !important;
+        }
+
+        body > aside > nav a i {
+            width: 18px !important;
+            margin-right: 9px !important;
+            font-size: 14px !important;
+        }
+
+        body > aside > div:last-child {
+            padding: 12px 10px !important;
+            border-top: 1px solid rgba(255,255,255,.08) !important;
+        }
+
+        body > aside > div:last-child button {
+            color: #e3a4aa !important;
+            font-size: 13px !important;
+            padding: 9px 12px !important;
+        }
+
+        body > aside > div:last-child button:hover {
+            background: rgba(255,255,255,.07) !important;
+            color: #ffffff !important;
+        }
+
+        /* =========================================================
+           MAIN / HEADER
+           ========================================================= */
+        body > main {
+            background: var(--bc-bg) !important;
+            min-width: 0;
+        }
+
+        body > main > header {
+            height: 76px !important;
+            min-height: 76px !important;
+            padding: 15px 28px !important;
+            background: rgba(255,255,255,.92) !important;
+            border-bottom: 1px solid var(--bc-border) !important;
+            box-shadow: none !important;
+        }
+
+        body > main > header h1 {
+            color: #20262b !important;
+            font-size: 19px !important;
+            font-weight: 700 !important;
+            letter-spacing: -.02em !important;
+        }
+
+        body > main > header .flex.items-center.gap-6 {
+            gap: 14px !important;
+        }
+
+        #btnNotificaciones {
+            width: 36px !important;
+            height: 36px !important;
+            background: #ffffff !important;
+            color: #667078 !important;
+            border: 1px solid #e8e9e7 !important;
+            box-shadow: 0 1px 4px rgba(30,42,48,.06) !important;
+        }
+
+        #btnNotificaciones:hover {
+            background: #f4f5f3 !important;
+            color: var(--bc-navy) !important;
+        }
+
+        #contadorNotificaciones {
+            background: var(--bc-red) !important;
+        }
+
+        body > main > header .w-10.h-10.rounded-full {
+            background: var(--bc-navy) !important;
+            color: #ffffff !important;
+            box-shadow: none !important;
+        }
+
+        body > main > header .text-sm.font-semibold {
+            color: #283037 !important;
+            font-size: 13px !important;
+        }
+
+        body > main > header .text-xs.text-slate-500 {
+            color: #747c82 !important;
+            font-size: 11px !important;
+        }
+
+        /* =========================================================
+           CONTENIDO DE CADA VISTA
+           ========================================================= */
+        body > main > .p-10 {
+            padding: 24px 28px 30px !important;
+            background: var(--bc-bg) !important;
+        }
+
+        /* =========================================================
+           NOTIFICACIONES
+           ========================================================= */
+        #panelNotificaciones {
+            border-color: var(--bc-border) !important;
+            box-shadow: 0 12px 30px rgba(25,35,42,.14) !important;
+        }
+
+        #panelNotificaciones .bg-blue-100 {
+            background: #e8f0f6 !important;
+        }
+
+        #panelNotificaciones .text-blue-600 {
+            color: var(--bc-navy) !important;
+        }
+
+        /* =========================================================
+           RESPONSIVE
+           ========================================================= */
+        @media (max-width: 900px) {
+            body > aside { width: 210px !important; min-width: 210px !important; }
+            body > main > header { padding-left: 20px !important; padding-right: 20px !important; }
+            body > main > .p-10 { padding-left: 20px !important; padding-right: 20px !important; }
+        }
+
+        @media (max-width: 640px) {
+            body > aside { width: 190px !important; min-width: 190px !important; }
+            body > main > header { padding-left: 14px !important; padding-right: 14px !important; }
+            body > main > .p-10 { padding: 18px 14px 24px !important; }
+        }
+    </style>
 </head>
+
 <body class="bg-slate-50 h-screen flex">
 
     <!-- Sidebar (Menú Fijo) -->
     <aside class="w-64 bg-slate-950 text-white flex flex-col shadow-xl z-20">
         
-        <!-- LOGO Y NOMBRE DE LA EMPRESA CENTRADOS - Refined with better padding and colors -->
         <div class="p-6 border-b border-slate-800 flex flex-col items-center justify-center text-center">
             <img
                 src="{% static 'img/logo_boccherini.jpg' %}"
@@ -34,9 +239,8 @@
             </span>
         </div>
         
-        <nav class="flex-1 p-4 space-y-1.5">
+        <nav class="flex-1 p-4 space-y-1.5 overflow-y-auto">
 
-            <!-- Dashboard - Sophisticated blue gradient for active state -->
             <a href="/"
                class="flex items-center px-4 py-2.5 rounded-lg transition-all
                {% if request.resolver_match.url_name == 'dashboard' %}
@@ -48,7 +252,6 @@
                 Dashboard
             </a>
 
-            <!-- Contratos -->
             <a href="{% url 'contracts:lista' %}"
                class="flex items-center px-4 py-2.5 rounded-lg transition-all
                {% if request.resolver_match.url_name in 'lista crear_contrato detalle_contrato editar_contrato' %}
@@ -60,7 +263,6 @@
                 Contratos
             </a>
 
-            <!-- Terceros -->
             <a href="{% url 'contracts:lista_terceros' %}"
                class="flex items-center px-4 py-2.5 rounded-lg transition-all
                {% if 'tercero' in request.resolver_match.url_name %}
@@ -72,7 +274,6 @@
                 Terceros
             </a>
 
-            <!-- Áreas -->
             <a href="{% url 'contracts:lista_areas' %}"
                class="flex items-center px-4 py-2.5 rounded-lg transition-all
                {% if 'area' in request.resolver_match.url_name %}
@@ -84,7 +285,6 @@
                 Áreas
             </a>
 
-            <!-- Empresas -->
             <a href="{% url 'contracts:lista_empresas' %}"
                class="flex items-center px-4 py-2.5 rounded-lg transition-all
                {% if 'empresa' in request.resolver_match.url_name %}
@@ -96,7 +296,6 @@
                 Empresas
             </a>
 
-            <!-- Supervisores -->
             <a href="{% url 'contracts:lista_supervisores' %}"
                class="flex items-center px-4 py-2.5 rounded-lg transition-all
                {% if 'supervisor' in request.resolver_match.url_name %}
@@ -108,7 +307,6 @@
                 Supervisores
             </a>
 
-            <!-- Tipos de Contrato -->
             <a href="{% url 'contracts:lista_tipos_contrato' %}"
                class="flex items-center px-4 py-2.5 rounded-lg transition-all
                {% if 'tipos_contrato' in request.resolver_match.url_name %}
@@ -120,7 +318,6 @@
                 Tipos de Contrato
             </a>
 
-            <!-- Tipos de Documentos Contractuales -->
             <a href="{% url 'contracts:lista_tipos_documento' %}"
                class="flex items-center px-4 py-2.5 rounded-lg transition-all
                {% if 'tipos_documento' in request.resolver_match.url_name %}
@@ -132,7 +329,6 @@
                 Tipos de Documentos
             </a>
 
-            <!-- Plantillas Documentales -->
             <a href="{% url 'contracts:lista_plantillas' %}"
                class="flex items-center px-4 py-2.5 rounded-lg transition-all
                {% if 'plantilla' in request.resolver_match.url_name %}
@@ -159,78 +355,41 @@
     <!-- Main Content -->
     <main class="flex-1 flex flex-col overflow-y-auto">
         
-        <!-- Header - Modern white with glass effect and distinct text colors -->
         <header class="bg-white/95 backdrop-blur-sm shadow-sm h-16 flex items-center justify-between px-8 z-10">
-
             <h1 class="text-xl font-bold text-slate-900 tracking-tight">
                 {% block header_title %}Documentación Contractual{% endblock %}
             </h1>
 
             <div class="flex items-center gap-6 pr-4">
-
                 <!-- CAMPANA DE NOTIFICACIONES -->
                 <div class="relative">
-
-                    <button
-                        id="btnNotificaciones"
-                        type="button"
-                        class="relative flex items-center justify-center w-10 h-10 rounded-full text-slate-500 bg-slate-100 hover:bg-slate-200 hover:text-slate-800 transition"
-                        title="Notificaciones"
-                    >
-
+                    <button id="btnNotificaciones" type="button" class="relative flex items-center justify-center w-10 h-10 rounded-full text-slate-500 bg-slate-100 hover:bg-slate-200 hover:text-slate-800 transition" title="Notificaciones">
                         <i class="fa-regular fa-bell text-lg"></i>
-
-                        <!-- CONTADOR - Refined condition-based badge -->
-                        <span
-                            id="contadorNotificaciones"
-                            class="hidden absolute -top-1 -right-1 min-w-[20px] h-5 px-1 bg-red-500 text-white text-xs font-bold rounded-full flex items-center justify-center border-2 border-white shadow-sm"
-                        >
+                        <span id="contadorNotificaciones" class="hidden absolute -top-1 -right-1 min-w-[20px] h-5 px-1 bg-red-500 text-white text-xs font-bold rounded-full flex items-center justify-center border-2 border-white shadow-sm">
                             0
                         </span>
-
                     </button>
 
-                    <!-- PANEL DE NOTIFICACIONES - Refined structure and colors -->
-                    <div
-                        id="panelNotificaciones"
-                        class="hidden absolute right-0 mt-3 w-96 bg-white rounded-xl shadow-2xl border border-slate-100 z-50 overflow-hidden transform origin-top-right transition-all"
-                    >
-
-                        <!-- ENCABEZADO -->
+                    <!-- PANEL DE NOTIFICACIONES -->
+                    <div id="panelNotificaciones" class="hidden absolute right-0 mt-3 w-96 bg-white rounded-xl shadow-2xl border border-slate-100 z-50 overflow-hidden transform origin-top-right transition-all">
                         <div class="px-6 py-4 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
-
                             <div>
-                                <h3 class="font-bold text-slate-900">
-                                    Notificaciones
-                                </h3>
-
-                                <p
-                                    id="textoContadorNotificaciones"
-                                    class="text-xs text-slate-500 mt-0.5"
-                                >
+                                <h3 class="font-bold text-slate-900">Notificaciones</h3>
+                                <p id="textoContadorNotificaciones" class="text-xs text-slate-500 mt-0.5">
                                     No hay notificaciones pendientes
                                 </p>
                             </div>
-
                             <div class="w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center"><i class="fa-regular fa-bell text-sm"></i></div>
-
                         </div>
-
-                        <!-- LISTA -->
-                        <div
-                            id="listaNotificaciones"
-                            class="max-h-96 overflow-y-auto"
-                        >
+                        <div id="listaNotificaciones" class="max-h-96 overflow-y-auto">
                             <div class="p-6 text-center text-sm text-slate-500">
                                 Cargando notificaciones...
                             </div>
                         </div>
-
                     </div>
-
                 </div>
 
-                <!-- USUARIO - Refined layout -->
+                <!-- USUARIO -->
                 <div class="flex items-center gap-3">
                     <div class="w-10 h-10 rounded-full bg-slate-200 text-slate-600 flex items-center justify-center text-lg font-bold shadow-inner">
                         {{ request.user.username|make_list|first|upper }}
@@ -244,15 +403,14 @@
                                 Bienvenida
                             {% else %}
                                 Bienvenido
-                            {% endif %}</span>
+                            {% endif %}
+                        </span>
                     </div>
                 </div>
-
             </div>
-
         </header>
 
-        <!-- Contenido Dinámico with professional padding -->
+        <!-- Contenido Dinámico -->
         <div class="p-10 space-y-8 bg-slate-50">
             {% block content %}
             {% endblock content %}
@@ -260,29 +418,22 @@
         
     </main>
 
-    <!-- Preservation of original dynamic JS logic -->
+    <!-- JS de Notificaciones Original -->
     <script>
     document.addEventListener("DOMContentLoaded", function () {
-
         const btnNotificaciones = document.getElementById("btnNotificaciones");
         const panelNotificaciones = document.getElementById("panelNotificaciones");
         const contador = document.getElementById("contadorNotificaciones");
         const textoContador = document.getElementById("textoContadorNotificaciones");
         const lista = document.getElementById("listaNotificaciones");
 
-        // --------------------------------------------------
-        // CARGAR NOTIFICACIONES
-        // --------------------------------------------------
         function cargarNotificaciones() {
             fetch("{% url 'contracts:obtener_notificaciones' %}")
                 .then(response => {
-                    if (!response.ok) {
-                        throw new Error("Error en la respuesta del servidor");
-                    }
+                    if (!response.ok) throw new Error("Error en la respuesta del servidor");
                     return response.json();
                 })
                 .then(data => {
-                    // Actualizar el contador numérico
                     if (data.total > 0) {
                         contador.textContent = data.total;
                         contador.classList.remove("hidden");
@@ -292,16 +443,13 @@
                         textoContador.textContent = "No hay notificaciones pendientes";
                     }
 
-                    // Limpiar la lista actual
                     lista.innerHTML = "";
 
-                    // Si no hay notificaciones
                     if (!data.notificaciones || data.notificaciones.length === 0) {
                         lista.innerHTML = `<div class="p-6 text-center text-sm text-slate-500">No hay notificaciones pendientes.</div>`;
                         return;
                     }
 
-                    // Renderizar cada notificación
                     data.notificaciones.forEach(notif => {
                         const div = document.createElement("div");
                         div.className = "p-5 border-b border-slate-100 hover:bg-blue-50 transition cursor-pointer";
@@ -325,20 +473,15 @@
                             </div>
                         `;
 
-                        // ------------------------------------------
-                        // VER CONTRATO
-                        // ------------------------------------------
                         const botonVer = div.querySelector("button");
 
                         botonVer.addEventListener("click", function (e) {
                             e.stopPropagation();
-
                             const id = this.dataset.id;
                             const url = this.dataset.url;
 
                             fetch(
-                                "{% url 'contracts:marcar_notificacion_leida' 0 %}"
-                                    .replace("/0/", `/${id}/`),
+                                "{% url 'contracts:marcar_notificacion_leida' 0 %}".replace("/0/", `/${id}/`),
                                 {
                                     method: "POST",
                                     headers: {
@@ -348,18 +491,14 @@
                                 }
                             )
                             .then(response => {
-                                if (!response.ok) {
-                                    throw new Error("No se pudo marcar la notificación");
-                                }
+                                if (!response.ok) throw new Error("No se pudo marcar la notificación");
                                 return response.json();
                             })
                             .then(() => {
-                                // Ir al contrato
                                 window.location.href = url;
                             })
                             .catch(error => {
                                 console.error("Error marcando notificación:", error);
-                                // Si falla marcarla como leída, igualmente permitimos abrir el contrato.
                                 window.location.href = url;
                             });
                         });
@@ -372,33 +511,23 @@
                     lista.innerHTML = `<div class="p-6 text-center text-sm text-red-500">Error al cargar. Inténtalo más tarde.</div>`;
                 });
         }
-
-        // --------------------------------------------------
-        // EVENTOS DEL PANEL
-        // --------------------------------------------------
         
-        // Alternar el panel al hacer clic en la campana
         btnNotificaciones.addEventListener("click", function (e) {
             e.stopPropagation();
             panelNotificaciones.classList.toggle("hidden");
-            
-            // Si el panel se acaba de abrir, recargamos los datos
             if (!panelNotificaciones.classList.contains("hidden")) {
                 cargarNotificaciones();
             }
         });
 
-        // Cerrar el panel al hacer clic fuera de él
         document.addEventListener("click", function (e) {
             if (!panelNotificaciones.contains(e.target) && !btnNotificaciones.contains(e.target)) {
                 panelNotificaciones.classList.add("hidden");
             }
         });
 
-        // Cargar las notificaciones iniciales para encender la campanita si hay pendientes
         cargarNotificaciones();
     });
     </script>
-
 </body>
 </html>

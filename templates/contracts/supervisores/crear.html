@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block title %}
-    {% if supervisor %}Editar Supervisor{% else %}Registrar Supervisor{% endif %} | CLM Pro
+    {% if supervisor %}Editar Supervisor{% else %}Registrar Supervisor{% endif %} | Gestión Contractual
 {% endblock %}
 
 {% block header_title %}
@@ -9,25 +9,25 @@
 {% endblock %}
 
 {% block content %}
-<div class="max-w-4xl mx-auto space-y-6">
+<div class="max-w-4xl mx-auto space-y-5">
 
     <div>
-        <a href="{% url 'contracts:lista_supervisores' %}" class="inline-flex items-center gap-2 text-sm font-semibold text-slate-500 hover:text-blue-600 transition-colors">
-            <i class="fa-solid fa-arrow-left text-xs"></i> Volver a la lista de supervisores
+        <a href="{% url 'contracts:lista_supervisores' %}" class="inline-flex items-center gap-2 text-[12px] font-semibold text-[#737b80] hover:text-[#0f4d7d] transition-colors">
+            <i class="fa-solid fa-arrow-left text-[10px]"></i> Volver a la lista de supervisores
         </a>
     </div>
 
-    <div class="bg-white rounded-2xl shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] border border-slate-100 p-8">
+    <div class="bg-white rounded-[11px] shadow-[0_2px_8px_rgba(30,42,48,0.06)] border border-[#e7e7e2] p-7">
 
-        <div class="flex items-center gap-4 pb-6 mb-6 border-b border-slate-100">
-            <div class="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center text-xl shadow-xs shrink-0">
+        <div class="flex items-center gap-4 pb-5 mb-5 border-b border-[#eeeeea]">
+            <div class="w-[42px] h-[42px] rounded-[10px] bg-[#e8f0f6] text-[#0f4d7d] flex items-center justify-center text-[18px] shadow-inner shrink-0">
                 <i class="fa-solid fa-user-tie"></i>
             </div>
             <div>
-                <h2 class="text-2xl font-bold text-slate-800 tracking-tight">
+                <h2 class="text-[18px] font-bold text-[#20262b] tracking-tight">
                     {% if supervisor %}Editar Supervisor{% else %}Registrar Supervisor{% endif %}
                 </h2>
-                <p class="text-sm text-slate-500 mt-0.5 font-medium">
+                <p class="text-[11px] text-[#737b80] mt-0.5 font-medium">
                     {% if supervisor %}Modifique la información general del supervisor.{% else %}Complete la información para registrar un nuevo supervisor en el sistema.{% endif %}
                 </p>
             </div>
@@ -36,68 +36,79 @@
         <form method="POST" enctype="multipart/form-data" class="form-styled">
             {% csrf_token %}
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {% if form.errors %}
+            <div class="bg-[#f7e7e9] border border-[#f0cdd1] text-[#9f2431] px-5 py-4 rounded-[8px] text-[12px] shadow-sm mb-5">
+                <p class="font-bold mb-1 flex items-center gap-2">
+                    <i class="fa-solid fa-triangle-exclamation text-[#9f2431]"></i> Por favor corrige los siguientes errores:
+                </p>
+                <div class="text-[11px] text-[#9f2431] pl-6 font-medium">
+                    {{ form.errors }}
+                </div>
+            </div>
+            {% endif %}
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
 
                 <div class="md:col-span-2">
-                    <label class="block text-sm font-bold text-slate-700 mb-2">
-                        Empresa Asignada <span class="text-rose-500">*</span>
+                    <label class="block text-[12px] font-bold text-[#293137] mb-1.5">
+                        Empresa Asignada <span class="text-[#9f2431]">*</span>
                     </label>
                     {{ form.empresa }}
                     {% if form.empresa.errors %}
-                        <p class="text-xs text-rose-500 mt-1.5 font-medium">{{ form.empresa.errors.0 }}</p>
+                        <p class="text-[10px] text-[#9f2431] mt-1 font-bold">{{ form.empresa.errors.0 }}</p>
                     {% endif %}
                 </div>
 
                 <div>
-                    <label class="block text-sm font-bold text-slate-700 mb-2">
-                        Nombre Completo <span class="text-rose-500">*</span>
+                    <label class="block text-[12px] font-bold text-[#293137] mb-1.5">
+                        Nombre Completo <span class="text-[#9f2431]">*</span>
                     </label>
                     {{ form.nombre }}
                     {% if form.nombre.errors %}
-                        <p class="text-xs text-rose-500 mt-1.5 font-medium">{{ form.nombre.errors.0 }}</p>
+                        <p class="text-[10px] text-[#9f2431] mt-1 font-bold">{{ form.nombre.errors.0 }}</p>
                     {% endif %}
                 </div>
 
                 <div>
-                    <label class="block text-sm font-bold text-slate-700 mb-2">
+                    <label class="block text-[12px] font-bold text-[#293137] mb-1.5">
                         Cargo / Puesto
                     </label>
                     {{ form.cargo }}
                     {% if form.cargo.errors %}
-                        <p class="text-xs text-rose-500 mt-1.5 font-medium">{{ form.cargo.errors.0 }}</p>
+                        <p class="text-[10px] text-[#9f2431] mt-1 font-bold">{{ form.cargo.errors.0 }}</p>
                     {% endif %}
                 </div>
 
                 <div>
-                    <label class="block text-sm font-bold text-slate-700 mb-2">
+                    <label class="block text-[12px] font-bold text-[#293137] mb-1.5">
                         Correo Electrónico
                     </label>
                     {{ form.correo }}
                     {% if form.correo.errors %}
-                        <p class="text-xs text-rose-500 mt-1.5 font-medium">{{ form.correo.errors.0 }}</p>
+                        <p class="text-[10px] text-[#9f2431] mt-1 font-bold">{{ form.correo.errors.0 }}</p>
                     {% endif %}
                 </div>
 
                 <div>
-                    <label class="block text-sm font-bold text-slate-700 mb-2">
+                    <label class="block text-[12px] font-bold text-[#293137] mb-1.5">
                         Teléfono de Contacto
                     </label>
                     {{ form.telefono }}
                     {% if form.telefono.errors %}
-                        <p class="text-xs text-rose-500 mt-1.5 font-medium">{{ form.telefono.errors.0 }}</p>
+                        <p class="text-[10px] text-[#9f2431] mt-1 font-bold">{{ form.telefono.errors.0 }}</p>
                     {% endif %}
                 </div>
 
-                <div class="md:col-span-2 p-4 rounded-xl bg-slate-50/80 border border-slate-200/80 flex items-center justify-between">
+                <div class="md:col-span-2 p-4 rounded-[8px] bg-[#f5f3e8] border border-[#e7e7e2] flex items-center justify-between mt-2">
                     <div class="flex items-center gap-3">
-                        <div class="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center">
-                            <i class="fa-solid fa-power-off text-xs"></i>
+                        <div class="w-8 h-8 rounded-[6px] bg-[#e8f3f0] text-[#2f7d70] flex items-center justify-center">
+                            <i class="fa-solid fa-power-off text-[12px]"></i>
                         </div>
                         <div>
-                            <label class="text-sm font-bold text-slate-800 cursor-pointer">
+                            <label class="text-[12px] font-bold text-[#20262b] cursor-pointer">
                                 Supervisor Activo
                             </label>
-                            <p class="text-xs text-slate-500 font-medium">Determine si este supervisor estará disponible para la gestión de contratos.</p>
+                            <p class="text-[10px] text-[#737b80] font-medium">Determine si este supervisor estará disponible para la gestión de contratos.</p>
                         </div>
                     </div>
                     <div class="flex items-center gap-2">
@@ -107,15 +118,15 @@
 
             </div>
 
-            <div class="mt-8 pt-6 border-t border-slate-100 flex items-center justify-end gap-3">
+            <div class="mt-7 pt-5 border-t border-[#eeeeea] flex items-center justify-end gap-3">
                 <a href="{% url 'contracts:lista_supervisores' %}"
-                   class="px-5 py-2.5 rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-50 hover:text-slate-800 text-sm font-semibold transition-all">
+                   class="px-5 py-2.5 rounded-[8px] border border-[#e7e7e2] text-[#59636a] hover:bg-[#f5f3e8] hover:text-[#20262b] text-[12px] font-bold transition-all">
                     Cancelar
                 </a>
 
                 <button type="submit"
-                        class="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-xl transition-all shadow-[0_4px_14px_0_rgba(37,99,235,0.39)] hover:shadow-[0_6px_20px_rgba(37,99,235,0.23)] hover:-translate-y-0.5 flex items-center gap-2">
-                    <i class="fa-solid fa-floppy-disk text-xs"></i> Guardar Supervisor
+                        class="px-5 py-2.5 bg-[#0f4d7d] hover:bg-[#0c416b] text-white text-[12px] font-bold rounded-[8px] transition-all shadow-[0_4px_10px_rgba(15,77,125,0.2)] hover:shadow-[0_6px_15px_rgba(15,77,125,0.25)] hover:-translate-y-0.5 flex items-center gap-2">
+                    <i class="fa-solid fa-floppy-disk text-[11px]"></i> Guardar Supervisor
                 </button>
             </div>
 
@@ -132,14 +143,14 @@
     .form-styled input[type="number"],
     .form-styled select,
     .form-styled textarea {
-        width: 100%;
-        padding: 0.625rem 1rem;
-        background-color: #f8fafc;
-        border: 1px solid #e2e8f0;
-        border-radius: 0.75rem;
-        font-size: 0.875rem;
-        color: #0f172a;
-        transition: all 0.2s ease-in-out;
+        width: 100% !important;
+        padding: 0.5rem 0.875rem !important;
+        background-color: #f5f3e8 !important;
+        border: 1px solid #e7e7e2 !important;
+        border-radius: 8px !important;
+        font-size: 13px !important;
+        color: #20262b !important;
+        transition: all 0.2s ease-in-out !important;
     }
 
     .form-styled input[type="text"]:focus,
@@ -148,23 +159,23 @@
     .form-styled input[type="number"]:focus,
     .form-styled select:focus,
     .form-styled textarea:focus {
-        outline: none;
-        background-color: #ffffff;
-        border-color: #2563eb;
-        box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+        outline: none !important;
+        background-color: #ffffff !important;
+        border-color: #0f4d7d !important;
+        box-shadow: 0 0 0 3px rgba(15, 77, 125, 0.15) !important;
     }
 
     .form-styled textarea {
-        min-height: 100px;
-        resize: vertical;
+        min-height: 90px !important;
+        resize: vertical !important;
     }
 
     .form-styled input[type="checkbox"] {
-        width: 1.25rem;
-        height: 1.25rem;
-        accent-color: #2563eb;
-        border-radius: 0.375rem;
-        cursor: pointer;
+        width: 1.125rem !important;
+        height: 1.125rem !important;
+        accent-color: #0f4d7d !important;
+        border-radius: 4px !important;
+        cursor: pointer !important;
     }
 </style>
 {% endblock %}

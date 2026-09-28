@@ -3,358 +3,355 @@
 {% block header_title %}Dashboard Principal{% endblock %}
 
 {% block content %}
-<div class="space-y-8">
+<div class="space-y-6">
     <!-- ENCABEZADO -->
     <div>
-        <h2 class="text-3xl font-bold text-slate-800 tracking-tight">Gestión Contractual</h2>
-        <p class="text-slate-500 mt-1 text-sm font-medium">Resumen general del estado de los contratos y su documentación.</p>
+        <h2 class="text-[15px] font-bold text-[#20262b] tracking-tight">Gestión Contractual</h2>
+        <p class="text-[#737b80] mt-0.5 text-[10px] font-medium">Resumen general del estado de los contratos y su documentación.</p>
     </div>
 
     <!-- RESUMEN INTERACTIVO DE CONTRATOS -->
     <div>
-        <div class="mb-5">
-            <h3 class="text-xl font-bold text-slate-800">Resumen de Contratos</h3>
-            <p class="text-sm text-slate-500 mt-0.5">Selecciona una categoría para consultar sus contratos.</p>
+        <div class="mb-3 border-b border-[#e7e7e2] pb-3">
+            <h3 class="text-[12px] font-bold text-[#293137]">Resumen de Contratos</h3>
+            <p class="text-[9px] text-[#737b80] mt-0.5">Selecciona una categoría para consultar sus contratos.</p>
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <!-- 4 TARJETAS PRINCIPALES -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-[14px]">
             
             <!-- TOTAL -->
-            <button type="button" onclick="mostrarPanelContratos('total', this)" data-titulo="Total de Contratos" data-desc="Contratos actuales dentro de la gestión contractual." data-color="blue" class="dashboard-card group text-left relative overflow-hidden bg-gradient-to-br from-blue-600 to-blue-800 rounded-2xl shadow-[0_10px_20px_-10px_rgba(37,99,235,0.5)] p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_15px_30px_-10px_rgba(37,99,235,0.6)] focus:outline-none focus:ring-4 focus:ring-blue-300/50">
-                <div class="absolute -right-6 -top-6 w-24 h-24 bg-white/10 rounded-full blur-2xl group-hover:scale-150 transition-transform duration-700"></div>
+            <button type="button" onclick="mostrarPanelContratos('total', this)" data-titulo="Total de Contratos" data-desc="Contratos actuales dentro de la gestión contractual." data-color="blue" class="dashboard-card group text-left relative overflow-hidden bg-[#0f4d7d] rounded-[11px] shadow-[0_2px_8px_rgba(30,42,48,0.10)] p-[17px_18px] min-h-[108px] transition-all duration-300 hover:-translate-y-1 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-[#0f4d7d]/50">
                 <div class="relative z-10 flex flex-col h-full justify-between">
-                    <div class="flex justify-between items-start mb-4">
-                        <p class="text-sm font-medium text-blue-100">Total Contratos</p>
-                        <i class="fa-solid fa-file-contract text-white/50 text-2xl"></i>
+                    <div class="flex justify-between items-start mb-2">
+                        <p class="text-[10px] font-medium text-white/90">Total Contratos</p>
+                        <i class="fa-solid fa-file-contract text-white/50 text-[13px]"></i>
                     </div>
                     <div>
-                        <p class="text-4xl font-bold text-white mb-1">{{ total_contratos }}</p>
-                        <p class="text-xs text-blue-200 uppercase tracking-wider font-semibold opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center gap-1"><i class="fa-solid fa-arrow-right"></i> Ver Lista</p>
+                        <p class="text-[27px] font-bold text-white mb-1 leading-none">{{ total_contratos }}</p>
+                        <p class="text-[9px] text-blue-200 uppercase tracking-wider font-semibold opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center gap-1"><i class="fa-solid fa-arrow-right"></i> Ver Lista</p>
                     </div>
                 </div>
             </button>
 
             <!-- ACTIVOS -->
-            <button type="button" onclick="mostrarPanelContratos('activos', this)" data-titulo="Contratos Activos" data-desc="Contratos actualmente vigentes y en ejecución." data-color="emerald" class="dashboard-card group text-left relative overflow-hidden bg-gradient-to-br from-emerald-500 to-emerald-700 rounded-2xl shadow-[0_10px_20px_-10px_rgba(16,185,129,0.5)] p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_15px_30px_-10px_rgba(16,185,129,0.6)] focus:outline-none focus:ring-4 focus:ring-emerald-300/50">
-                <div class="absolute -right-6 -top-6 w-24 h-24 bg-white/10 rounded-full blur-2xl group-hover:scale-150 transition-transform duration-700"></div>
+            <button type="button" onclick="mostrarPanelContratos('activos', this)" data-titulo="Contratos Activos" data-desc="Contratos actualmente vigentes y en ejecución." data-color="emerald" class="dashboard-card group text-left relative overflow-hidden bg-[#2f7d70] rounded-[11px] shadow-[0_2px_8px_rgba(30,42,48,0.10)] p-[17px_18px] min-h-[108px] transition-all duration-300 hover:-translate-y-1 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-[#2f7d70]/50">
                 <div class="relative z-10 flex flex-col h-full justify-between">
-                    <div class="flex justify-between items-start mb-4">
-                        <p class="text-sm font-medium text-emerald-100">Activos</p>
-                        <i class="fa-solid fa-circle-check text-white/50 text-2xl"></i>
+                    <div class="flex justify-between items-start mb-2">
+                        <p class="text-[10px] font-medium text-white/90">Activos</p>
+                        <i class="fa-solid fa-circle-check text-white/50 text-[13px]"></i>
                     </div>
                     <div>
-                        <p class="text-4xl font-bold text-white mb-1">{{ contratos_activos }}</p>
-                        <p class="text-xs text-emerald-200 uppercase tracking-wider font-semibold opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center gap-1"><i class="fa-solid fa-arrow-right"></i> Ver Lista</p>
+                        <p class="text-[27px] font-bold text-white mb-1 leading-none">{{ contratos_activos }}</p>
+                        <p class="text-[9px] text-emerald-200 uppercase tracking-wider font-semibold opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center gap-1"><i class="fa-solid fa-arrow-right"></i> Ver Lista</p>
                     </div>
                 </div>
             </button>
 
             <!-- POR VENCER -->
-            <button type="button" onclick="mostrarPanelContratos('por_vencer', this)" data-titulo="Próximos a Vencer" data-desc="Contratos con vencimiento dentro de los próximos 90 días." data-color="amber" class="dashboard-card group text-left relative overflow-hidden bg-gradient-to-br from-amber-500 to-orange-600 rounded-2xl shadow-[0_10px_20px_-10px_rgba(245,158,11,0.5)] p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_15px_30px_-10px_rgba(245,158,11,0.6)] focus:outline-none focus:ring-4 focus:ring-amber-300/50">
-                <div class="absolute -right-6 -top-6 w-24 h-24 bg-white/10 rounded-full blur-2xl group-hover:scale-150 transition-transform duration-700"></div>
+            <button type="button" onclick="mostrarPanelContratos('por_vencer', this)" data-titulo="Próximos a Vencer" data-desc="Contratos con vencimiento dentro de los próximos 90 días." data-color="amber" class="dashboard-card group text-left relative overflow-hidden bg-[#c29135] rounded-[11px] shadow-[0_2px_8px_rgba(30,42,48,0.10)] p-[17px_18px] min-h-[108px] transition-all duration-300 hover:-translate-y-1 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-[#c29135]/50">
                 <div class="relative z-10 flex flex-col h-full justify-between">
-                    <div class="flex justify-between items-start mb-4">
-                        <p class="text-sm font-medium text-amber-100">Por Vencer</p>
-                        <i class="fa-solid fa-clock text-white/50 text-2xl"></i>
+                    <div class="flex justify-between items-start mb-2">
+                        <p class="text-[10px] font-medium text-white/90">Por Vencer</p>
+                        <i class="fa-solid fa-clock text-white/50 text-[13px]"></i>
                     </div>
                     <div>
-                        <p class="text-4xl font-bold text-white mb-1">{{ contratos_por_vencer }}</p>
-                        <p class="text-xs text-amber-200 uppercase tracking-wider font-semibold opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center gap-1"><i class="fa-solid fa-arrow-right"></i> Ver Lista</p>
+                        <p class="text-[27px] font-bold text-white mb-1 leading-none">{{ contratos_por_vencer }}</p>
+                        <p class="text-[9px] text-amber-200 uppercase tracking-wider font-semibold opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center gap-1"><i class="fa-solid fa-arrow-right"></i> Ver Lista</p>
                     </div>
                 </div>
             </button>
 
             <!-- VENCIDOS -->
-            <button type="button" onclick="mostrarPanelContratos('vencidos', this)" data-titulo="Contratos Vencidos" data-desc="Contratos que ya superaron su fecha de vencimiento." data-color="red" class="dashboard-card group text-left relative overflow-hidden bg-gradient-to-br from-rose-500 to-red-700 rounded-2xl shadow-[0_10px_20px_-10px_rgba(225,29,72,0.5)] p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_15px_30px_-10px_rgba(225,29,72,0.6)] focus:outline-none focus:ring-4 focus:ring-rose-300/50">
-                <div class="absolute -right-6 -top-6 w-24 h-24 bg-white/10 rounded-full blur-2xl group-hover:scale-150 transition-transform duration-700"></div>
+            <button type="button" onclick="mostrarPanelContratos('vencidos', this)" data-titulo="Contratos Vencidos" data-desc="Contratos que ya superaron su fecha de vencimiento." data-color="red" class="dashboard-card group text-left relative overflow-hidden bg-[#9f2431] rounded-[11px] shadow-[0_2px_8px_rgba(30,42,48,0.10)] p-[17px_18px] min-h-[108px] transition-all duration-300 hover:-translate-y-1 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-[#9f2431]/50">
                 <div class="relative z-10 flex flex-col h-full justify-between">
-                    <div class="flex justify-between items-start mb-4">
-                        <p class="text-sm font-medium text-rose-100">Vencidos</p>
-                        <i class="fa-solid fa-triangle-exclamation text-white/50 text-2xl"></i>
+                    <div class="flex justify-between items-start mb-2">
+                        <p class="text-[10px] font-medium text-white/90">Vencidos</p>
+                        <i class="fa-solid fa-triangle-exclamation text-white/50 text-[13px]"></i>
                     </div>
                     <div>
-                        <p class="text-4xl font-bold text-white mb-1">{{ contratos_vencidos }}</p>
-                        <p class="text-xs text-rose-200 uppercase tracking-wider font-semibold opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center gap-1"><i class="fa-solid fa-arrow-right"></i> Ver Lista</p>
+                        <p class="text-[27px] font-bold text-white mb-1 leading-none">{{ contratos_vencidos }}</p>
+                        <p class="text-[9px] text-red-200 uppercase tracking-wider font-semibold opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center gap-1"><i class="fa-solid fa-arrow-right"></i> Ver Lista</p>
                     </div>
                 </div>
             </button>
         </div>
 
-        <!-- METRICAS SECUNDARIAS -->
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 mt-6">
+        <!-- 3 METRICAS SECUNDARIAS -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-[14px] mt-[14px]">
             
-            <button type="button" onclick="mostrarPanelContratos('documentacion', this)" data-titulo="Documentación Pendiente" data-desc="Contratos actuales que requieren documentación." data-color="yellow" class="dashboard-card group text-left bg-white rounded-2xl shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] border border-slate-100 p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:border-yellow-200 focus:outline-none focus:ring-4 focus:ring-yellow-100">
-                <div class="flex items-center gap-5">
-                    <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-yellow-50 to-yellow-100 flex items-center justify-center transition-transform duration-300 group-hover:scale-110 shadow-inner">
-                        <i class="fa-solid fa-folder-open text-yellow-600 text-2xl"></i>
+            <button type="button" onclick="mostrarPanelContratos('documentacion', this)" data-titulo="Documentación Pendiente" data-desc="Contratos actuales que requieren documentación." data-color="blue_light" class="dashboard-card group text-left bg-white rounded-[11px] border border-[#e7e7e2] shadow-[0_2px_8px_rgba(30,42,48,0.06)] p-[14px_16px] min-h-[70px] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-[#0f4d7d]/20">
+                <div class="flex items-center gap-4">
+                    <div class="w-[38px] h-[38px] rounded-[9px] bg-[#e8f0f6] text-[#0f4d7d] flex items-center justify-center transition-transform duration-300 group-hover:scale-105">
+                        <i class="fa-solid fa-folder-open text-[15px]"></i>
                     </div>
                     <div>
-                        <p class="text-sm font-medium text-slate-500">Docs. Pendientes</p>
-                        <p class="text-2xl font-bold text-slate-800">{{ contratos_pendientes_documentacion }}</p>
-                        <p class="text-[10px] text-yellow-600 uppercase tracking-widest font-bold mt-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300">Revisar</p>
+                        <p class="text-[9px] font-medium text-[#737b80]">Docs. Pendientes</p>
+                        <p class="text-[20px] font-bold text-[#20262b] leading-none mt-0.5">{{ contratos_pendientes_documentacion }}</p>
                     </div>
                 </div>
             </button>
 
-            <button type="button" onclick="mostrarPanelContratos('renovados', this)" data-titulo="Contratos Renovados" data-desc="Historial de contratos que fueron renovados." data-color="purple" class="dashboard-card group text-left bg-white rounded-2xl shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] border border-slate-100 p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:border-purple-200 focus:outline-none focus:ring-4 focus:ring-purple-100">
-                <div class="flex items-center gap-5">
-                    <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-purple-50 to-purple-100 flex items-center justify-center transition-transform duration-300 group-hover:scale-110 shadow-inner">
-                        <i class="fa-solid fa-rotate text-purple-600 text-2xl"></i>
+            <button type="button" onclick="mostrarPanelContratos('renovados', this)" data-titulo="Contratos Renovados" data-desc="Historial de contratos que fueron renovados." data-color="emerald_light" class="dashboard-card group text-left bg-white rounded-[11px] border border-[#e7e7e2] shadow-[0_2px_8px_rgba(30,42,48,0.06)] p-[14px_16px] min-h-[70px] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-[#2f7d70]/20">
+                <div class="flex items-center gap-4">
+                    <div class="w-[38px] h-[38px] rounded-[9px] bg-[#e8f3f0] text-[#2f7d70] flex items-center justify-center transition-transform duration-300 group-hover:scale-105">
+                        <i class="fa-solid fa-rotate text-[15px]"></i>
                     </div>
                     <div>
-                        <p class="text-sm font-medium text-slate-500">Renovados</p>
-                        <p class="text-2xl font-bold text-slate-800">{{ contratos_renovados }}</p>
-                        <p class="text-[10px] text-purple-600 uppercase tracking-widest font-bold mt-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300">Historial</p>
+                        <p class="text-[9px] font-medium text-[#737b80]">Renovados</p>
+                        <p class="text-[20px] font-bold text-[#20262b] leading-none mt-0.5">{{ contratos_renovados }}</p>
                     </div>
                 </div>
             </button>
 
-            <button type="button" onclick="mostrarPanelContratos('finalizados', this)" data-titulo="Contratos Finalizados" data-desc="Histórico de contratos cerrados definitivamente." data-color="slate" class="dashboard-card group text-left bg-white rounded-2xl shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] border border-slate-100 p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:border-slate-300 focus:outline-none focus:ring-4 focus:ring-slate-200">
-                <div class="flex items-center gap-5">
-                    <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-slate-100 to-slate-200 flex items-center justify-center transition-transform duration-300 group-hover:scale-110 shadow-inner">
-                        <i class="fa-solid fa-flag-checkered text-slate-600 text-2xl"></i>
+            <button type="button" onclick="mostrarPanelContratos('finalizados', this)" data-titulo="Contratos Finalizados" data-desc="Histórico de contratos cerrados definitivamente." data-color="slate_light" class="dashboard-card group text-left bg-white rounded-[11px] border border-[#e7e7e2] shadow-[0_2px_8px_rgba(30,42,48,0.06)] p-[14px_16px] min-h-[70px] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-[#59636a]/20">
+                <div class="flex items-center gap-4">
+                    <div class="w-[38px] h-[38px] rounded-[9px] bg-[#f0f0ed] text-[#59636a] flex items-center justify-center transition-transform duration-300 group-hover:scale-105">
+                        <i class="fa-solid fa-flag-checkered text-[15px]"></i>
                     </div>
                     <div>
-                        <p class="text-sm font-medium text-slate-500">Finalizados</p>
-                        <p class="text-2xl font-bold text-slate-800">{{ contratos_finalizados }}</p>
-                        <p class="text-[10px] text-slate-600 uppercase tracking-widest font-bold mt-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300">Archivo</p>
+                        <p class="text-[9px] font-medium text-[#737b80]">Finalizados</p>
+                        <p class="text-[20px] font-bold text-[#20262b] leading-none mt-0.5">{{ contratos_finalizados }}</p>
                     </div>
                 </div>
             </button>
         </div>
 
-        <!-- PANEL INTERACTIVO VISIBLE -->
-        <div id="panel-contratos" class="hidden mt-8 bg-white rounded-2xl shadow-[0_8px_30px_rgba(0,0,0,0.12)] border border-slate-200 overflow-hidden transform transition-all">
-            <div class="px-8 py-6 bg-slate-50/80 backdrop-blur-sm border-b border-slate-200 flex items-center justify-between">
+        <!-- PANEL INTERACTIVO VISIBLE (TABLAS) -->
+        <div id="panel-contratos" class="hidden mt-6 bg-white rounded-[11px] shadow-[0_4px_15px_rgba(30,42,48,0.08)] border border-[#e7e7e2] overflow-hidden transform transition-all">
+            <div class="px-6 py-4 bg-[#f5f3e8] border-b border-[#e7e7e2] flex items-center justify-between">
                 <div>
-                    <h3 id="panel-titulo" class="text-xl font-bold text-slate-900 tracking-tight">Contratos</h3>
-                    <p id="panel-descripcion" class="text-sm text-slate-500 mt-1 font-medium">Selecciona una categoría.</p>
+                    <h3 id="panel-titulo" class="text-[14px] font-bold text-[#293137] tracking-tight">Contratos</h3>
+                    <p id="panel-descripcion" class="text-[10px] text-[#737b80] mt-0.5 font-medium">Selecciona una categoría.</p>
                 </div>
-                <button type="button" onclick="cerrarPanelContratos()" class="w-10 h-10 rounded-full bg-white border border-slate-200 text-slate-400 hover:text-rose-500 hover:border-rose-200 hover:bg-rose-50 transition-all shadow-sm flex items-center justify-center focus:outline-none">
-                    <i class="fa-solid fa-xmark text-lg"></i>
+                <button type="button" onclick="cerrarPanelContratos()" class="w-8 h-8 rounded-lg bg-white border border-[#e7e7e2] text-[#737b80] hover:text-[#9f2431] hover:border-[#f7e7e9] hover:bg-[#f7e7e9] transition-all shadow-sm flex items-center justify-center focus:outline-none">
+                    <i class="fa-solid fa-xmark text-[14px]"></i>
                 </button>
             </div>
-            <div id="panel-contenido" class="p-8"></div>
+            <div id="panel-contenido" class="p-6 bg-white"></div>
         </div>
     </div>
     
-    <!-- DATOS OCULTOS PARA EL PANEL -->
+    <!-- DATOS OCULTOS PARA EL PANEL (TABLAS REDISEÑADAS) -->
     <div id="datos-dashboard" class="hidden">
         
         <div data-panel="total">
-            <div class="mb-6"><p class="text-sm font-medium text-slate-500">{{ total_contratos }} contratos actuales vigentes.</p></div>
+            <div class="mb-4"><p class="text-[11px] font-medium text-[#737b80]">{{ total_contratos }} contratos actuales vigentes.</p></div>
             {% if contratos_actuales %}
-            <div class="overflow-hidden border border-slate-200 rounded-xl shadow-sm">
+            <div class="overflow-hidden border border-[#e7e7e2] rounded-[8px] shadow-sm">
                 <div class="overflow-x-auto">
-                    <table class="w-full text-sm text-left"><thead class="bg-slate-50/80 border-b border-slate-200">
-                        <tr>
-                            <th class="px-6 py-4 font-semibold text-slate-600 uppercase tracking-wider text-[11px]">Contrato</th>
-                            <th class="px-6 py-4 font-semibold text-slate-600 uppercase tracking-wider text-[11px]">Tercero</th>
-                            <th class="px-6 py-4 font-semibold text-slate-600 uppercase tracking-wider text-[11px]">Estado</th>
-                            <th class="px-6 py-4 font-semibold text-slate-600 uppercase tracking-wider text-[11px]">Vencimiento</th>
-                            <th class="px-6 py-4 font-semibold text-slate-600 uppercase tracking-wider text-[11px] text-right">Acción</th>
-                        </tr>
-                    </thead><tbody class="divide-y divide-slate-100">
-                        {% for contrato in contratos_actuales %}
-                        <tr class="hover:bg-slate-50/50 transition-colors">
-                            <td class="px-6 py-4 font-medium text-slate-900">{{ contrato.numero_contrato }}</td>
-                            <td class="px-6 py-4 text-slate-600">{% if contrato.tercero %}{{ contrato.tercero.nombre }}{% else %}{{ contrato.empresa }}{% endif %}</td>
-                            <td class="px-6 py-4">
-                                {% if contrato.estado == "ACTIVO" %}<span class="inline-flex px-2.5 py-1 rounded-full bg-emerald-100 border border-emerald-200 text-emerald-700 text-[10px] uppercase font-bold tracking-wider">Activo</span>
-                                {% elif contrato.fecha_fin < hoy %}<span class="inline-flex px-2.5 py-1 rounded-full bg-rose-100 border border-rose-200 text-rose-700 text-[10px] uppercase font-bold tracking-wider">Vencido</span>
-                                {% else %}<span class="inline-flex px-2.5 py-1 rounded-full bg-amber-100 border border-amber-200 text-amber-700 text-[10px] uppercase font-bold tracking-wider">Próximo</span>{% endif %}
-                            </td>
-                            <td class="px-6 py-4 font-medium text-slate-600">{{ contrato.fecha_fin|date:"d/m/Y" }}</td>
-                            <td class="px-6 py-4 text-right"><a href="{% url 'contracts:detalle_contrato' contrato.id %}" class="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white font-semibold transition-colors" title="Ver Detalle"><i class="fa-regular fa-eye"></i></a></td>
-                        </tr>
-                        {% endfor %}
-                    </tbody></table>
+                    <table class="w-full text-[11px] text-left">
+                        <thead class="bg-[#f5f3e8] border-b border-[#e7e7e2]">
+                            <tr>
+                                <th class="px-5 py-3 font-semibold text-[#59636a] uppercase tracking-wider text-[10px]">Contrato</th>
+                                <th class="px-5 py-3 font-semibold text-[#59636a] uppercase tracking-wider text-[10px]">Tercero</th>
+                                <th class="px-5 py-3 font-semibold text-[#59636a] uppercase tracking-wider text-[10px]">Estado</th>
+                                <th class="px-5 py-3 font-semibold text-[#59636a] uppercase tracking-wider text-[10px]">Vencimiento</th>
+                                <th class="px-5 py-3 font-semibold text-[#59636a] uppercase tracking-wider text-[10px] text-right">Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-[#e7e7e2]">
+                            {% for contrato in contratos_actuales %}
+                            <tr class="hover:bg-[#fafaf7] transition-colors">
+                                <td class="px-5 py-3 font-bold text-[#20262b]">{{ contrato.numero_contrato }}</td>
+                                <td class="px-5 py-3 text-[#59636a]">{% if contrato.tercero %}{{ contrato.tercero.nombre }}{% else %}{{ contrato.empresa }}{% endif %}</td>
+                                <td class="px-5 py-3">
+                                    {% if contrato.estado == "ACTIVO" %}<span class="inline-flex px-2 py-0.5 rounded-[4px] bg-[#e8f3f0] border border-[#cce4dd] text-[#2f7d70] text-[9px] uppercase font-bold tracking-wider">Activo</span>
+                                    {% elif contrato.fecha_fin < hoy %}<span class="inline-flex px-2 py-0.5 rounded-[4px] bg-[#f7e7e9] border border-[#f0cdd1] text-[#9f2431] text-[9px] uppercase font-bold tracking-wider">Vencido</span>
+                                    {% else %}<span class="inline-flex px-2 py-0.5 rounded-[4px] bg-[#f6eee0] border border-[#ead9bd] text-[#c29135] text-[9px] uppercase font-bold tracking-wider">Próximo</span>{% endif %}
+                                </td>
+                                <td class="px-5 py-3 font-medium text-[#59636a]">{{ contrato.fecha_fin|date:"d/m/Y" }}</td>
+                                <td class="px-5 py-3 text-right"><a href="{% url 'contracts:detalle_contrato' contrato.id %}" class="inline-flex items-center justify-center w-7 h-7 rounded-[6px] bg-[#e8f0f6] text-[#0f4d7d] hover:bg-[#0f4d7d] hover:text-white transition-colors"><i class="fa-regular fa-eye text-[12px]"></i></a></td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
                 </div>
             </div>
-            {% else %}<div class="text-center py-12 text-slate-500 bg-slate-50 rounded-xl border border-dashed border-slate-300"><i class="fa-solid fa-file-circle-xmark text-4xl mb-3 text-slate-300"></i><p class="font-medium text-slate-600">No hay contratos actuales.</p></div>{% endif %}
+            {% else %}<div class="text-center py-8 text-[#737b80] bg-[#fafaf7] rounded-[8px] border border-dashed border-[#e7e7e2]"><i class="fa-solid fa-file-circle-xmark text-[24px] mb-2 opacity-50"></i><p class="font-medium text-[11px]">No hay contratos actuales.</p></div>{% endif %}
         </div>
 
         <div data-panel="activos">
-            <div class="mb-6"><p class="text-sm font-medium text-slate-500">{{ contratos_activos }} contratos activos en ejecución.</p></div>
+            <div class="mb-4"><p class="text-[11px] font-medium text-[#737b80]">{{ contratos_activos }} contratos activos en ejecución.</p></div>
             {% if contratos_activos_lista %}
-            <div class="overflow-hidden border border-slate-200 rounded-xl shadow-sm">
+            <div class="overflow-hidden border border-[#e7e7e2] rounded-[8px] shadow-sm">
                 <div class="overflow-x-auto">
-                    <table class="w-full text-sm text-left"><thead class="bg-emerald-50/50 border-b border-emerald-100">
+                    <table class="w-full text-[11px] text-left"><thead class="bg-[#f5f3e8] border-b border-[#e7e7e2]">
                         <tr>
-                            <th class="px-6 py-4 font-semibold text-emerald-800 uppercase tracking-wider text-[11px]">Contrato</th>
-                            <th class="px-6 py-4 font-semibold text-emerald-800 uppercase tracking-wider text-[11px]">Tercero</th>
-                            <th class="px-6 py-4 font-semibold text-emerald-800 uppercase tracking-wider text-[11px]">Tipo</th>
-                            <th class="px-6 py-4 font-semibold text-emerald-800 uppercase tracking-wider text-[11px]">Vencimiento</th>
-                            <th class="px-6 py-4 font-semibold text-emerald-800 uppercase tracking-wider text-[11px] text-right">Acción</th>
+                            <th class="px-5 py-3 font-semibold text-[#59636a] uppercase tracking-wider text-[10px]">Contrato</th>
+                            <th class="px-5 py-3 font-semibold text-[#59636a] uppercase tracking-wider text-[10px]">Tercero</th>
+                            <th class="px-5 py-3 font-semibold text-[#59636a] uppercase tracking-wider text-[10px]">Tipo</th>
+                            <th class="px-5 py-3 font-semibold text-[#59636a] uppercase tracking-wider text-[10px]">Vencimiento</th>
+                            <th class="px-5 py-3 font-semibold text-[#59636a] uppercase tracking-wider text-[10px] text-right">Acción</th>
                         </tr>
-                    </thead><tbody class="divide-y divide-slate-100">
+                    </thead><tbody class="divide-y divide-[#e7e7e2]">
                         {% for contrato in contratos_activos_lista %}
-                        <tr class="hover:bg-slate-50/50 transition-colors">
-                            <td class="px-6 py-4 font-medium text-slate-900">{{ contrato.numero_contrato }}</td>
-                            <td class="px-6 py-4 text-slate-600">{% if contrato.tercero %}{{ contrato.tercero.nombre }}{% else %}{{ contrato.empresa }}{% endif %}</td>
-                            <td class="px-6 py-4 text-slate-600">{{ contrato.tipo_contrato.nombre }}</td>
-                            <td class="px-6 py-4 font-medium text-emerald-600">{{ contrato.fecha_fin|date:"d/m/Y" }}</td>
-                            <td class="px-6 py-4 text-right"><a href="{% url 'contracts:detalle_contrato' contrato.id %}" class="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 hover:bg-emerald-600 hover:text-white font-semibold transition-colors" title="Ver Detalle"><i class="fa-regular fa-eye"></i></a></td>
+                        <tr class="hover:bg-[#fafaf7] transition-colors">
+                            <td class="px-5 py-3 font-bold text-[#20262b]">{{ contrato.numero_contrato }}</td>
+                            <td class="px-5 py-3 text-[#59636a]">{% if contrato.tercero %}{{ contrato.tercero.nombre }}{% else %}{{ contrato.empresa }}{% endif %}</td>
+                            <td class="px-5 py-3 text-[#59636a]">{{ contrato.tipo_contrato.nombre }}</td>
+                            <td class="px-5 py-3 font-bold text-[#2f7d70]">{{ contrato.fecha_fin|date:"d/m/Y" }}</td>
+                            <td class="px-5 py-3 text-right"><a href="{% url 'contracts:detalle_contrato' contrato.id %}" class="inline-flex items-center justify-center w-7 h-7 rounded-[6px] bg-[#e8f3f0] text-[#2f7d70] hover:bg-[#2f7d70] hover:text-white transition-colors"><i class="fa-regular fa-eye text-[12px]"></i></a></td>
                         </tr>
                         {% endfor %}
                     </tbody></table>
                 </div>
             </div>
-            {% else %}<div class="text-center py-12 text-slate-500 bg-slate-50 rounded-xl border border-dashed border-slate-300"><i class="fa-solid fa-circle-check text-4xl text-emerald-300 mb-3"></i><p class="font-medium text-slate-600">No hay contratos activos.</p></div>{% endif %}
+            {% else %}<div class="text-center py-8 text-[#737b80] bg-[#fafaf7] rounded-[8px] border border-dashed border-[#e7e7e2]"><p class="font-medium text-[11px]">No hay contratos activos.</p></div>{% endif %}
         </div>
 
         <div data-panel="por_vencer">
-            <div class="mb-6"><p class="text-sm font-medium text-slate-500">{{ contratos_por_vencer }} contratos próximos a vencer (90 días).</p></div>
+            <div class="mb-4"><p class="text-[11px] font-medium text-[#737b80]">{{ contratos_por_vencer }} contratos próximos a vencer (90 días).</p></div>
             {% if contratos_por_vencer_lista %}
-            <div class="overflow-hidden border border-slate-200 rounded-xl shadow-sm">
+            <div class="overflow-hidden border border-[#e7e7e2] rounded-[8px] shadow-sm">
                 <div class="overflow-x-auto">
-                    <table class="w-full text-sm text-left"><thead class="bg-amber-50/50 border-b border-amber-100">
+                    <table class="w-full text-[11px] text-left"><thead class="bg-[#f5f3e8] border-b border-[#e7e7e2]">
                         <tr>
-                            <th class="px-6 py-4 font-semibold text-amber-800 uppercase tracking-wider text-[11px]">Contrato</th>
-                            <th class="px-6 py-4 font-semibold text-amber-800 uppercase tracking-wider text-[11px]">Tercero</th>
-                            <th class="px-6 py-4 font-semibold text-amber-800 uppercase tracking-wider text-[11px]">Tipo</th>
-                            <th class="px-6 py-4 font-semibold text-amber-800 uppercase tracking-wider text-[11px]">Vencimiento</th>
-                            <th class="px-6 py-4 font-semibold text-amber-800 uppercase tracking-wider text-[11px] text-right">Acción</th>
+                            <th class="px-5 py-3 font-semibold text-[#59636a] uppercase tracking-wider text-[10px]">Contrato</th>
+                            <th class="px-5 py-3 font-semibold text-[#59636a] uppercase tracking-wider text-[10px]">Tercero</th>
+                            <th class="px-5 py-3 font-semibold text-[#59636a] uppercase tracking-wider text-[10px]">Tipo</th>
+                            <th class="px-5 py-3 font-semibold text-[#59636a] uppercase tracking-wider text-[10px]">Vencimiento</th>
+                            <th class="px-5 py-3 font-semibold text-[#59636a] uppercase tracking-wider text-[10px] text-right">Acción</th>
                         </tr>
-                    </thead><tbody class="divide-y divide-slate-100">
+                    </thead><tbody class="divide-y divide-[#e7e7e2]">
                         {% for contrato in contratos_por_vencer_lista %}
-                        <tr class="hover:bg-slate-50/50 transition-colors">
-                            <td class="px-6 py-4 font-medium text-slate-900">{{ contrato.numero_contrato }}</td>
-                            <td class="px-6 py-4 text-slate-600">{% if contrato.tercero %}{{ contrato.tercero.nombre }}{% else %}{{ contrato.empresa }}{% endif %}</td>
-                            <td class="px-6 py-4 text-slate-600">{{ contrato.tipo_contrato.nombre }}</td>
-                            <td class="px-6 py-4 font-bold text-amber-600">{{ contrato.fecha_fin|date:"d/m/Y" }}</td>
-                            <td class="px-6 py-4 text-right"><a href="{% url 'contracts:detalle_contrato' contrato.id %}" class="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-amber-50 text-amber-600 hover:bg-amber-500 hover:text-white font-semibold transition-colors" title="Ver Detalle"><i class="fa-regular fa-eye"></i></a></td>
+                        <tr class="hover:bg-[#fafaf7] transition-colors">
+                            <td class="px-5 py-3 font-bold text-[#20262b]">{{ contrato.numero_contrato }}</td>
+                            <td class="px-5 py-3 text-[#59636a]">{% if contrato.tercero %}{{ contrato.tercero.nombre }}{% else %}{{ contrato.empresa }}{% endif %}</td>
+                            <td class="px-5 py-3 text-[#59636a]">{{ contrato.tipo_contrato.nombre }}</td>
+                            <td class="px-5 py-3 font-bold text-[#c29135]">{{ contrato.fecha_fin|date:"d/m/Y" }}</td>
+                            <td class="px-5 py-3 text-right"><a href="{% url 'contracts:detalle_contrato' contrato.id %}" class="inline-flex items-center justify-center w-7 h-7 rounded-[6px] bg-[#f6eee0] text-[#c29135] hover:bg-[#c29135] hover:text-white transition-colors"><i class="fa-regular fa-eye text-[12px]"></i></a></td>
                         </tr>
                         {% endfor %}
                     </tbody></table>
                 </div>
             </div>
-            {% else %}<div class="text-center py-12 text-slate-500 bg-slate-50 rounded-xl border border-dashed border-slate-300"><i class="fa-solid fa-calendar-check text-4xl text-emerald-300 mb-3"></i><p class="font-medium text-slate-600">No hay contratos próximos a vencer.</p></div>{% endif %}
+            {% else %}<div class="text-center py-8 text-[#737b80] bg-[#fafaf7] rounded-[8px] border border-dashed border-[#e7e7e2]"><p class="font-medium text-[11px]">No hay contratos próximos a vencer.</p></div>{% endif %}
         </div>
 
         <div data-panel="vencidos">
-            <div class="mb-6"><p class="text-sm font-medium text-slate-500">{{ contratos_vencidos }} contratos vencidos sin finalizar ni renovar.</p></div>
+            <div class="mb-4"><p class="text-[11px] font-medium text-[#737b80]">{{ contratos_vencidos }} contratos vencidos sin finalizar ni renovar.</p></div>
             {% if contratos_vencidos_lista %}
-            <div class="overflow-hidden border border-slate-200 rounded-xl shadow-sm">
+            <div class="overflow-hidden border border-[#e7e7e2] rounded-[8px] shadow-sm">
                 <div class="overflow-x-auto">
-                    <table class="w-full text-sm text-left"><thead class="bg-rose-50/50 border-b border-rose-100">
+                    <table class="w-full text-[11px] text-left"><thead class="bg-[#f5f3e8] border-b border-[#e7e7e2]">
                         <tr>
-                            <th class="px-6 py-4 font-semibold text-rose-800 uppercase tracking-wider text-[11px]">Contrato</th>
-                            <th class="px-6 py-4 font-semibold text-rose-800 uppercase tracking-wider text-[11px]">Tercero</th>
-                            <th class="px-6 py-4 font-semibold text-rose-800 uppercase tracking-wider text-[11px]">Tipo</th>
-                            <th class="px-6 py-4 font-semibold text-rose-800 uppercase tracking-wider text-[11px]">Vencimiento</th>
-                            <th class="px-6 py-4 font-semibold text-rose-800 uppercase tracking-wider text-[11px] text-right">Acción</th>
+                            <th class="px-5 py-3 font-semibold text-[#59636a] uppercase tracking-wider text-[10px]">Contrato</th>
+                            <th class="px-5 py-3 font-semibold text-[#59636a] uppercase tracking-wider text-[10px]">Tercero</th>
+                            <th class="px-5 py-3 font-semibold text-[#59636a] uppercase tracking-wider text-[10px]">Tipo</th>
+                            <th class="px-5 py-3 font-semibold text-[#59636a] uppercase tracking-wider text-[10px]">Vencimiento</th>
+                            <th class="px-5 py-3 font-semibold text-[#59636a] uppercase tracking-wider text-[10px] text-right">Acción</th>
                         </tr>
-                    </thead><tbody class="divide-y divide-slate-100">
+                    </thead><tbody class="divide-y divide-[#e7e7e2]">
                         {% for contrato in contratos_vencidos_lista %}
-                        <tr class="hover:bg-slate-50/50 transition-colors">
-                            <td class="px-6 py-4 font-medium text-slate-900">{{ contrato.numero_contrato }}</td>
-                            <td class="px-6 py-4 text-slate-600">{% if contrato.tercero %}{{ contrato.tercero.nombre }}{% else %}{{ contrato.empresa }}{% endif %}</td>
-                            <td class="px-6 py-4 text-slate-600">{{ contrato.tipo_contrato.nombre }}</td>
-                            <td class="px-6 py-4 font-bold text-rose-600">{{ contrato.fecha_fin|date:"d/m/Y" }}</td>
-                            <td class="px-6 py-4 text-right"><a href="{% url 'contracts:detalle_contrato' contrato.id %}" class="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-rose-50 text-rose-600 hover:bg-rose-600 hover:text-white font-semibold transition-colors" title="Ver Detalle"><i class="fa-regular fa-eye"></i></a></td>
+                        <tr class="hover:bg-[#fafaf7] transition-colors">
+                            <td class="px-5 py-3 font-bold text-[#20262b]">{{ contrato.numero_contrato }}</td>
+                            <td class="px-5 py-3 text-[#59636a]">{% if contrato.tercero %}{{ contrato.tercero.nombre }}{% else %}{{ contrato.empresa }}{% endif %}</td>
+                            <td class="px-5 py-3 text-[#59636a]">{{ contrato.tipo_contrato.nombre }}</td>
+                            <td class="px-5 py-3 font-bold text-[#9f2431]">{{ contrato.fecha_fin|date:"d/m/Y" }}</td>
+                            <td class="px-5 py-3 text-right"><a href="{% url 'contracts:detalle_contrato' contrato.id %}" class="inline-flex items-center justify-center w-7 h-7 rounded-[6px] bg-[#f7e7e9] text-[#9f2431] hover:bg-[#9f2431] hover:text-white transition-colors"><i class="fa-regular fa-eye text-[12px]"></i></a></td>
                         </tr>
                         {% endfor %}
                     </tbody></table>
                 </div>
             </div>
-            {% else %}<div class="text-center py-12 text-slate-500 bg-slate-50 rounded-xl border border-dashed border-slate-300"><i class="fa-solid fa-shield-check text-4xl text-emerald-300 mb-3"></i><p class="font-medium text-slate-600">No hay contratos vencidos.</p></div>{% endif %}
+            {% else %}<div class="text-center py-8 text-[#737b80] bg-[#fafaf7] rounded-[8px] border border-dashed border-[#e7e7e2]"><p class="font-medium text-[11px]">No hay contratos vencidos.</p></div>{% endif %}
         </div>
 
         <div data-panel="documentacion">
-            <div class="mb-6"><p class="text-sm font-medium text-slate-500">{{ contratos_pendientes_documentacion }} contratos actuales que requieren documentación.</p></div>
+            <div class="mb-4"><p class="text-[11px] font-medium text-[#737b80]">{{ contratos_pendientes_documentacion }} contratos actuales que requieren documentación.</p></div>
             {% if contratos_documentacion %}
-            <div class="overflow-hidden border border-slate-200 rounded-xl shadow-sm">
+            <div class="overflow-hidden border border-[#e7e7e2] rounded-[8px] shadow-sm">
                 <div class="overflow-x-auto">
-                    <table class="w-full text-sm text-left"><thead class="bg-yellow-50/50 border-b border-yellow-100">
+                    <table class="w-full text-[11px] text-left"><thead class="bg-[#f5f3e8] border-b border-[#e7e7e2]">
                         <tr>
-                            <th class="px-6 py-4 font-semibold text-yellow-800 uppercase tracking-wider text-[11px]">Contrato</th>
-                            <th class="px-6 py-4 font-semibold text-yellow-800 uppercase tracking-wider text-[11px]">Tercero</th>
-                            <th class="px-6 py-4 font-semibold text-yellow-800 uppercase tracking-wider text-[11px]">Progreso</th>
-                            <th class="px-6 py-4 font-semibold text-yellow-800 uppercase tracking-wider text-[11px] text-right">Acción</th>
+                            <th class="px-5 py-3 font-semibold text-[#59636a] uppercase tracking-wider text-[10px]">Contrato</th>
+                            <th class="px-5 py-3 font-semibold text-[#59636a] uppercase tracking-wider text-[10px]">Tercero</th>
+                            <th class="px-5 py-3 font-semibold text-[#59636a] uppercase tracking-wider text-[10px]">Progreso</th>
+                            <th class="px-5 py-3 font-semibold text-[#59636a] uppercase tracking-wider text-[10px] text-right">Acción</th>
                         </tr>
-                    </thead><tbody class="divide-y divide-slate-100">
+                    </thead><tbody class="divide-y divide-[#e7e7e2]">
                         {% for item in contratos_documentacion %}
-                        <tr class="hover:bg-slate-50/50 transition-colors">
-                            <td class="px-6 py-4 font-medium text-slate-900">{{ item.contrato.numero_contrato }}</td>
-                            <td class="px-6 py-4 text-slate-600">{% if item.contrato.tercero %}{{ item.contrato.tercero.nombre }}{% else %}{{ item.contrato.empresa }}{% endif %}</td>
-                            <td class="px-6 py-4">
+                        <tr class="hover:bg-[#fafaf7] transition-colors">
+                            <td class="px-5 py-3 font-bold text-[#20262b]">{{ item.contrato.numero_contrato }}</td>
+                            <td class="px-5 py-3 text-[#59636a]">{% if item.contrato.tercero %}{{ item.contrato.tercero.nombre }}{% else %}{{ item.contrato.empresa }}{% endif %}</td>
+                            <td class="px-5 py-3">
                                 <div class="flex items-center gap-3">
-                                    <div class="w-32 bg-slate-200 rounded-full h-2.5 overflow-hidden shadow-inner">
-                                        <div class="bg-gradient-to-r from-yellow-400 to-yellow-500 h-full rounded-full porcentaje-barra transition-all duration-1000" data-porcentaje="{{ item.porcentaje }}"></div>
+                                    <div class="w-24 bg-[#e7e7e2] rounded-full h-1.5 overflow-hidden">
+                                        <div class="bg-[#0f4d7d] h-full rounded-full porcentaje-barra transition-all duration-1000" data-porcentaje="{{ item.porcentaje }}"></div>
                                     </div>
-                                    <span class="text-xs font-bold text-slate-700 w-8">{{ item.porcentaje }}%</span>
+                                    <span class="text-[10px] font-bold text-[#293137]">{{ item.porcentaje }}%</span>
                                 </div>
                             </td>
-                            <td class="px-6 py-4 text-right"><a href="{% url 'contracts:detalle_contrato' item.contrato.id %}" class="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-yellow-50 text-yellow-600 hover:bg-yellow-500 hover:text-white font-semibold transition-colors" title="Cargar Documentos"><i class="fa-solid fa-folder-arrow-up"></i></a></td>
+                            <td class="px-5 py-3 text-right"><a href="{% url 'contracts:detalle_contrato' item.contrato.id %}" class="inline-flex items-center justify-center w-7 h-7 rounded-[6px] bg-[#e8f0f6] text-[#0f4d7d] hover:bg-[#0f4d7d] hover:text-white transition-colors"><i class="fa-solid fa-folder-arrow-up text-[12px]"></i></a></td>
                         </tr>
                         {% endfor %}
                     </tbody></table>
                 </div>
             </div>
-            {% else %}<div class="text-center py-12 text-slate-500 bg-slate-50 rounded-xl border border-dashed border-slate-300"><i class="fa-solid fa-file-shield text-4xl text-emerald-300 mb-3"></i><p class="font-medium text-slate-600">No hay contratos con documentación pendiente.</p></div>{% endif %}
+            {% else %}<div class="text-center py-8 text-[#737b80] bg-[#fafaf7] rounded-[8px] border border-dashed border-[#e7e7e2]"><p class="font-medium text-[11px]">No hay contratos con documentación pendiente.</p></div>{% endif %}
         </div>
 
         <div data-panel="renovados">
-            <div class="mb-6"><p class="text-sm font-medium text-slate-500">{{ contratos_renovados }} contratos renovados registrados.</p></div>
+            <div class="mb-4"><p class="text-[11px] font-medium text-[#737b80]">{{ contratos_renovados }} contratos renovados registrados.</p></div>
             {% if contratos_renovados_lista %}
-            <div class="overflow-hidden border border-slate-200 rounded-xl shadow-sm">
+            <div class="overflow-hidden border border-[#e7e7e2] rounded-[8px] shadow-sm">
                 <div class="overflow-x-auto">
-                    <table class="w-full text-sm text-left"><thead class="bg-purple-50/50 border-b border-purple-100">
+                    <table class="w-full text-[11px] text-left"><thead class="bg-[#f5f3e8] border-b border-[#e7e7e2]">
                         <tr>
-                            <th class="px-6 py-4 font-semibold text-purple-800 uppercase tracking-wider text-[11px]">Contrato</th>
-                            <th class="px-6 py-4 font-semibold text-purple-800 uppercase tracking-wider text-[11px]">Tercero</th>
-                            <th class="px-6 py-4 font-semibold text-purple-800 uppercase tracking-wider text-[11px]">Tipo</th>
-                            <th class="px-6 py-4 font-semibold text-purple-800 uppercase tracking-wider text-[11px]">Origen</th>
-                            <th class="px-6 py-4 font-semibold text-purple-800 uppercase tracking-wider text-[11px] text-right">Acción</th>
+                            <th class="px-5 py-3 font-semibold text-[#59636a] uppercase tracking-wider text-[10px]">Contrato</th>
+                            <th class="px-5 py-3 font-semibold text-[#59636a] uppercase tracking-wider text-[10px]">Tercero</th>
+                            <th class="px-5 py-3 font-semibold text-[#59636a] uppercase tracking-wider text-[10px]">Tipo</th>
+                            <th class="px-5 py-3 font-semibold text-[#59636a] uppercase tracking-wider text-[10px]">Origen</th>
+                            <th class="px-5 py-3 font-semibold text-[#59636a] uppercase tracking-wider text-[10px] text-right">Acción</th>
                         </tr>
-                    </thead><tbody class="divide-y divide-slate-100">
+                    </thead><tbody class="divide-y divide-[#e7e7e2]">
                         {% for contrato in contratos_renovados_lista %}
-                        <tr class="hover:bg-slate-50/50 transition-colors">
-                            <td class="px-6 py-4 font-medium text-slate-900">{{ contrato.numero_contrato }}</td>
-                            <td class="px-6 py-4 text-slate-600">{% if contrato.tercero %}{{ contrato.tercero.nombre }}{% else %}{{ contrato.empresa }}{% endif %}</td>
-                            <td class="px-6 py-4 text-slate-600">{{ contrato.tipo_contrato.nombre }}</td>
-                            <td class="px-6 py-4">{% if contrato.contrato_anterior %}<span class="inline-flex px-2 py-1 rounded bg-purple-100 text-purple-700 text-xs font-medium"><i class="fa-solid fa-link text-[10px] mr-1"></i> {{ contrato.contrato_anterior.numero_contrato }}</span>{% else %}<span class="text-slate-400 italic text-xs">No registrado</span>{% endif %}</td>
-                            <td class="px-6 py-4 text-right"><a href="{% url 'contracts:detalle_contrato' contrato.id %}" class="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-purple-50 text-purple-600 hover:bg-purple-600 hover:text-white font-semibold transition-colors" title="Ver Detalle"><i class="fa-regular fa-eye"></i></a></td>
+                        <tr class="hover:bg-[#fafaf7] transition-colors">
+                            <td class="px-5 py-3 font-bold text-[#20262b]">{{ contrato.numero_contrato }}</td>
+                            <td class="px-5 py-3 text-[#59636a]">{% if contrato.tercero %}{{ contrato.tercero.nombre }}{% else %}{{ contrato.empresa }}{% endif %}</td>
+                            <td class="px-5 py-3 text-[#59636a]">{{ contrato.tipo_contrato.nombre }}</td>
+                            <td class="px-5 py-3">{% if contrato.contrato_anterior %}<span class="inline-flex px-1.5 py-0.5 rounded-[4px] bg-[#e8f3f0] text-[#2f7d70] text-[9px] font-bold"><i class="fa-solid fa-link text-[8px] mr-1"></i> {{ contrato.contrato_anterior.numero_contrato }}</span>{% else %}<span class="text-[#737b80] italic text-[9px]">No registrado</span>{% endif %}</td>
+                            <td class="px-5 py-3 text-right"><a href="{% url 'contracts:detalle_contrato' contrato.id %}" class="inline-flex items-center justify-center w-7 h-7 rounded-[6px] bg-[#e8f3f0] text-[#2f7d70] hover:bg-[#2f7d70] hover:text-white transition-colors"><i class="fa-regular fa-eye text-[12px]"></i></a></td>
                         </tr>
                         {% endfor %}
                     </tbody></table>
                 </div>
             </div>
-            {% else %}<div class="text-center py-12 text-slate-500 bg-slate-50 rounded-xl border border-dashed border-slate-300"><i class="fa-solid fa-rotate-left text-4xl text-slate-300 mb-3"></i><p class="font-medium text-slate-600">No hay contratos renovados.</p></div>{% endif %}
+            {% else %}<div class="text-center py-8 text-[#737b80] bg-[#fafaf7] rounded-[8px] border border-dashed border-[#e7e7e2]"><p class="font-medium text-[11px]">No hay contratos renovados.</p></div>{% endif %}
         </div>
 
         <div data-panel="finalizados">
-            <div class="mb-6"><p class="text-sm font-medium text-slate-500">{{ contratos_finalizados }} contratos cerrados definitivamente en el histórico.</p></div>
+            <div class="mb-4"><p class="text-[11px] font-medium text-[#737b80]">{{ contratos_finalizados }} contratos cerrados definitivamente en el histórico.</p></div>
             {% if contratos_finalizados_lista %}
-            <div class="overflow-hidden border border-slate-200 rounded-xl shadow-sm">
+            <div class="overflow-hidden border border-[#e7e7e2] rounded-[8px] shadow-sm">
                 <div class="overflow-x-auto">
-                    <table class="w-full text-sm text-left"><thead class="bg-slate-100/50 border-b border-slate-200">
+                    <table class="w-full text-[11px] text-left"><thead class="bg-[#f5f3e8] border-b border-[#e7e7e2]">
                         <tr>
-                            <th class="px-6 py-4 font-semibold text-slate-600 uppercase tracking-wider text-[11px]">Contrato</th>
-                            <th class="px-6 py-4 font-semibold text-slate-600 uppercase tracking-wider text-[11px]">Tercero</th>
-                            <th class="px-6 py-4 font-semibold text-slate-600 uppercase tracking-wider text-[11px]">Tipo</th>
-                            <th class="px-6 py-4 font-semibold text-slate-600 uppercase tracking-wider text-[11px]">Fin</th>
-                            <th class="px-6 py-4 font-semibold text-slate-600 uppercase tracking-wider text-[11px] text-right">Acción</th>
+                            <th class="px-5 py-3 font-semibold text-[#59636a] uppercase tracking-wider text-[10px]">Contrato</th>
+                            <th class="px-5 py-3 font-semibold text-[#59636a] uppercase tracking-wider text-[10px]">Tercero</th>
+                            <th class="px-5 py-3 font-semibold text-[#59636a] uppercase tracking-wider text-[10px]">Tipo</th>
+                            <th class="px-5 py-3 font-semibold text-[#59636a] uppercase tracking-wider text-[10px]">Fin</th>
+                            <th class="px-5 py-3 font-semibold text-[#59636a] uppercase tracking-wider text-[10px] text-right">Acción</th>
                         </tr>
-                    </thead><tbody class="divide-y divide-slate-100">
+                    </thead><tbody class="divide-y divide-[#e7e7e2]">
                         {% for contrato in contratos_finalizados_lista %}
-                        <tr class="hover:bg-slate-50/50 transition-colors">
-                            <td class="px-6 py-4 font-medium text-slate-500">{{ contrato.numero_contrato }}</td>
-                            <td class="px-6 py-4 text-slate-500">{% if contrato.tercero %}{{ contrato.tercero.nombre }}{% else %}{{ contrato.empresa }}{% endif %}</td>
-                            <td class="px-6 py-4 text-slate-500">{{ contrato.tipo_contrato.nombre }}</td>
-                            <td class="px-6 py-4 font-medium text-slate-500">{{ contrato.fecha_fin|date:"d/m/Y" }}</td>
-                            <td class="px-6 py-4 text-right"><a href="{% url 'contracts:detalle_contrato' contrato.id %}" class="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-slate-100 text-slate-500 hover:bg-slate-600 hover:text-white font-semibold transition-colors" title="Ver Histórico"><i class="fa-solid fa-box-archive"></i></a></td>
+                        <tr class="hover:bg-[#fafaf7] transition-colors">
+                            <td class="px-5 py-3 font-bold text-[#20262b]">{{ contrato.numero_contrato }}</td>
+                            <td class="px-5 py-3 text-[#59636a]">{% if contrato.tercero %}{{ contrato.tercero.nombre }}{% else %}{{ contrato.empresa }}{% endif %}</td>
+                            <td class="px-5 py-3 text-[#59636a]">{{ contrato.tipo_contrato.nombre }}</td>
+                            <td class="px-5 py-3 font-medium text-[#59636a]">{{ contrato.fecha_fin|date:"d/m/Y" }}</td>
+                            <td class="px-5 py-3 text-right"><a href="{% url 'contracts:detalle_contrato' contrato.id %}" class="inline-flex items-center justify-center w-7 h-7 rounded-[6px] bg-[#f0f0ed] text-[#59636a] hover:bg-[#59636a] hover:text-white transition-colors"><i class="fa-solid fa-box-archive text-[12px]"></i></a></td>
                         </tr>
                         {% endfor %}
                     </tbody></table>
                 </div>
             </div>
-            {% else %}<div class="text-center py-12 text-slate-500 bg-slate-50 rounded-xl border border-dashed border-slate-300"><i class="fa-solid fa-folder-closed text-4xl text-slate-300 mb-3"></i><p class="font-medium text-slate-600">No hay contratos finalizados.</p></div>{% endif %}
+            {% else %}<div class="text-center py-8 text-[#737b80] bg-[#fafaf7] rounded-[8px] border border-dashed border-[#e7e7e2]"><p class="font-medium text-[11px]">No hay contratos finalizados.</p></div>{% endif %}
         </div>
     </div>
 
-    <!-- SCRIPT DE PANELES -->
+    <!-- SCRIPT DE PANELES ACTUALIZADO -->
     <script>
     function mostrarPanelContratos(tipo, btn) {
         const panel = document.getElementById("panel-contratos");
@@ -371,21 +368,21 @@
         setTimeout(() => { panel.classList.add("translate-y-0", "opacity-100"); }, 10);
 
         document.querySelectorAll(".dashboard-card").forEach(c => {
-            c.classList.remove("ring-4", "ring-blue-300/50", "ring-emerald-300/50", "ring-amber-300/50", "ring-rose-300/50", "ring-yellow-100", "ring-purple-100", "ring-slate-200");
+            c.classList.remove("ring-2", "ring-[#0f4d7d]/50", "ring-[#2f7d70]/50", "ring-[#c29135]/50", "ring-[#9f2431]/50", "ring-[#0f4d7d]/20", "ring-[#2f7d70]/20", "ring-[#59636a]/20");
         });
         
         const colorMap = {
-            'blue': 'ring-blue-300/50',
-            'emerald': 'ring-emerald-300/50',
-            'amber': 'ring-amber-300/50',
-            'red': 'ring-rose-300/50',
-            'yellow': 'ring-yellow-100',
-            'purple': 'ring-purple-100',
-            'slate': 'ring-slate-200'
+            'blue': 'ring-[#0f4d7d]/50',
+            'emerald': 'ring-[#2f7d70]/50',
+            'amber': 'ring-[#c29135]/50',
+            'red': 'ring-[#9f2431]/50',
+            'blue_light': 'ring-[#0f4d7d]/20',
+            'emerald_light': 'ring-[#2f7d70]/20',
+            'slate_light': 'ring-[#59636a]/20'
         };
         
-        const ringClass = colorMap[btn.dataset.color] || 'ring-blue-300/50';
-        btn.classList.add("ring-4", ringClass);
+        const ringClass = colorMap[btn.dataset.color] || 'ring-[#0f4d7d]/50';
+        btn.classList.add("ring-2", ringClass);
 
         setTimeout(() => panel.scrollIntoView({ behavior: "smooth", block: "nearest" }), 150);
     }
@@ -396,98 +393,99 @@
             panel.classList.add("hidden");
         }
         document.querySelectorAll(".dashboard-card").forEach(c => {
-            c.classList.remove("ring-4", "ring-blue-300/50", "ring-emerald-300/50", "ring-amber-300/50", "ring-rose-300/50", "ring-yellow-100", "ring-purple-100", "ring-slate-200");
+            c.classList.remove("ring-2", "ring-[#0f4d7d]/50", "ring-[#2f7d70]/50", "ring-[#c29135]/50", "ring-[#9f2431]/50", "ring-[#0f4d7d]/20", "ring-[#2f7d70]/20", "ring-[#59636a]/20");
         });
     }
     </script>
 
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+    <!-- PANELES DE VENCIMIENTOS Y ALERTAS -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-[14px]">
         
-        <!-- PRÓXIMOS VENCIMIENTOS GLOBALES -->
-        <div class="bg-white rounded-2xl shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] border border-slate-100 flex flex-col h-full">
-            <div class="px-6 py-5 border-b border-slate-100 flex justify-between items-center bg-slate-50/50 rounded-t-2xl">
+        <!-- PRÓXIMOS VENCIMIENTOS -->
+        <div class="bg-white rounded-[11px] shadow-[0_2px_8px_rgba(30,42,48,0.06)] border border-[#e7e7e2] p-[17px] flex flex-col h-full">
+            <div class="flex justify-between items-center mb-3 border-b border-[#eeeeea] pb-3">
                 <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-lg bg-orange-100 flex items-center justify-center text-orange-600"><i class="fa-regular fa-calendar-days text-lg"></i></div>
+                    <div class="w-[34px] h-[34px] rounded-[9px] bg-[#f6eee0] flex items-center justify-center text-[#c29135]"><i class="fa-regular fa-calendar-days text-[14px]"></i></div>
                     <div>
-                        <h3 class="text-base font-bold text-slate-800">Próximos Vencimientos</h3>
-                        <p class="text-xs text-slate-500 font-medium">90 días</p>
+                        <h3 class="text-[12px] font-bold text-[#293137]">Próximos Vencimientos</h3>
+                        <p class="text-[9px] text-[#737b80] font-medium">90 días</p>
                     </div>
                 </div>
-                <a href="{% url 'contracts:lista' %}?filtro=vencer" class="text-xs font-bold text-blue-600 hover:text-blue-800 transition-colors px-3 py-1.5 rounded-md hover:bg-blue-50">Ver todos</a>
+                <a href="{% url 'contracts:lista' %}?filtro=vencer" class="text-[10px] font-bold text-[#0f4d7d] hover:text-[#0b3d63] transition-colors">Ver todos</a>
             </div>
             
-            <div class="p-6 flex-1">
+            <div class="flex-1">
                 {% if proximos_vencimientos %}
-                <div class="space-y-4">
+                <div class="space-y-2">
                     {% for contrato in proximos_vencimientos|slice:":4" %}
-                    <div class="flex items-center justify-between p-4 rounded-xl border border-slate-100 hover:border-orange-200 hover:shadow-md transition-all group">
-                        <div class="flex items-center gap-4">
-                            <div class="w-2 h-12 rounded-full {% if contrato.fecha_fin <= hoy|date:'Y-m-d' %}bg-rose-500{% else %}bg-amber-400{% endif %}"></div>
+                    <div class="flex items-center justify-between p-3 rounded-[8px] border border-[#e7e7e2] hover:bg-[#fafaf7] hover:border-[#ead9bd] transition-all group">
+                        <div class="flex items-center gap-3">
+                            <div class="w-[4px] h-[30px] rounded-full {% if contrato.fecha_fin <= hoy|date:'Y-m-d' %}bg-[#9f2431]{% else %}bg-[#0f4d7d]{% endif %}"></div>
                             <div>
-                                <p class="font-bold text-slate-800 text-sm">{{ contrato.numero_contrato }}</p>
-                                <p class="text-xs text-slate-500 line-clamp-1 max-w-[200px]">{% if contrato.tercero %}{{ contrato.tercero.nombre }}{% else %}{{ contrato.empresa }}{% endif %}</p>
+                                <p class="font-bold text-[#20262b] text-[11px]">{{ contrato.numero_contrato }}</p>
+                                <p class="text-[9px] text-[#737b80] line-clamp-1 max-w-[200px]">{% if contrato.tercero %}{{ contrato.tercero.nombre }}{% else %}{{ contrato.empresa }}{% endif %}</p>
                             </div>
                         </div>
-                        <div class="flex items-center gap-4">
+                        <div class="flex items-center gap-3">
                             <div class="text-right">
-                                <p class="text-[10px] uppercase font-bold text-slate-400">Vence</p>
-                                <p class="text-sm font-bold {% if contrato.fecha_fin <= hoy|date:'Y-m-d' %}text-rose-600{% else %}text-amber-600{% endif %}">{{ contrato.fecha_fin|date:"d/m/Y" }}</p>
+                                <p class="text-[8px] uppercase font-bold text-[#737b80]">Vence</p>
+                                <p class="text-[11px] font-bold {% if contrato.fecha_fin <= hoy|date:'Y-m-d' %}text-[#9f2431]{% else %}text-[#c29135]{% endif %}">{{ contrato.fecha_fin|date:"d/m/Y" }}</p>
                             </div>
-                            <a href="{% url 'contracts:detalle_contrato' contrato.id %}" class="w-8 h-8 rounded-lg bg-slate-50 text-slate-400 group-hover:bg-blue-50 group-hover:text-blue-600 flex items-center justify-center transition-colors"><i class="fa-solid fa-chevron-right text-xs"></i></a>
+                            <a href="{% url 'contracts:detalle_contrato' contrato.id %}" class="w-7 h-7 rounded-[6px] bg-[#f5f3e8] text-[#59636a] group-hover:bg-[#e8f0f6] group-hover:text-[#0f4d7d] flex items-center justify-center transition-colors"><i class="fa-solid fa-chevron-right text-[10px]"></i></a>
                         </div>
                     </div>
                     {% endfor %}
                 </div>
                 {% else %}
-                <div class="flex flex-col items-center justify-center h-full text-center py-8">
-                    <div class="w-16 h-16 rounded-full bg-emerald-50 flex items-center justify-center mb-3 text-emerald-400"><i class="fa-regular fa-face-smile text-2xl"></i></div>
-                    <p class="font-bold text-slate-700">Sin apuros</p>
-                    <p class="text-sm text-slate-500">No hay contratos por vencer pronto.</p>
+                <div class="flex flex-col items-center justify-center h-full text-center py-6">
+                    <div class="w-10 h-10 rounded-full bg-[#e8f3f0] flex items-center justify-center mb-2 text-[#2f7d70]"><i class="fa-regular fa-face-smile text-[18px]"></i></div>
+                    <p class="font-bold text-[12px] text-[#293137]">Sin apuros</p>
+                    <p class="text-[10px] text-[#737b80]">No hay contratos por vencer pronto.</p>
                 </div>
                 {% endif %}
             </div>
         </div>
 
-        <!-- ALERTAS Y DOCUMENTACIÓN -->
-        <div class="bg-white rounded-2xl shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] border border-slate-100 flex flex-col h-full">
-            <div class="px-6 py-5 border-b border-slate-100 flex items-center justify-between bg-slate-50/50 rounded-t-2xl">
+        <!-- ALERTAS -->
+        <div class="bg-white rounded-[11px] shadow-[0_2px_8px_rgba(30,42,48,0.06)] border border-[#e7e7e2] p-[17px] flex flex-col h-full">
+            <div class="flex justify-between items-center mb-3 border-b border-[#eeeeea] pb-3">
                 <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-lg bg-rose-100 flex items-center justify-center text-rose-600"><i class="fa-regular fa-bell text-lg"></i></div>
+                    <div class="w-[34px] h-[34px] rounded-[9px] bg-[#f7e7e9] flex items-center justify-center text-[#9f2431]"><i class="fa-regular fa-bell text-[14px]"></i></div>
                     <div>
-                        <h3 class="text-base font-bold text-slate-800">Alertas Recientes</h3>
-                        <p class="text-xs text-slate-500 font-medium">Notificaciones del sistema</p>
+                        <h3 class="text-[12px] font-bold text-[#293137]">Alertas Recientes</h3>
+                        <p class="text-[9px] text-[#737b80] font-medium">Notificaciones del sistema</p>
                     </div>
                 </div>
                 {% if total_notificaciones_pendientes > 0 %}
-                <span class="flex h-3 w-3 relative">
-                  <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
-                  <span class="relative inline-flex rounded-full h-3 w-3 bg-rose-500"></span>
+                <span class="flex h-2.5 w-2.5 relative">
+                  <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#9f2431] opacity-75"></span>
+                  <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#9f2431]"></span>
                 </span>
                 {% else %}
-                <span class="w-3 h-3 bg-emerald-400 rounded-full shadow-sm"></span>
+                <span class="w-2.5 h-2.5 bg-[#2f7d70] rounded-full"></span>
                 {% endif %}
             </div>
 
-            <div class="p-6 flex-1 overflow-y-auto max-h-[350px] custom-scrollbar">
+            <div class="flex-1 overflow-y-auto max-h-[220px] custom-scrollbar pr-1">
                 {% if notificaciones_pendientes %}
-                <div class="space-y-4">
+                <div class="space-y-2">
                     {% for notificacion in notificaciones_pendientes|slice:":5" %}
-                    <div class="flex items-start gap-4 p-4 rounded-xl bg-slate-50 hover:bg-rose-50/50 transition-colors border border-transparent hover:border-rose-100 group">
-                        <div class="w-8 h-8 rounded-full bg-white border border-slate-200 flex items-center justify-center shadow-sm text-rose-500 mt-1 shrink-0"><i class="fa-solid fa-triangle-exclamation text-[10px]"></i></div>
+                    <div class="flex items-start gap-3 p-3 rounded-[8px] bg-[#fafaf7] hover:bg-[#f7e7e9]/50 transition-colors border border-transparent hover:border-[#f0cdd1] group">
+                        <div class="w-6 h-6 rounded-full bg-white border border-[#e7e7e2] flex items-center justify-center shadow-sm text-[#9f2431] shrink-0 mt-0.5"><i class="fa-solid fa-triangle-exclamation text-[8px]"></i></div>
                         <div class="flex-1">
-                            <p class="text-xs font-bold text-slate-500 mb-1">{{ notificacion.fecha_programada|date:"d M Y" }}</p>
-                            <p class="font-bold text-slate-800 text-sm leading-tight mb-1">{{ notificacion.contrato.numero_contrato }}</p>
-                            <p class="text-xs text-slate-600 font-medium">Aviso a {{ notificacion.dias_anticipacion }} día{{ notificacion.dias_anticipacion|pluralize }} del vencimiento.</p>
+                            <p class="text-[9px] font-bold text-[#737b80] mb-0.5">{{ notificacion.fecha_programada|date:"d M Y" }}</p>
+                            <p class="font-bold text-[#20262b] text-[11px] leading-tight mb-0.5">{{ notificacion.contrato.numero_contrato }}</p>
+                            <p class="text-[9px] text-[#59636a] font-medium">Aviso a {{ notificacion.dias_anticipacion }} día{{ notificacion.dias_anticipacion|pluralize }} del vencimiento.</p>
                         </div>
-                        <a href="{% url 'contracts:detalle_contrato' notificacion.contrato.id %}" class="text-xs font-bold text-blue-600 bg-blue-50 px-2.5 py-1.5 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity">Ver</a>
+                        <a href="{% url 'contracts:detalle_contrato' notificacion.contrato.id %}" class="text-[9px] font-bold text-[#0f4d7d] bg-[#e8f0f6] px-2 py-1 rounded-[6px] opacity-0 group-hover:opacity-100 transition-opacity">Ver</a>
                     </div>
                     {% endfor %}
                 </div>
                 {% else %}
-                <div class="flex flex-col items-center justify-center h-full text-center py-8">
-                    <div class="w-16 h-16 rounded-full bg-emerald-50 flex items-center justify-center mb-3 text-emerald-400"><i class="fa-solid fa-check text-2xl"></i></div>
-                    <p class="font-bold text-slate-700">Todo al día</p>
-                    <p class="text-sm text-slate-500">No tienes alertas pendientes de lectura.</p>
+                <div class="flex flex-col items-center justify-center h-full text-center py-6">
+                    <div class="w-10 h-10 rounded-full bg-[#e8f3f0] flex items-center justify-center mb-2 text-[#2f7d70]"><i class="fa-solid fa-check text-[18px]"></i></div>
+                    <p class="font-bold text-[12px] text-[#293137]">Todo al día</p>
+                    <p class="text-[10px] text-[#737b80]">No tienes alertas pendientes de lectura.</p>
                 </div>
                 {% endif %}
             </div>
@@ -496,20 +494,20 @@
     </div>
 
     <!-- ESTADO DEL SISTEMA -->
-    <div class="bg-gradient-to-r from-slate-900 to-slate-800 rounded-2xl p-6 shadow-xl flex justify-between items-center relative overflow-hidden">
+    <div class="bg-[#29333b] rounded-[11px] p-[17px] shadow-[0_2px_8px_rgba(30,42,48,0.10)] flex justify-between items-center relative overflow-hidden mt-4">
         <div class="absolute -right-10 -top-10 w-40 h-40 bg-white/5 rounded-full blur-3xl"></div>
         <div class="relative z-10">
-            <h3 class="font-bold text-base text-white tracking-wide flex items-center gap-2">
-                <i class="fa-solid fa-server text-blue-400"></i> Gestión Contractual
+            <h3 class="font-bold text-[13px] text-white tracking-wide flex items-center gap-2">
+                <i class="fa-solid fa-server text-[#e8f0f6]"></i> Gestión Contractual
             </h3>
-            <p class="text-slate-400 text-xs mt-1 font-medium">Panel sincronizado al {{ hoy|date:"d/m/Y" }}</p>
+            <p class="text-[#e1e5e7] text-[10px] mt-0.5 font-medium">Panel sincronizado al {{ hoy|date:"d/m/Y" }}</p>
         </div>
-        <div class="relative z-10 flex items-center gap-2 bg-slate-950/50 px-4 py-2 rounded-full border border-slate-700">
-            <span class="flex h-2.5 w-2.5 relative">
-              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-              <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+        <div class="relative z-10 flex items-center gap-2 bg-[#1b2329] px-3 py-1.5 rounded-full border border-[#34414a]">
+            <span class="flex h-2 w-2 relative">
+              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#2f7d70] opacity-75"></span>
+              <span class="relative inline-flex rounded-full h-2 w-2 bg-[#2f7d70]"></span>
             </span>
-            <span class="text-xs font-bold text-emerald-400 uppercase tracking-widest">Operativo</span>
+            <span class="text-[9px] font-bold text-[#2f7d70] uppercase tracking-widest">Operativo</span>
         </div>
     </div>
 </div>
